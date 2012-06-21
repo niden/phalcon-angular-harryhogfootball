@@ -1,15 +1,16 @@
 <?php
 /**
-* Scoring.php
-*
-* The model for the scoring table
-*
-* @author      Nikos Dimopoulos <nikos@niden.net>
-* @since       2012-06-21
-* @category    Models
-* @license     MIT - https://github.com/niden/phalcon-angular-harryhogfootball/blob/master/LICENSE
-*
-*/
+ * Scoring.php
+ * Scoring
+ *
+ * The model for the scoring table
+ *
+ * @author      Nikos Dimopoulos <nikos@niden.net>
+ * @since       2012-06-21
+ * @category    Models
+ * @license     MIT - https://github.com/niden/phalcon-angular-harryhogfootball/blob/master/LICENSE
+ *
+ */
 
 class Scoring extends Phalcon_Model_Base
 {

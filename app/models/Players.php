@@ -1,15 +1,16 @@
 <?php
-    /**
-* Positions.php
-*
-* The model for the positions table
-*
-* @author      Nikos Dimopoulos <nikos@niden.net>
-* @since       2012-06-21
-* @category    Models
-* @license     MIT - https://github.com/niden/phalcon-angular-harryhogfootball/blob/master/LICENSE
-*
-*/
+/**
+ * Players.php
+ * Players
+ *
+ * The model for the players table
+ *
+ * @author      Nikos Dimopoulos <nikos@niden.net>
+ * @since       2012-06-21
+ * @category    Models
+ * @license     MIT - https://github.com/niden/phalcon-angular-harryhogfootball/blob/master/LICENSE
+ *
+ */
 
 class Players extends Phalcon_Model_Base
 {

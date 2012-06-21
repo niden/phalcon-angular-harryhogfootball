@@ -1,21 +1,22 @@
 <?php
-    /**
-* Positions.php
-*
-* The model for the positions table
-*
-* @author      Nikos Dimopoulos <nikos@niden.net>
-* @since       2012-06-21
-* @category    Models
-* @license     MIT - https://github.com/niden/phalcon-angular-harryhogfootball/blob/master/LICENSE
-*
-*/
+/**
+ * Episodes.php
+ * Episodes
+ *
+ * The model for the episodes table
+ *
+ * @author      Nikos Dimopoulos <nikos@niden.net>
+ * @since       2012-06-21
+ * @category    Models
+ * @license     MIT - https://github.com/niden/phalcon-angular-harryhogfootball/blob/master/LICENSE
+ *
+ */
 
 class Episodes extends Phalcon_Model_Base
 {
     /**
-* @var integer
-*/
+     * @var integer
+     */
     public $id;
 
     /**
@@ -31,7 +32,7 @@ class Episodes extends Phalcon_Model_Base
     /**
      * @var integer
      */
-    public $air_date;
+    public $airDate;
 
     /**
      * @param array $parameters

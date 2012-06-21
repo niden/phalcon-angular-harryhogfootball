@@ -1,6 +1,7 @@
 <?php
 /**
  * Positions.php
+ * Positions
  *
  * The model for the positions table
  *
