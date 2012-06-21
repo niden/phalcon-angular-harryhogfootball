@@ -11,8 +11,8 @@
  *
  */
 
-class Users extends Phalcon_Model_Base {
-
+class Users extends Phalcon_Model_Base
+{
     /**
      * @var integer
      */
@@ -28,19 +28,21 @@ class Users extends Phalcon_Model_Base {
      */
     public $password;
 
-
     /**
+     * @param array $parameters
+     *
      * @static
-     * @param   array                   $parameters
-     * @return  Phalcon_Model_Resultset Users[]
+     * @return Phalcon_Model_Resultset Users[]
      */
-    static public function find($parameters=array()){
+    static public function find($parameters = array())
+    {
         return parent::find($parameters);
     }
 
     /**
+     * @param array $parameters
+     *
      * @static
-     * @param   array               $parameters
      * @return  Phalcon_Model_Base   Users
      */
     static public function findFirst($parameters = array())
@@ -48,4 +50,3 @@ class Users extends Phalcon_Model_Base {
         return parent::findFirst($parameters);
     }
 }
-
