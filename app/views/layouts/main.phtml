@@ -1,0 +1,28 @@
+    <div class='navbar navbar-fixed-top'>
+        <div class='navbar-inner'>
+            <div class='container'>
+                <a class='btn btn-navbar' data-toggle='collapse' data-target='.nav-collapse'>
+                    <span class='icon-bar'></span>
+                    <span class='icon-bar'></span>
+                    <span class='icon-bar'></span>
+                </a>
+                <a class='brand' href='#'>HHF GKB Awards</a>
+                <div class='nav-collapse' ng-controller='MenuCtrl'>
+                    <ul class='nav pull-left'>
+                        <li ng-repeat='menu in menus.left' ng-bind-html-unsafe='menu.link'></li>
+                    </ul>
+                    <ul class='nav pull-right'>
+                        <li ng-repeat='menu in menus.right' ng-bind-html-unsafe='menu.link'></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class='container'>
+        <?php echo $this->getContent() ?>
+        <hr>
+        <footer>
+            <p>&copy; niden.net <?php echo date('Y'); ?></p>
+        </footer>
+    </div>

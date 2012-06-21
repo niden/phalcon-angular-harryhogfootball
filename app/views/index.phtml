@@ -1,9 +1,28 @@
+<?php use Phalcon_Tag as Tag; ?>
 <!DOCTYPE html>
-<html>
-	<head>
-		<title>Phalcon PHP Framework</title>
-	</head>
-	<body>
-		<?php echo $this->getContent(); ?>
-	</body>
+<html ng-app>
+    <head>
+        <meta charset="utf-8">
+        <?php echo Tag::getTitle(); ?>
+        <link rel="stylesheet" href="http://current.bootstrapcdn.com/bootstrap-v204/css/bootstrap-combined.min.css" type="text/css" />
+        <?php echo Tag::stylesheetLink('css/style.css'); ?>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Harry Hog Football - Game balls and Kick in the Balls awards finder" />
+        <meta name="author" content="niden.net" />
+
+        <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js' type='text/javascript'></script>
+        <script src='http://current.bootstrapcdn.com/bootstrap-v204/js/bootstrap.min.js' type='text/javascript'></script>
+        <script src='http://code.angularjs.org/1.0.0/angular-1.0.0.min.js' type='text/javascript'></script>
+        <?php echo Tag::javascriptInclude('js/utils.js') ?>
+
+        <script type='text/javascript'>
+        function MenuCtrl($scope) {
+            $scope.menus = <?php echo Elements::getMenu($this); ?>
+        }
+        </script>
+
+    </head>
+    <body>
+    <?php echo $this->getContent() ?>
+    </body>
 </html>
