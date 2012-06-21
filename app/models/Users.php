@@ -7,7 +7,7 @@
  * @author      Nikos Dimopoulos <nikos@niden.net>
  * @since       2012-06-21
  * @category    Models
- * @license     MIT -
+ * @license     MIT - https://github.com/niden/phalcon-angular-harryhogfootball/blob/master/LICENSE
  *
  */
 
