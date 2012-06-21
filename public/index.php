@@ -4,15 +4,20 @@ error_reporting(E_ALL);
 
 try {
 
-	require "../app/controllers/ControllerBase.php";
+    require __DIR__ . '/../app/controllers/ControllerBase.php';
+    require __DIR__ . '/../app/library/Elements.php';
 
-	$front = Phalcon_Controller_Front::getInstance();
+    Phalcon_Session::start();
 
-	$config = new Phalcon_Config_Adapter_Ini("../app/config/config.ini");
-	$front->setConfig($config);
+    $front = Phalcon_Controller_Front::getInstance();
 
-	echo $front->dispatchLoop()->getContent();
-}
-catch(Phalcon_Exception $e){
-	echo "PhalconException: ", $e->getMessage();
+    $config = new Phalcon_Config_Adapter_Ini(
+        __DIR__ . '/../app/config/config.ini'
+    );
+    $front->setConfig($config);
+
+    echo $front->dispatchLoop()->getContent();
+
+} catch (Phalcon_Exception $e) {
+    echo "PhalconException: ", $e->getMessage();
 }
