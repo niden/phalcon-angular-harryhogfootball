@@ -19,8 +19,8 @@ abstract class Elements
         $auth = Phalcon_Session::get('auth');
 
         $active         = $view->getControllerName();
-        $sessionCaption = ($auth) ? 'Log In'         : 'Log Out';
-        $sessionAction  = ($auth) ? '/session/login' : '/session/logout';
+        $sessionCaption = ($auth) ? 'Log Out'         : 'Log In';
+        $sessionAction  = ($auth) ? '/session/logout' : '/session/index';
 
         $leftMenu = array();
         foreach ($commonMenu as $link => $text) {
@@ -34,13 +34,22 @@ abstract class Elements
         $menu = new StdClass();
         $menu->current = $active;
         $menu->left    = $leftMenu;
-        $menu->right   = array(
-            array(
-                'active' => false,
-                'link'   => $sessionAction,
-                'text'   => $sessionCaption,
-            ),
-        );
+
+        $menu->right = array();
+
+        if ($auth) {
+            $$menu->right[] = array(
+                                'active' => false,
+                                'link'   => '/',
+                                'text'   => 'Logged in as: ' . $auth->username,
+                              );
+        }
+
+        $menu->right[] = array(
+                            'active' => false,
+                            'link'   => $sessionAction,
+                            'text'   => $sessionCaption,
+                         );
 
         echo json_encode($menu);
     }

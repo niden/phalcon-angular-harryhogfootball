@@ -18,7 +18,6 @@
         <script type='text/javascript'>
         function MenuCtrl($scope) {
             $scope.menus = <?php echo Elements::getMenu($this); ?>;
-            $scope.bc = <?php echo $bc; ?>;
         }
         function BcCtrl($scope) {
             $scope.breadcrumbs = <?php echo $breadcrumbs; ?>;

@@ -10,12 +10,12 @@
                 <div class='nav-collapse' ng-controller='MenuCtrl'>
                     <ul class='nav pull-left'>
                         <li ng-repeat='menu in menus.left' ng-class="{true:'active', false:''}[$index==menu.current]">
-                            <a href='{{$menu.link}}'>{{menu.text}}</a>
+                            <a href='{{menu.link}}'>{{menu.text}}</a>
                         </li>
                     </ul>
                     <ul class='nav pull-right'>
                         <li ng-repeat='menu in menus.right'>
-                            <a href='{{$menu.link}}'>{{menu.text}}</a>
+                            <a href='{{menu.link}}'>{{menu.text}}</a>
                         </li>
                     </ul>
                 </div>
