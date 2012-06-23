@@ -14,11 +14,20 @@
 
 class ControllerBase extends Phalcon_Controller
 {
+    protected $_bc = null;
+
     /**
      * Initializes the controller
      */
     public function initialize()
     {
         Phalcon_Tag::prependTitle('HHF G&KB Awards | ');
+
+        $this->_bc = new HHF_Breadcrumbs();
+    }
+
+    public function beforeDispatch()
+    {
+        $this->view->setVar('breadcrumbs', $this->_bc->generate());
     }
 }

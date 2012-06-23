@@ -9,10 +9,14 @@
                 <a class='brand' href='#'>HHF GKB Awards</a>
                 <div class='nav-collapse' ng-controller='MenuCtrl'>
                     <ul class='nav pull-left'>
-                        <li ng-repeat='menu in menus.left' ng-bind-html-unsafe='menu.link'></li>
+                        <li ng-repeat='menu in menus.left' ng-class="{true:'active', false:''}[$index==menu.current]">
+                            <a href='{{$menu.link}}'>{{menu.text}}</a>
+                        </li>
                     </ul>
                     <ul class='nav pull-right'>
-                        <li ng-repeat='menu in menus.right' ng-bind-html-unsafe='menu.link'></li>
+                        <li ng-repeat='menu in menus.right'>
+                            <a href='{{$menu.link}}'>{{menu.text}}</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -20,6 +24,13 @@
     </div>
 
     <div class='container'>
+        <div ng-controller='BcCtrl'>
+            <ul class='breadcrumb'>
+                <li ng-repeat="bc in breadcrumbs" ng-class="{true:'active', false:''}[$index==breadcrumb.current]">
+                    <a href="{{bc.link}}">{{bc.text}}</a> <span class="divider">/</span>
+                </li>
+            </ul>
+        </div>
         <?php echo $this->getContent() ?>
         <hr>
         <footer>

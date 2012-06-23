@@ -6,6 +6,7 @@ try {
 
     require __DIR__ . '/../app/controllers/ControllerBase.php';
     require __DIR__ . '/../app/library/Elements.php';
+    require __DIR__ . '/../app/library/HHF/Breadcrumbs.php';
 
     Phalcon_Session::start();
 
