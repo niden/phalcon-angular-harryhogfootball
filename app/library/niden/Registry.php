@@ -21,10 +21,10 @@ class niden_Registry extends ArrayObject
     private static $_registry = null;
 
     /**
-     * Constructs a parent ArrayObject with default
-     * ARRAY_AS_PROPS to allow access as an object
+     * Constructs a parent ArrayObject with default ARRAY_AS_PROPS to allow
+     * access as an object
      *
-     * @param array $array data array
+     * @param array   $array Array with data
      * @param integer $flags ArrayObject flags
      */
     public function __construct(
