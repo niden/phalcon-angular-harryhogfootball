@@ -3,7 +3,7 @@
  * Registry.php
  * niden_Registry
  *
- * Registry pattern inmplementation
+ * Registry pattern implementation
  *
  * @author      Nikos Dimopoulos <nikos@niden.net>
  * @since       6/24/12
@@ -27,7 +27,10 @@ class niden_Registry extends ArrayObject
      * @param array $array data array
      * @param integer $flags ArrayObject flags
      */
-    public function __construct($array = array(), $flags = parent::ARRAY_AS_PROPS)
+    public function __construct(
+        $array = array(),
+        $flags = parent::ARRAY_AS_PROPS
+    )
     {
         parent::__construct($array, $flags);
     }
