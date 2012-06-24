@@ -1,19 +1,18 @@
 <?php
 /**
  * Breadcrumbs.php
- * HHF_Breadcrumbs
+ * niden_Breadcrumbs
  *
  * Handles the breadcrumbs for the application
  *
- * @author      Nikolaos Dimopoulos <ndimopoulos@avectra.com>
+ * @author      Nikos Dimopoulos <nikos@niden.net>
  * @since       6/22/12
- * @name        HHF_Breadcrumbs
- * @package     Library
+ * @category    Library
  * @license     MIT - https://github.com/niden/phalcon-angular-harryhogfootball/blob/master/LICENSE
  *
  */
 
-class HHF_Breadcrumbs
+class niden_Breadcrumbs
 {
     /**
      * @var array

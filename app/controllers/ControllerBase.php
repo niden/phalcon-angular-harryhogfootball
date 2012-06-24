@@ -23,7 +23,7 @@ class ControllerBase extends Phalcon_Controller
     {
         Phalcon_Tag::prependTitle('HHF G&KB Awards | ');
 
-        $this->_bc = new HHF_Breadcrumbs();
+        $this->_bc = new niden_Breadcrumbs();
     }
 
     public function beforeDispatch()
