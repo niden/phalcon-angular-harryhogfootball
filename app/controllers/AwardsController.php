@@ -22,6 +22,13 @@ class AwardsController extends ControllerBase
      */
     public function initialize()
     {
+        $auth = Phalcon_Session::get('auth');
+
+        // Not logged in user cannot come directly here
+        if ($auth == false) {
+            $this->_forward('/');
+        }
+
         $this->view->setTemplateAfter('main');
         Tag::setTitle('Awards Entry');
         parent::initialize();

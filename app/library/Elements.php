@@ -39,6 +39,12 @@ abstract class Elements
 
         if ($auth != false) {
 
+            $menu->left[] = array(
+                'active' => false,
+                'link'   => '/awards/add',
+                'text'   => 'Add Award',
+            );
+
             $menu->right[] = array(
                                 'active' => false,
                                 'link'   => '/',
