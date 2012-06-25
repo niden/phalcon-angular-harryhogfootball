@@ -1,4 +1,4 @@
-<?php use Phalcon_Tag as Tag ?>
+<?php use Phalcon_Tag as Tag; ?>
 
 <?php echo $this->getContent() ?>
 
@@ -9,10 +9,10 @@
             <div class="page-header">
                 <h2>Log In</h2>
             </div>
-            <?php echo Tag::form(array('session/start', 'class' => 'form-inline')) ?>
+            <?php echo Tag::form(array('session/login', 'class' => 'form-inline')) ?>
                 <fieldset>
                     <div class="control-group">
-                        <label class="control-label" for="email">Username/Email</label>
+                        <label class="control-label">Username/Email</label>
                         <div class="controls">
                             <?php echo Tag::textField(array(
                                 'email',
@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="password">Password</label>
+                        <label class="control-label">Password</label>
                         <div class="controls">
                             <?php echo Tag::passwordField(array(
                                 'password',

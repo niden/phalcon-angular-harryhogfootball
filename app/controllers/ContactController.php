@@ -22,6 +22,8 @@ class ContactController extends ControllerBase
         $this->view->setTemplateAfter('main');
         Phalcon_Tag::setTitle('Contact us');
         parent::initialize();
+
+        $this->_bc->add('Contact Us', 'contact');
     }
 
     /**

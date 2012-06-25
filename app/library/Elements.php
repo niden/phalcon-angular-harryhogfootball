@@ -37,12 +37,13 @@ abstract class Elements
 
         $menu->right = array();
 
-        if ($auth) {
-            $$menu->right[] = array(
+        if ($auth != false) {
+
+            $menu->right[] = array(
                                 'active' => false,
                                 'link'   => '/',
-                                'text'   => 'Logged in as: ' . $auth->username,
-                              );
+                                'text'   => 'Logged in as: ' . $auth['name'],
+                             );
         }
 
         $menu->right[] = array(

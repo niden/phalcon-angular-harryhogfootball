@@ -1,3 +1,18 @@
+// AngularJS code goes here
+var ngModule = angular.module('HHF', []);
+
+// Utility directives
+
+// ng-visible directive
+ngModule.directive('ngVisible', function() {
+    return function(scope, element, attr) {
+        scope.$watch(attr.ngVisible, function(visible) {
+            element.css('display', visible ? '' : 'none');
+        });
+    };
+});
+
+
 var Profile = {
     check: function (id) {
         if ($.trim($("#" + id)[0].value) == '') {

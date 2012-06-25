@@ -27,7 +27,7 @@ class Scoring extends Phalcon_Model_Base
     /**
      * @var integer
      */
-    public $gameball;
+    public $gamePlayerId;
 
     /**
      * @var integer
@@ -37,7 +37,7 @@ class Scoring extends Phalcon_Model_Base
     /**
      * @var integer
      */
-    public $playerId;
+    public $kickPlayerId;
 
     /**
      * Initializes the class and sets any relationships with other models
@@ -49,8 +49,9 @@ class Scoring extends Phalcon_Model_Base
         $fk = array('foreignKey' => array('message' => $message));
 
         $this->hasOne('userId', 'Users', 'id', $fk);
-        $this->hasOne('playerId', 'Players', 'id', $fk);
         $this->hasOne('episodeId', 'Episodes', 'id', $fk);
+        $this->hasOne('gamePlayerId', 'Players', 'id', $fk);
+        $this->hasOne('kickPlayerId', 'Players', 'id', $fk);
     }
 
     /**
