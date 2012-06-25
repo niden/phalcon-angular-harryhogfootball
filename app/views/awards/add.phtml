@@ -1,0 +1,67 @@
+<?php use Phalcon_Tag as Tag; ?>
+
+<?php echo $this->getContent() ?>
+
+<div class='page-header'>
+    <h2>Awards Entry</h2>
+</div>
+
+<p>
+    Enter the Game Balls and Kick-In-The-Balls Awards
+</p>
+
+<?php
+
+echo Tag::form(
+    array(
+        'awards/add',
+        'class' => 'form-horizontal',
+    )
+)
+?>
+<fieldset>
+    <div class='control-group'>
+        <label class='control-label'>Episode</label>
+        <div class='controls'>
+            <?php echo Tag::textField(array('episode', 'class' => 'input-xlarge')) ?>
+            <p class='help-block'>(required)</p>
+        </div>
+    </div>
+
+    <div class='control-group'>
+        <label class='control-label'>Game Ball</label>
+        <div class='controls'>
+            <?php
+                echo Tag::select(
+                    array(
+                        'gameball',
+                        $players,
+                        'using' => array('id', 'name'),
+                        'class' => 'input-xlarge',
+                    )
+                ); ?>
+            <p class='help-block'>(required)</p>
+        </div>
+    </div>
+
+    <div class='control-group'>
+        <label class='control-label'>Kick In The Balls</label>
+        <div class='controls'>
+            <?php
+            echo Tag::select(
+                array(
+                    'kitb',
+                    $players,
+                    'using' => array('id', 'name'),
+                    'class' => 'input-xlarge',
+                )
+            ); ?>
+            <p class='help-block'>(required)</p>
+        </div>
+    </div>
+
+    <div class='form-actions'>
+        <?php echo Tag::submitButton(array('Save', 'class' => 'btn btn-primary btn-large')) ?>
+    </div>
+</fieldset>
+</form>
