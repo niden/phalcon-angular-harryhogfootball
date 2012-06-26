@@ -1,7 +1,3 @@
-<?php use Phalcon_Tag as Tag; ?>
-
-<?php echo $this->getContent() ?>
-
 <div class="hero-unit">
     <h1>
         Welcome to HHF GKB Awards
@@ -15,31 +11,30 @@
 <div class="row">
     <div class="span4">
         <h2>Hall of Fame</h2>
-        <p>
-            <div>100 - London Fletcher</div>
-            <div class='progress'><div class='bar' style='width: 100%;'></div></div>
-            <div>87 - Sean Taylor</div>
-            <div class='progress'><div class='bar' style='width: 87%;'></div></div>
-            <div>72 - Chris Samuel</div>
-            <div class='progress'><div class='bar' style='width: 72%;'></div></div>
-            <div>53 - Lorenzo Alexander</div>
-            <div class='progress'><div class='bar' style='width: 53%;'></div></div>
-            <div>25 - Graham Gano</div>
-            <div class='progress'><div class='bar' style='width: 25%;'></div></div>
-
-        </p>
+        <div ng-repeat='gb in hofData.gameballs'>
+            <div>{{gb.total}} - {{gb.name}}</div>
+            <div class='progress progress-info'>
+                <div class='bar' style='width:{{gb.percent}}%;'></div>
+            </div>
+        </div>
     </div>
     <div class="span4">
         <h2>Hall of Shame</h2>
-        <p>
-            <div><span>120</span> <span>Rex Grossman</span></div>
-            <div><span>120</span> <span>Rex Grossman</span></div>
-            <div><span>120</span> <span>Rex Grossman</span></div>
-            <div><span>120</span> <span>Rex Grossman</span></div>
-        </p>
+        <div ng-repeat='kitb in hofData.kicks'>
+            <div>{{kitb.total}} - {{kitb.name}}</div>
+            <div class='progress progress-danger'>
+                <div class='bar' style='width:{{kitb.percent}}%;'></div>
+            </div>
+        </div>
     </div>
     <div class="span4">
         <h2>Invite, Share, Spread the word</h2>
         <p>Invite others to listen to the podcast </p>
     </div>
+    <div class="span4">
+        <h2>Advertisements</h2>
+        <p>Advertisements go here</p>
+    </div>
 </div>
+<hr />
+<?php echo $this->getContent() ?>

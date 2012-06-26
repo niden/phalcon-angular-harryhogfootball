@@ -1,6 +1,6 @@
 <?php use Phalcon_Tag as Tag; ?>
 <!DOCTYPE html>
-<html ng-app>
+<html ng-app='HHF'>
     <head>
         <meta charset="utf-8">
         <?php echo Tag::getTitle(); ?>
@@ -13,14 +13,14 @@
         <?php echo Tag::javascriptInclude('js/jquery.min.js') ?>
         <?php echo Tag::javascriptInclude('js/bootstrap.min.js') ?>
         <?php echo Tag::javascriptInclude('js/angular-1.0.0.min.js') ?>
+        <?php echo Tag::javascriptInclude('js/angular-resource-1.0.0.min.js') ?>
         <?php echo Tag::javascriptInclude('js/utils.js') ?>
 
         <script type='text/javascript'>
-        function MenuCtrl($scope) {
+        function HHFCtrl($scope) {
             $scope.menus = <?php echo Elements::getMenu($this); ?>;
-        }
-        function BcCtrl($scope) {
             $scope.breadcrumbs = <?php echo $breadcrumbs; ?>;
+            $scope.hofData = <?php echo Elements::getHof(5); ?>;
         }
         </script>
 

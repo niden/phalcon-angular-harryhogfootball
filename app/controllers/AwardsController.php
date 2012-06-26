@@ -37,6 +37,14 @@ class AwardsController extends ControllerBase
     }
 
     /**
+     * The index action
+     */
+    public function indexAction()
+    {
+
+    }
+
+    /**
      * The add action
      */
     public function addAction()
@@ -49,18 +57,6 @@ class AwardsController extends ControllerBase
         $this->view->setVar('players', $allPlayers);
 
         if (!$this->request->isPost()) {
-
-        }
-    }
-
-    /**
-     * Gets the Hall of Fame
-     */
-    public function hofAction($limit = 5)
-    {
-        $request = $this->getRequest();
-
-        if ($request->isGet() == true && $request->isAjax() == true) {
 
         }
     }

@@ -1,3 +1,4 @@
+    <div ng-controller='HHFCtrl'>
     <div class='navbar navbar-fixed-top'>
         <div class='navbar-inner'>
             <div class='container'>
@@ -7,7 +8,7 @@
                     <span class='icon-bar'></span>
                 </a>
                 <a class='brand' href='#'>HHF GKB Awards</a>
-                <div class='nav-collapse' ng-controller='MenuCtrl'>
+                <div class='nav-collapse'>
                     <ul class='nav pull-left'>
                         <li ng-repeat='menu in menus.left' ng-class="{true:'active', false:''}[menu.active]">
                             <a href='{{menu.link}}'>{{menu.text}}</a>
@@ -24,16 +25,15 @@
     </div>
 
     <div class='container'>
-        <div ng-controller='BcCtrl'>
-            <ul class='breadcrumb'>
-                <li ng-repeat='bc in breadcrumbs'>
-                    <a href='{{bc.link}}'>{{bc.text}}</a> <span ng-visible='{{bc.active}}' class='divider'>/</span>
-                </li>
-            </ul>
-        </div>
+        <ul class='breadcrumb'>
+            <li ng-repeat='bc in breadcrumbs'>
+                <a href='{{bc.link}}'>{{bc.text}}</a> <span ng-visible='{{bc.active}}' class='divider'>/</span>
+            </li>
+        </ul>
         <?php echo $this->getContent() ?>
         <hr />
         <footer>
             <p>&copy; niden.net <?php echo date('Y'); ?></p>
         </footer>
+    </div>
     </div>

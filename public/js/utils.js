@@ -1,5 +1,12 @@
 // AngularJS code goes here
-var ngModule = angular.module('HHF', []);
+var ngModule = angular.module('HHF', ['ngResource']);
+
+ngModule.controller('HoFCtrl', function HoFCtrl($scope, $resource) {
+    $scope.hof = $resource('/awards/hof');
+    $scope.hofData = $scope.hof.get();
+    $scope.gameballs = $scope.hofData.gameballs;
+    $scope.kicks = $scope.hofData.kicks;
+});
 
 // Utility directives
 
