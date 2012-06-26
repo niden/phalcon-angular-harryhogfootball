@@ -21,20 +21,44 @@ echo Tag::form(
 ?>
 <fieldset>
     <div class='control-group'>
-        <label class='control-label'>Episode</label>
+        <label class='control-label'>User</label>
         <div class='controls'>
-            <?php echo Tag::textField(array('episode', 'class' => 'input-xlarge')) ?>
+            <?php
+            echo Tag::select(
+                array(
+                    'userId',
+                    $users,
+                    'using' => array('id', 'username'),
+                    'class' => 'input-xlarge',
+                )
+            ); ?>
             <p class='help-block'>(required)</p>
         </div>
     </div>
 
     <div class='control-group'>
-        <label class='control-label'>Game Ball</label>
+        <label class='control-label'>Episode</label>
+        <div class='controls'>
+            <?php
+            echo Tag::select(
+                array(
+                    'episodeId',
+                    $episodes,
+                    'using' => array('id', 'number'),
+                    'class' => 'input-xlarge',
+                )
+            ); ?>
+            <p class='help-block'>(required)</p>
+        </div>
+    </div>
+
+    <div class='control-group'>
+        <label class='control-label'>Player</label>
         <div class='controls'>
             <?php
                 echo Tag::select(
                     array(
-                        'gameball',
+                        'playerId',
                         $players,
                         'using' => array('id', 'name'),
                         'class' => 'input-xlarge',
@@ -45,17 +69,17 @@ echo Tag::form(
     </div>
 
     <div class='control-group'>
-        <label class='control-label'>Kick In The Balls</label>
+        <label class='control-label'>Award</label>
         <div class='controls'>
             <?php
-            echo Tag::select(
-                array(
-                    'kitb',
-                    $players,
-                    'using' => array('id', 'name'),
-                    'class' => 'input-xlarge',
+                echo Tag::selectStatic(
+                    array(
+                        'award',
+                        array('1' => 'Game Ball', '0' => 'Kick In The Balls'),
+                        'class' => 'input-xlarge'
+                    )
                 )
-            ); ?>
+            ?>
             <p class='help-block'>(required)</p>
         </div>
     </div>

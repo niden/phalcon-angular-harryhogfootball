@@ -23,6 +23,22 @@ class PlayersController extends ControllerBase
         parent::initialize();
 
         $this->_bc->add('Players', 'Players');
+
+        $auth = Phalcon_Session::get('auth');
+        $add  = '';
+
+        if ($auth) {
+
+            $add = Tag::linkTo(
+                array(
+                    'players/add',
+                    'Add Player',
+                    'class' => 'btn btn-primary'
+                )
+            );
+        }
+
+        $this->view->setVar('addButton', $add);
     }
 
     public function indexAction()
@@ -33,10 +49,9 @@ class PlayersController extends ControllerBase
     public function getAction()
     {
         $this->view->setRenderLevel(Phalcon_View::LEVEL_LAYOUT);
-        $parameters['order'] = 'active DESC, name';
         $data = array();
 
-        $players = Players::find($parameters);
+        $players = Players::find();
         if (count($players) >= 0) {
             foreach ($players as $player) {
                 $data[] = array(
@@ -53,102 +68,85 @@ class PlayersController extends ControllerBase
 
     public function addAction()
     {
-        if ($this->request->isPost()) {
+        $auth = Phalcon_Session::get('auth');
 
-            $player = new Players();
-            $this->_setEpisode($player);
+        if ($auth) {
 
-            if (!$player->save()) {
-                foreach ($player->getMessages() as $message) {
-                    Flash::error((string) $message, 'alert alert-error');
+            if ($this->request->isPost()) {
+
+                $player = new Players();
+                $this->_setPlayer($player);
+
+                if (!$player->save()) {
+                    foreach ($player->getMessages() as $message) {
+                        Flash::error((string) $message, 'alert alert-error');
+                    }
+                } else {
+                    Flash::success(
+                        'Player created successfully',
+                        'alert alert-success'
+                    );
+                    $this->_forward('players/');
                 }
-            } else {
-                Flash::success(
-                    'Player created successfully',
-                    'alert alert-success'
-                );
-                $this->_forward('/Players/add');
             }
         }
     }
 
     public function editAction($id)
     {
-        if (!$this->request->isPost()) {
+        $auth = Phalcon_Session::get('auth');
 
+        if ($auth) {
+            if (!$this->request->isPost()) {
+
+                $id      = $this->filter->sanitize($id, array('int'));
+                $player = Players::findFirst('id=' . $id);
+
+                if (!$player) {
+                    Flash::error('Episode not found', 'alert alert-error');
+
+                    return $this->_forward('Players');
+                }
+
+                $this->view->setVar('id', $player->id);
+
+                Tag::displayTo('id', $player->id);
+                Tag::displayTo('number', $player->number);
+                Tag::displayTo('airDate', $player->airDate);
+                Tag::displayTo('outcome', $player->outcome);
+                Tag::displayTo('summary', $player->summary);
+            }
+        }
+    }
+
+    public function deleteAction($id)
+    {
+        $auth = Phalcon_Session::get('auth');
+
+        if ($auth) {
             $id      = $this->filter->sanitize($id, array('int'));
-            $player = Players::findFirst('id=' . $id);
-
+            $player = Companies::findFirst('id=' . $id);
             if (!$player) {
                 Flash::error('Episode not found', 'alert alert-error');
 
                 return $this->_forward('Players');
             }
 
-            $this->view->setVar('id', $player->id);
+            if (!$player->delete()) {
+                foreach ($player->getMessages() as $message) {
+                    Flash::error((string) $message, 'alert alert-error');
+                }
 
-            Tag::displayTo('id', $player->id);
-            Tag::displayTo('number', $player->number);
-            Tag::displayTo('airDate', $player->airDate);
-            Tag::displayTo('outcome', $player->outcome);
-            Tag::displayTo('summary', $player->summary);
-        }
-    }
+                return $this->_forward('companies/search');
+            } else {
+                Flash::success('Episode deleted', 'alert alert-success');
 
-    public function saveAction()
-    {
-        if (!$this->request->isPost()) {
-            return $this->_forward('Players');
-        }
-
-        $id      = $this->request->getPost('id', 'int');
-        $player = Players::findFirst('id=' . $id);
-
-        if (!$player) {
-            Flash::error('Episode does not exist ' . $id, 'alert alert-error');
-
-            return $this->_forward('Players');
-        }
-
-        $this->_setEpisode($player);
-
-        if (!$player->save()) {
-            foreach ($player->getMessages() as $message) {
-                Flash::error((string) $message, 'alert alert-error');
+                return $this->_forward('Players');
             }
-
-            return $this->_forward('Players/edit/' . $player->id);
-        } else {
-            Flash::success('Episode updated successfully', 'alert alert-success');
-
-            return $this->_forward('Players');
         }
     }
 
-    public function deleteAction($id)
-    {
-        $id      = $this->filter->sanitize($id, array('int'));
-        $player = Companies::findFirst('id=' . $id);
-        if (!$player) {
-            Flash::error('Episode not found', 'alert alert-error');
-
-            return $this->_forward('Players');
-        }
-
-        if (!$player->delete()) {
-            foreach ($player->getMessages() as $message) {
-                Flash::error((string) $message, 'alert alert-error');
-            }
-
-            return $this->_forward('companies/search');
-        } else {
-            Flash::success('Episode deleted', 'alert alert-success');
-
-            return $this->_forward('Players');
-        }
-    }
-
-    private function _setEpisode($player)
+    private function _setPlayer($player)
     {
         $player->name   = $this->request->getPost('name');
         $player->active = $this->request->getPost('active', 'int');

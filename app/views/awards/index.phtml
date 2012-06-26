@@ -7,9 +7,7 @@
         <?php echo Tag::linkTo('awards', '&larr; Go Back') ?>
     </li>
     <li class='pull-right'>
-        <?php echo Tag::linkTo(
-            array('awards/add', 'Add Award', 'class' => 'btn btn-primary')
-        ) ?>
+        <?php echo $addButton; ?>
     </li>
 </ul>
 

@@ -18,11 +18,13 @@ ngModule.controller('AwardsCtrl', function ($scope, $resource) {
 ngModule.controller('EpisodesCtrl', function ($scope, $resource) {
     $scope.episodes = $resource('/episodes/get');
     $scope.episodesData = $scope.episodes.get();
+    $scope.predicate = '-airDate';
 });
 
 ngModule.controller('PlayersCtrl', function ($scope, $resource) {
     $scope.players = $resource('/players/get');
     $scope.playersData = $scope.players.get();
+    $scope.predicate = 'name';
 });
 
 // Utility directives

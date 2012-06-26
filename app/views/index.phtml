@@ -10,12 +10,6 @@
         <meta name="description" content="Harry Hog Football - Game balls and Kick in the Balls awards finder" />
         <meta name="author" content="niden.net" />
 
-        <?php echo Tag::javascriptInclude('js/jquery.min.js') ?>
-        <?php echo Tag::javascriptInclude('js/bootstrap.min.js') ?>
-        <?php echo Tag::javascriptInclude('js/angular-1.0.0.min.js') ?>
-        <?php echo Tag::javascriptInclude('js/angular-resource-1.0.0.min.js') ?>
-        <?php echo Tag::javascriptInclude('js/utils.js') ?>
-
         <script type='text/javascript'>
         function MenuCtrl($scope) {
             $scope.menus = <?php echo Elements::getMenu($this); ?>;
@@ -28,5 +22,12 @@
     </head>
     <body>
     <?php echo $this->getContent() ?>
+
+    <?php echo Tag::javascriptInclude('js/jquery.min.js') ?>
+    <?php echo Tag::javascriptInclude('js/bootstrap.min.js') ?>
+    <?php echo Tag::javascriptInclude('js/angular-1.0.0.min.js') ?>
+    <?php echo Tag::javascriptInclude('js/angular-resource-1.0.0.min.js') ?>
+    <?php echo Tag::javascriptInclude('js/utils.js') ?>
+
     </body>
 </html>

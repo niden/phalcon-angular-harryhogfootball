@@ -7,9 +7,7 @@
         <?php echo Tag::linkTo('players', '&larr; Go Back') ?>
     </li>
     <li class='pull-right'>
-        <?php echo Tag::linkTo(
-        array('players/add', 'Add Player', 'class' => 'btn btn-primary')
-    ) ?>
+        <?php echo $addButton; ?>
     </li>
 </ul>
 
@@ -17,18 +15,20 @@
     <table class='table table-bordered table-striped' align='center'>
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Active</th>
-            <th>Info</th>
+            <th><a href='' ng-click="predicate='name'; reverse=!reverse">Name</a></th>
+            <th><a href='' ng-click="predicate='active'; reverse=!reverse">active</a></th>
+            <th><a href='' ng-click="predicate='team'; reverse=!reverse">Info</a></th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat='player in playersData.results'>
+        <tr ng-repeat="player in playersData.results | orderBy:predicate:reverse">
             <td>{{player.name}}</td>
             <td>{{player.active}}</td>
             <td>{{player.team}}</td>
+            <?php if ($addButton) { ?>
             <td width='12%'><a href='/players/edit/{{player.id}}'><i class='icon-pencil'></i> Edit</a></td>
             <td width='12%'><a href='/players/delete/{{player.id}}'><i class='icon-remove'></i> Delete</a></td>
+            <?php } ?>
         </tr>
         </tbody>
     </table>

@@ -10,11 +10,13 @@ abstract class Elements
     public static function getMenu($view)
     {
         $commonMenu = array(
-            'index'      => 'Home',
-            'statistics' => 'Statistics',
-            'about'      => 'About',
-            'contact'    => 'Contact Us',
-        );
+                        'index'      => 'Home',
+                        'awards'     => 'Awards',
+                        'players'    => 'Players',
+                        'episodes'   => 'Episodes',
+                        'about'      => 'About',
+                        'contact'    => 'Contact Us',
+                      );
 
         $auth = Phalcon_Session::get('auth');
 
@@ -36,25 +38,6 @@ abstract class Elements
         $menu->left    = $leftMenu;
 
         if ($auth != false) {
-
-            $menu->left[] = array(
-                'active' => false,
-                'link'   => '/awards',
-                'text'   => 'Awards',
-            );
-
-            $menu->left[] = array(
-                'active' => false,
-                'link'   => '/episodes',
-                'text'   => 'Episodes',
-            );
-
-            $menu->left[] = array(
-                'active' => false,
-                'link'   => '/players',
-                'text'   => 'Players',
-            );
-
             $sessionCaption .= ' ' . $auth['name'];
         }
 

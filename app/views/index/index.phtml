@@ -42,6 +42,44 @@
     </div>
     <div class="span3">
         <h2>Advertisements</h2>
-        <p>Advertisements go here</p>
+        <p>
+            <a href='http://www.davidmleeatty.com' title='David Lee Legal Services'>
+                <?php
+                    echo Phalcon_Tag::image(
+                        array(
+                            'img/davide-lee.jpg',
+                            'alt'   => 'David Lee Legal Services',
+                            'title' => 'David Lee Legal Services'
+                        )
+                    );
+                ?>
+            </a>
+        </p>
+        <p>
+            <a href='http://football.fantasysports.yahoo.com/f1/177614' title='HHFFFL'>
+                <?php
+                echo Phalcon_Tag::image(
+                    array(
+                        'img/hhfffl.jpg',
+                        'alt'   => 'HHFFFL',
+                        'title' => 'HHFFFL'
+                    )
+                );
+                ?>
+            </a>
+        </p>
+        <p>
+            <a href='https://www.paypal.com/us/cgi-bin/webscr?cmd=_flow&SESSION=Y-jXZVtqZJVolLl_uTEGnIR0G-x6dvh1eXAKj_pOZFVf6QkhwffdmfzNww4&dispatch=5885d80a13c0db1f8e263663d3faee8db2b24f7b84f1819343fd6c338b1d9d60' title='Donate to HHF!'>
+                <?php
+                echo Phalcon_Tag::image(
+                    array(
+                        'img/help-harry.jpg',
+                        'alt'   => 'Donate to HHF!',
+                        'title' => 'Donate to HHF!'
+                    )
+                );
+                ?>
+            </a>
+        </p>
     </div>
 </div>

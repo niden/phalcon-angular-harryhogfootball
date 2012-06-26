@@ -13,6 +13,7 @@
  */
 
 use Phalcon_Tag as Tag;
+use Phalcon_Flash as Flash;
 
 class AwardsController extends ControllerBase
 {
@@ -26,6 +27,22 @@ class AwardsController extends ControllerBase
         parent::initialize();
 
         $this->_bc->add('Awards', 'awards');
+
+        $auth = Phalcon_Session::get('auth');
+        $add  = '';
+
+        if ($auth) {
+
+            $add = Tag::linkTo(
+                array(
+                    'awards/add',
+                    'Add Award',
+                    'class' => 'btn btn-primary'
+                )
+            );
+        }
+
+        $this->view->setVar('addButton', $add);
     }
 
     /**
@@ -41,15 +58,47 @@ class AwardsController extends ControllerBase
      */
     public function addAction()
     {
-        $this->_bc->add('Add', 'awards/add');
+        $auth = Phalcon_Session::get('auth');
 
-        $players    = new Players();
-        $allPlayers = $players->find();
+        if ($auth) {
+            $this->_bc->add('Add', 'awards/add');
 
-        $this->view->setVar('players', $allPlayers);
+            $episodes    = new Episodes();
+            $allEpisodes = $episodes->find(array('order' => 'airDate DESC'));
 
-        if (!$this->request->isPost()) {
+            $users    = new Users();
+            $allUsers = $users->find(array('order' => 'username'));
 
+            $players    = new Players();
+            $allPlayers = $players->find(array('order' => 'active DESC, name'));
+
+            $this->view->setVar('users', $allUsers);
+            $this->view->setVar('episodes', $allEpisodes);
+            $this->view->setVar('players', $allPlayers);
+
+            if ($this->request->isPost()) {
+
+                $award = new Scoring();
+                $award->userId    = $this->request->getPost('userId', 'int');
+                $award->episodeId = $this->request->getPost('episodeId', 'int');
+                $award->playerId  = $this->request->getPost('playerId', 'int');
+                $award->award     = $this->request->getPost('award', 'int');
+
+                if (!$award->save()) {
+                    foreach ($award->getMessages() as $message) {
+                        Flash::error((string) $message, 'alert alert-error');
+                    }
+                } else {
+
+                    Flash::success(
+                        'Award created successfully',
+                        'alert alert-success'
+                    );
+
+                    $this->_forward('awards/');
+                }
+
+            }
         }
     }
 
@@ -92,55 +141,58 @@ class AwardsController extends ControllerBase
         $sql = 'SELECT COUNT(s.id) AS total, p.name AS playerName, p.team, s.award '
              . 'FROM scoring s '
              . 'INNER JOIN players p ON s.playerId = p.id '
+             . 'WHERE s.award = %s '
              . 'GROUP BY s.award, s.playerId '
              . 'ORDER BY s.award ASC, total DESC, p.name ';
 
-        $result = $connection->query($sql);
+        if (!empty($limit)) {
+            $sql .= 'LIMIT ' . (int) $limit;
+        }
+
+        // Kicks
+        $query = sprintf($sql, 0);
+        $result = $connection->query($query);
         $result->setFetchMode(Phalcon_Db::DB_ASSOC);
 
-        $kicks     = array();
-        $gameballs = array();
+        $kicks    = array();
+        $kicksMax = 0;
 
-        $gameballsCount = 0;
-        $kicksCount     = 0;
-        $gameballsMax   = 0;
-        $kicksMax       = 0;
-        print_r(empty($limit));
         while ($item = $result->fetchArray()) {
-            if (0 == $item['award']) {
-                if (!empty($limit) && $limit > $kicksCount) {
-                    $kicksMax = (0 == $kicksMax) ?
-                                $item['total']   :
-                                $kicksMax;
-                    $name    = $item['playerName'];
-                    if ($item['team']) {
-                        $name .= ' (' . $item['team'] . ')';
-                    }
-
-                    $kicks[] = array(
-                        'total'   => $item['total'],
-                        'name'    => $name,
-                        'percent' => (int) ($item['total'] * 100 / $kicksMax),
-                    );
-                    $kicksCount++;
-                }
-            } else {
-                if (!empty($limit) && $limit > $gameballsCount) {
-                    $gameballsMax = (0 == $gameballsMax) ?
-                                    $item['total']       :
-                                    $gameballsMax;
-                    $name    = $item['playerName'];
-                    if ($item['team']) {
-                        $name .= ' (' . $item['team'] . ')';
-                    }
-                    $gameballs[] = array(
-                        'total'   => $item['total'],
-                        'name'    => $name,
-                        'percent' => (int) ($item['total'] * 100 / $gameballsMax),
-                    );
-                    $gameballsCount++;
-                }
+            $kicksMax = (0 == $kicksMax) ? $item['total'] : $kicksMax;
+            $name     = $item['playerName'];
+            if ($item['team']) {
+                $name .= ' (' . $item['team'] . ')';
             }
+
+            $kicks[] = array(
+                'total'   => $item['total'],
+                'name'    => $name,
+                'percent' => (int) ($item['total'] * 100 / $kicksMax),
+            );
+        }
+
+        // Game balls
+        $query = sprintf($sql, 1);
+        $result = $connection->query($query);
+        $result->setFetchMode(Phalcon_Db::DB_ASSOC);
+
+        $gameballs    = array();
+        $gameballsMax = 0;
+
+        while ($item = $result->fetchArray()) {
+            $gameballsMax = (0 == $gameballsMax) ?
+                            $item['total']       :
+                            $gameballsMax;
+            $name         = $item['playerName'];
+            if ($item['team']) {
+                $name .= ' (' . $item['team'] . ')';
+            }
+
+            $gameballs[] = array(
+                'total'   => $item['total'],
+                'name'    => $name,
+                'percent' => (int) ($item['total'] * 100 / $gameballsMax),
+            );
         }
 
         $result = array('gameballs' => $gameballs, 'kicks' => $kicks);

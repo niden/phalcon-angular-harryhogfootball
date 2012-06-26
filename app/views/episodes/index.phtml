@@ -7,9 +7,7 @@
         <?php echo Tag::linkTo('episodes', '&larr; Go Back') ?>
     </li>
     <li class='pull-right'>
-        <?php echo Tag::linkTo(
-            array('episodes/add', 'Add Episode', 'class' => 'btn btn-primary')
-        ) ?>
+        <?php echo $addButton; ?>
     </li>
 </ul>
 
@@ -17,20 +15,22 @@
 <table class='table table-bordered table-striped' align='center'>
     <thead>
     <tr>
-        <th>#</th>
-        <th>Date</th>
-        <th>Outcome</th>
-        <th>Summary</th>
+        <th><a href='' ng-click="predicate='number'; reverse=!reverse">#</a></th>
+        <th><a href='' ng-click="predicate='airDate'; reverse=!reverse">Date</a></th>
+        <th><a href='' ng-click="predicate='outcome'; reverse=!reverse">Outcome</a></th>
+        <th><a href='' ng-click="predicate='summary'; reverse=!reverse">Summary</a></th>
     </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="episode in episodesData.results | orderBy:name">
+        <tr ng-repeat="episode in episodesData.results | orderBy:predicate:reverse">
             <td>{{episode.number}}</td>
             <td>{{episode.airDate}}</td>
             <td>{{episode.outcome}}</td>
             <td>{{episode.summary}}</td>
+            <?php if ($addButton) { ?>
             <td width='12%'><a href='/episodes/edit/{{episode.id}}'><i class='icon-pencil'></i> Edit</a></td>
             <td width='12%'><a href='/episodes/delete/{{episode.id}}'><i class='icon-remove'></i> Delete</a></td>
+            <?php } ?>
         </tr>
     </tbody>
 </table>

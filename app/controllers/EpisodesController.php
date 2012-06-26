@@ -23,6 +23,22 @@ class EpisodesController extends ControllerBase
         parent::initialize();
 
         $this->_bc->add('Episodes', 'episodes');
+
+        $auth = Phalcon_Session::get('auth');
+        $add  = '';
+
+        if ($auth) {
+
+            $add = Tag::linkTo(
+                array(
+                    'episodes/add',
+                    'Add Episode',
+                    'class' => 'btn btn-primary'
+                )
+            );
+        }
+
+        $this->view->setVar('addButton', $add);
     }
 
     public function indexAction()
@@ -38,7 +54,7 @@ class EpisodesController extends ControllerBase
         if (count($episodes) == 0) {
             Flash::notice('No episodes in the database', 'alert alert-info');
 
-            return $this->_forward('/episodes');
+            return $this->_forward('episodes');
         }
 
         $data = array();
@@ -57,98 +73,80 @@ class EpisodesController extends ControllerBase
 
     public function addAction()
     {
-        if ($this->request->isPost()) {
+        $auth = Phalcon_Session::get('auth');
 
-            $episode = new Episodes();
-            $this->_setEpisode($episode);
+        if ($auth) {
+            if ($this->request->isPost()) {
 
-            if (!$episode->save()) {
-                foreach ($episode->getMessages() as $message) {
-                    Flash::error((string) $message, 'alert alert-error');
+                $episode = new Episodes();
+                $this->_setEpisode($episode);
+
+                if (!$episode->save()) {
+                    foreach ($episode->getMessages() as $message) {
+                        Flash::error((string) $message, 'alert alert-error');
+                    }
+                } else {
+                    Flash::success(
+                        'Episode created successfully',
+                        'alert alert-success'
+                    );
+                    $this->_forward('episodes/');
                 }
-            } else {
-                Flash::success(
-                    'Episode created successfully',
-                    'alert alert-success'
-                );
-                $this->_forward('/episodes/add');
             }
         }
     }
 
     public function editAction($id)
     {
-        if (!$this->request->isPost()) {
+        $auth = Phalcon_Session::get('auth');
 
+        if ($auth) {
+            if (!$this->request->isPost()) {
+
+                $id      = $this->filter->sanitize($id, array('int'));
+                $episode = Episodes::findFirst('id=' . $id);
+
+                if (!$episode) {
+                    Flash::error('Episode not found', 'alert alert-error');
+
+                    return $this->_forward('episodes');
+                }
+
+                $this->view->setVar('id', $episode->id);
+
+                Tag::displayTo('id', $episode->id);
+                Tag::displayTo('number', $episode->number);
+                Tag::displayTo('airDate', $episode->airDate);
+                Tag::displayTo('outcome', $episode->outcome);
+                Tag::displayTo('summary', $episode->summary);
+            }
+        }
+    }
+
+    public function deleteAction($id)
+    {
+        $auth = Phalcon_Session::get('auth');
+
+        if ($auth) {
             $id      = $this->filter->sanitize($id, array('int'));
-            $episode = Episodes::findFirst('id=' . $id);
-
+            $episode = Companies::findFirst('id=' . $id);
             if (!$episode) {
                 Flash::error('Episode not found', 'alert alert-error');
 
                 return $this->_forward('episodes');
             }
 
-            $this->view->setVar('id', $episode->id);
+            if (!$episode->delete()) {
+                foreach ($episode->getMessages() as $message) {
+                    Flash::error((string) $message, 'alert alert-error');
+                }
 
-            Tag::displayTo('id', $episode->id);
-            Tag::displayTo('number', $episode->number);
-            Tag::displayTo('airDate', $episode->airDate);
-            Tag::displayTo('outcome', $episode->outcome);
-            Tag::displayTo('summary', $episode->summary);
-        }
-    }
+                return $this->_forward('companies/search');
+            } else {
+                Flash::success('Episode deleted', 'alert alert-success');
 
-    public function saveAction()
-    {
-        if (!$this->request->isPost()) {
-            return $this->_forward('episodes');
-        }
-
-        $id      = $this->request->getPost('id', 'int');
-        $episode = Episodes::findFirst('id=' . $id);
-
-        if (!$episode) {
-            Flash::error('Episode does not exist ' . $id, 'alert alert-error');
-
-            return $this->_forward('episodes');
-        }
-
-        $this->_setEpisode($episode);
-
-        if (!$episode->save()) {
-            foreach ($episode->getMessages() as $message) {
-                Flash::error((string) $message, 'alert alert-error');
+                return $this->_forward('episodes');
             }
-
-            return $this->_forward('episodes/edit/' . $episode->id);
-        } else {
-            Flash::success('Episode updated successfully', 'alert alert-success');
-
-            return $this->_forward('episodes');
-        }
-    }
-
-    public function deleteAction($id)
-    {
-        $id      = $this->filter->sanitize($id, array('int'));
-        $episode = Companies::findFirst('id=' . $id);
-        if (!$episode) {
-            Flash::error('Episode not found', 'alert alert-error');
-
-            return $this->_forward('episodes');
-        }
-
-        if (!$episode->delete()) {
-            foreach ($episode->getMessages() as $message) {
-                Flash::error((string) $message, 'alert alert-error');
-            }
-
-            return $this->_forward('companies/search');
-        } else {
-            Flash::success('Episode deleted', 'alert alert-success');
-
-            return $this->_forward('episodes');
         }
     }
 

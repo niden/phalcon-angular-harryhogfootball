@@ -9,6 +9,8 @@ class AboutController extends ControllerBase
         $this->view->setTemplateAfter('main');
         Tag::setTitle('About');
         parent::initialize();
+
+        $this->_bc->add('About', 'about');
     }
 
     public function indexAction()

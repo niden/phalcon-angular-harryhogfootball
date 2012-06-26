@@ -33,7 +33,15 @@ echo Tag::form(
     <div class='control-group'>
         <label class='control-label'>Summary</label>
         <div class='controls'>
-            <?php echo Tag::select(array('outcome',array('1' => 'Win', '0' => 'Loss'), 'class' => 'input-xlarge')) ?>
+            <?php
+                echo Tag::selectStatic(
+                    array(
+                        'outcome',
+                        array('1' => 'Win', '0' => 'Loss'),
+                        'class' => 'input-xlarge'
+                    )
+                )
+            ?>
             <p class='help-block'>(required)</p>
         </div>
     </div>

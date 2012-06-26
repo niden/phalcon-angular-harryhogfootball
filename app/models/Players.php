@@ -35,18 +35,6 @@ class Players extends Phalcon_Model_Base
     public $team;
 
     /**
-     * Initializes the class and sets any relationships with other models
-     */
-    public function initialize()
-    {
-        $message = 'This record cannot be deleted because of referential '
-                 . 'integrity rules';
-        $fk = array('foreignKey' => array('message' => $message));
-
-        $this->hasOne('positionId', 'Positions', 'id', $fk);
-    }
-
-    /**
      * @param array $parameters
      *
      * @static

@@ -27,7 +27,7 @@
         <div  ng-controller='BreadcrumbsCtrl'>
             <ul class='breadcrumb'>
                 <li ng-repeat='bc in breadcrumbs'>
-                    <a href='{{bc.link}}'>{{bc.text}}</a> <span ng-visible='{{bc.active}}' class='divider'>/</span>
+                    <a href='{{bc.link}}'>{{bc.text}}</a> <span style='display:{{bc.active}};' class='divider'>/</span>
                 </li>
             </ul>
         </div>
@@ -38,5 +38,4 @@
         <footer>
             <p>&copy; niden.net <?php echo date('Y'); ?></p>
         </footer>
-    </div>
     </div>

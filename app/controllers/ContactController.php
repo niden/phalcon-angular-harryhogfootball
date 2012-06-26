@@ -12,6 +12,9 @@
  * @subpackage  Controllers
  *
  */
+
+use Phalcon_Flash as Flash;
+
 class ContactController extends ControllerBase
 {
     /**
@@ -59,14 +62,14 @@ class ContactController extends ControllerBase
 
             if ($contact->save() == false) {
                 foreach ($contact->getMessages() as $message) {
-                    Phalcon_Flash::error((string) $message, 'alert alert-error');
+                    Flash::error((string) $message, 'alert alert-error');
                 }
 
                 $forward = 'contact/index';
             } else {
                 $message = 'Thank you for your input. If your message requires '
                          . 'a reply, we will contact you as soon as possible.';
-                Phalcon_Flash::success($message, 'alert alert-success');
+                Flash::success($message, 'alert alert-success');
             }
         } else {
             $forward = 'contact/index';
