@@ -1,15 +1,24 @@
+<?php echo $this->getContent() ?>
+
 <div class="hero-unit">
     <h1>
         Welcome to HHF GKB Awards
     </h1>
     <p>
-        HHF GKB stands for <em>Harry Hog Football Game and Kick in the Balls
+        HHF GKB stands for <em>Harry Hog Football, Game Balls and Kick in the Balls
         Awards</em>
     </p>
+    <p>
+        This application showcases the power of
+        <a href='http://phalconphp.com'>Phalcon PHP</a> Framework as well as
+        <a href='http://angularjs.org'>AngularJS</a>. It also serves as a quick
+        search and statistics generator for the Game Balls and Kick In The Balls
+        awards of the <a href='http://harryhogfootball.com'>Harry Hog Football</a>
+        Redskins Fans podcast.
 </div>
 
-<div class="row">
-    <div class="span4">
+<div class="row" ng-controller='HoFCtrl'>
+    <div class="span3">
         <h2>Hall of Fame</h2>
         <div ng-repeat='gb in hofData.gameballs'>
             <div>{{gb.total}} - {{gb.name}}</div>
@@ -18,7 +27,7 @@
             </div>
         </div>
     </div>
-    <div class="span4">
+    <div class="span3">
         <h2>Hall of Shame</h2>
         <div ng-repeat='kitb in hofData.kicks'>
             <div>{{kitb.total}} - {{kitb.name}}</div>
@@ -27,14 +36,12 @@
             </div>
         </div>
     </div>
-    <div class="span4">
+    <div class="span3">
         <h2>Invite, Share, Spread the word</h2>
         <p>Invite others to listen to the podcast </p>
     </div>
-    <div class="span4">
+    <div class="span3">
         <h2>Advertisements</h2>
         <p>Advertisements go here</p>
     </div>
 </div>
-<hr />
-<?php echo $this->getContent() ?>

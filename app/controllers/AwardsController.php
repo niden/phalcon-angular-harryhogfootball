@@ -13,7 +13,6 @@
  */
 
 use Phalcon_Tag as Tag;
-use Phalcon_Flash as Flash;
 
 class AwardsController extends ControllerBase
 {
@@ -22,13 +21,6 @@ class AwardsController extends ControllerBase
      */
     public function initialize()
     {
-        $auth = Phalcon_Session::get('auth');
-
-        // Not logged in user cannot come directly here
-        if ($auth == false) {
-            $this->_forward('/');
-        }
-
         $this->view->setTemplateAfter('main');
         Tag::setTitle('Awards Entry');
         parent::initialize();
@@ -59,5 +51,88 @@ class AwardsController extends ControllerBase
         if (!$this->request->isPost()) {
 
         }
+    }
+
+    /**
+     * Gets the Hall of Fame
+     */
+    public function hofAction()
+    {
+        $this->view->setRenderLevel(Phalcon_View::LEVEL_LAYOUT);
+        $request = $this->request;
+
+//        if ($request->isGet() == true && $request->isAjax() == true) {
+
+            $results = $this->_getHof(5);
+
+            echo $results;
+    }
+
+    /**
+     * Private function getting results for the HOF
+     *
+     * @param $limit
+     * @return string
+     */
+    private function _getHof($limit)
+    {
+
+        $connection = Phalcon_Db_Pool::getConnection();
+        $sql = 'SELECT COUNT(s.id) AS total, p.name AS playerName, p.team, s.award '
+             . 'FROM scoring s '
+             . 'INNER JOIN players p ON s.playerId = p.id '
+             . 'GROUP BY s.award, s.playerId '
+             . 'ORDER BY s.award ASC, total DESC, p.name ';
+
+        $result = $connection->query($sql);
+        $result->setFetchMode(Phalcon_Db::DB_ASSOC);
+
+        $kicks     = array();
+        $gameballs = array();
+
+        $gameballsCount = 0;
+        $kicksCount     = 0;
+        $gameballsMax   = 0;
+        $kicksMax       = 0;
+        print_r(empty($limit));
+        while ($item = $result->fetchArray()) {
+            if (0 == $item['award']) {
+                if (!empty($limit) && $limit > $kicksCount) {
+                    $kicksMax = (0 == $kicksMax) ?
+                                $item['total']   :
+                                $kicksMax;
+                    $name    = $item['playerName'];
+                    if ($item['team']) {
+                        $name .= ' (' . $item['team'] . ')';
+                    }
+
+                    $kicks[] = array(
+                        'total'   => $item['total'],
+                        'name'    => $name,
+                        'percent' => (int) ($item['total'] * 100 / $kicksMax),
+                    );
+                    $kicksCount++;
+                }
+            } else {
+                if (!empty($limit) && $limit > $gameballsCount) {
+                    $gameballsMax = (0 == $gameballsMax) ?
+                                    $item['total']       :
+                                    $gameballsMax;
+                    $name    = $item['playerName'];
+                    if ($item['team']) {
+                        $name .= ' (' . $item['team'] . ')';
+                    }
+                    $gameballs[] = array(
+                        'total'   => $item['total'],
+                        'name'    => $name,
+                        'percent' => (int) ($item['total'] * 100 / $gameballsMax),
+                    );
+                    $gameballsCount++;
+                }
+            }
+        }
+
+        $result = array('gameballs' => $gameballs, 'kicks' => $kicks);
+        return json_encode($result);
     }
 }

@@ -1,0 +1,35 @@
+<?php use Phalcon_Tag as Tag; ?>
+
+<?php echo $this->getContent() ?>
+
+<ul class='pager'>
+    <li class='previous pull-left'>
+        <?php echo Tag::linkTo('episodes', '&larr; Go Back') ?>
+    </li>
+    <li class='pull-right'>
+        <?php echo Tag::linkTo(
+        array('players/add', 'Add Player', 'class' => 'btn btn-primary')
+    ) ?>
+    </li>
+</ul>
+
+<div ng-controller='PlayersCtrl'>
+    <table class='table table-bordered table-striped' align='center'>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Active</th>
+            <th>Info</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat='player in playersData.results'>
+            <td>{{player.name}}</td>
+            <td>{{player.active}}</td>
+            <td>{{player.team}}</td>
+            <td width='12%'><a href='/players/edit/{{player.id}}'><i class='icon-pencil'></i> Edit</a></td>
+            <td width='12%'><a href='/players/delete/{{player.id}}'><i class='icon-remove'></i> Delete</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>

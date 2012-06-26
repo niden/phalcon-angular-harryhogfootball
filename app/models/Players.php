@@ -20,24 +20,19 @@ class Players extends Phalcon_Model_Base
     public $id;
 
     /**
-     * @var integer
-     */
-    public $number;
-
-    /**
      * @var string
      */
     public $name;
 
     /**
-     * @var string
-     */
-    public $position;
-
-    /**
      * @var integer
      */
     public $active;
+
+    /**
+     * @var string
+     */
+    public $team;
 
     /**
      * Initializes the class and sets any relationships with other models

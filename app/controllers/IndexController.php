@@ -23,15 +23,6 @@ class IndexController extends ControllerBase
 
     public function indexAction()
     {
-        if (!$this->request->isPost()) {
 
-            $message = 'This application showcases the power of Phalcon PHP '
-                     . 'Framework as well as AngularJS. It also serves as a '
-                     . 'quick search and statistics generator for the Game '
-                     . 'Balls and Kick In The Balls awards of the Harry Hog '
-                     . 'Football podcast';
-
-            Phalcon_Flash::notice($message, 'alert alert-info');
-        }
     }
 }

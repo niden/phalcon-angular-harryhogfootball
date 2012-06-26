@@ -17,10 +17,11 @@
         <?php echo Tag::javascriptInclude('js/utils.js') ?>
 
         <script type='text/javascript'>
-        function HHFCtrl($scope) {
+        function MenuCtrl($scope) {
             $scope.menus = <?php echo Elements::getMenu($this); ?>;
+        }
+        function BreadcrumbsCtrl($scope) {
             $scope.breadcrumbs = <?php echo $breadcrumbs; ?>;
-            $scope.hofData = <?php echo Elements::getHof(5); ?>;
         }
         </script>
 

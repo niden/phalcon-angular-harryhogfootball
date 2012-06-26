@@ -1,11 +1,21 @@
 // AngularJS code goes here
 var ngModule = angular.module('HHF', ['ngResource']);
 
-ngModule.controller('HoFCtrl', function HoFCtrl($scope, $resource) {
+ngModule.controller('HoFCtrl', function ($scope, $resource) {
     $scope.hof = $resource('/awards/hof');
     $scope.hofData = $scope.hof.get();
     $scope.gameballs = $scope.hofData.gameballs;
     $scope.kicks = $scope.hofData.kicks;
+});
+
+ngModule.controller('EpisodesCtrl', function ($scope, $resource) {
+    $scope.episodes = $resource('/episodes/get');
+    $scope.episodesData = $scope.episodes.get();
+});
+
+ngModule.controller('PlayersCtrl', function ($scope, $resource) {
+    $scope.players = $resource('/players/get');
+    $scope.playersData = $scope.players.get();
 });
 
 // Utility directives

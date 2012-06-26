@@ -1,22 +1,21 @@
-    <div ng-controller='HHFCtrl'>
     <div class='navbar navbar-fixed-top'>
         <div class='navbar-inner'>
-            <div class='container'>
+            <div class='container-fluid'>
                 <a class='btn btn-navbar' data-toggle='collapse' data-target='.nav-collapse'>
                     <span class='icon-bar'></span>
                     <span class='icon-bar'></span>
                     <span class='icon-bar'></span>
                 </a>
-                <a class='brand' href='#'>HHF GKB Awards</a>
-                <div class='nav-collapse'>
+                <a class='brand' href='/'>HHF GKB Awards</a>
+                <div class='nav-collapse' ng-controller='MenuCtrl'>
                     <ul class='nav pull-left'>
                         <li ng-repeat='menu in menus.left' ng-class="{true:'active', false:''}[menu.active]">
                             <a href='{{menu.link}}'>{{menu.text}}</a>
                         </li>
                     </ul>
                     <ul class='nav pull-right'>
-                        <li ng-repeat='menu in menus.right'>
-                            <a href='{{menu.link}}'>{{menu.text}}</a>
+                        <li>
+                            <a href='{{menus.rightLink}}'>{{menus.rightText}}</a>
                         </li>
                     </ul>
                 </div>
@@ -24,13 +23,17 @@
         </div>
     </div>
 
-    <div class='container'>
-        <ul class='breadcrumb'>
-            <li ng-repeat='bc in breadcrumbs'>
-                <a href='{{bc.link}}'>{{bc.text}}</a> <span ng-visible='{{bc.active}}' class='divider'>/</span>
-            </li>
-        </ul>
-        <?php echo $this->getContent() ?>
+    <div class='container-fluid'>
+        <div  ng-controller='BreadcrumbsCtrl'>
+            <ul class='breadcrumb'>
+                <li ng-repeat='bc in breadcrumbs'>
+                    <a href='{{bc.link}}'>{{bc.text}}</a> <span ng-visible='{{bc.active}}' class='divider'>/</span>
+                </li>
+            </ul>
+        </div>
+        <div class="row-fluid">
+            <?php echo $this->getContent() ?>
+        </div> <!-- row -->
         <hr />
         <footer>
             <p>&copy; niden.net <?php echo date('Y'); ?></p>

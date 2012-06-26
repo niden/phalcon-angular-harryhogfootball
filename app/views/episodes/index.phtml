@@ -1,0 +1,37 @@
+<?php use Phalcon_Tag as Tag; ?>
+
+<?php echo $this->getContent() ?>
+
+<ul class='pager'>
+    <li class='previous pull-left'>
+        <?php echo Tag::linkTo('episodes', '&larr; Go Back') ?>
+    </li>
+    <li class='pull-right'>
+        <?php echo Tag::linkTo(
+            array('episodes/add', 'Add Episode', 'class' => 'btn btn-primary')
+        ) ?>
+    </li>
+</ul>
+
+<div ng-controller='EpisodesCtrl'>
+<table class='table table-bordered table-striped' align='center'>
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Date</th>
+        <th>Outcome</th>
+        <th>Summary</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="episode in episodesData.results | orderBy:name">
+            <td>{{episode.number}}</td>
+            <td>{{episode.airDate}}</td>
+            <td>{{episode.outcome}}</td>
+            <td>{{episode.summary}}</td>
+            <td width='12%'><a href='/episodes/edit/{{episode.id}}'><i class='icon-pencil'></i> Edit</a></td>
+            <td width='12%'><a href='/episodes/delete/{{episode.id}}'><i class='icon-remove'></i> Delete</a></td>
+        </tr>
+    </tbody>
+</table>
+</div>
