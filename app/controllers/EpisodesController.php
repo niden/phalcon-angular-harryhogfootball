@@ -159,6 +159,7 @@ class EpisodesController extends ControllerBase
         $episode->outcome = $this->request->getPost('outcome', 'int');
 
         $episode->summary = strip_tags($episode->summary);
+        $episode->summary = addslashes($episode->summary);
 
     }
 }
