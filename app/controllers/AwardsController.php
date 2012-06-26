@@ -22,7 +22,7 @@ class AwardsController extends ControllerBase
     public function initialize()
     {
         $this->view->setTemplateAfter('main');
-        Tag::setTitle('Awards Entry');
+        Tag::setTitle('Manage Awards');
         parent::initialize();
 
         $this->_bc->add('Awards', 'awards');
@@ -56,12 +56,23 @@ class AwardsController extends ControllerBase
     /**
      * Gets the Hall of Fame
      */
-    public function hofAction()
+    public function getAction()
     {
         $this->view->setRenderLevel(Phalcon_View::LEVEL_LAYOUT);
         $request = $this->request;
 
-//        if ($request->isGet() == true && $request->isAjax() == true) {
+        $results = $this->_getHof();
+
+        echo $results;
+    }
+
+    /**
+     * Gets the Hall of Fame for the home page
+     */
+    public function hofAction()
+    {
+        $this->view->setRenderLevel(Phalcon_View::LEVEL_LAYOUT);
+        $request = $this->request;
 
             $results = $this->_getHof(5);
 
@@ -71,10 +82,10 @@ class AwardsController extends ControllerBase
     /**
      * Private function getting results for the HOF
      *
-     * @param $limit
+     * @param  null $limit
      * @return string
      */
-    private function _getHof($limit)
+    private function _getHof($limit = null)
     {
 
         $connection = Phalcon_Db_Pool::getConnection();

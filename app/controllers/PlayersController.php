@@ -34,22 +34,18 @@ class PlayersController extends ControllerBase
     {
         $this->view->setRenderLevel(Phalcon_View::LEVEL_LAYOUT);
         $parameters['order'] = 'active DESC, name';
+        $data = array();
 
         $players = Players::find($parameters);
-        if (count($players) == 0) {
-            Flash::notice('No Players in the database', 'alert alert-info');
-
-            return $this->_forward('/players');
-        }
-
-        $data = array();
-        foreach ($players as $player) {
-            $data[] = array(
-                'id'     => $player->id,
-                'name'   => $player->name,
-                'active' => ($player->active) ? 'Yes' : 'No',
-                'team'   => $player->team,
-            );
+        if (count($players) >= 0) {
+            foreach ($players as $player) {
+                $data[] = array(
+                    'id'     => $player->id,
+                    'name'   => $player->name,
+                    'active' => ($player->active) ? 'Yes' : 'No',
+                    'team'   => $player->team,
+                );
+            }
         }
 
         echo json_encode(array('results' => $data));

@@ -8,6 +8,13 @@ ngModule.controller('HoFCtrl', function ($scope, $resource) {
     $scope.kicks = $scope.hofData.kicks;
 });
 
+ngModule.controller('AwardsCtrl', function ($scope, $resource) {
+    $scope.hof = $resource('/awards/get');
+    $scope.hofData = $scope.hof.get();
+    $scope.gameballs = $scope.hofData.gameballs;
+    $scope.kicks = $scope.hofData.kicks;
+});
+
 ngModule.controller('EpisodesCtrl', function ($scope, $resource) {
     $scope.episodes = $resource('/episodes/get');
     $scope.episodesData = $scope.episodes.get();
