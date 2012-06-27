@@ -101,25 +101,41 @@ class EpisodesController extends ControllerBase
         $auth = Phalcon_Session::get('auth');
 
         if ($auth) {
-            if (!$this->request->isPost()) {
 
-                $id      = $this->filter->sanitize($id, array('int'));
-                $episode = Episodes::findFirst('id=' . $id);
+            $id      = $this->filter->sanitize($id, array('int'));
+            $episode = Episodes::findFirst('id=' . $id);
 
-                if (!$episode) {
-                    Flash::error('Episode not found', 'alert alert-error');
+            if (!$episode) {
+                Flash::error('Episode not found', 'alert alert-error');
 
-                    return $this->_forward('episodes');
+                return $this->_forward('episodes/');
+            }
+
+            if ($this->request->isPost()) {
+
+                $this->_setEpisode($episode);
+
+                if (!$episode->save()) {
+                    foreach ($episode->getMessages() as $message) {
+                        Flash::error((string) $message, 'alert alert-error');
+                    }
+                } else {
+                    Flash::success(
+                        'Episode updated successfully',
+                        'alert alert-success'
+                    );
+                    $this->_forward('episodes/');
                 }
 
-                $this->view->setVar('id', $episode->id);
-
-                Tag::displayTo('id', $episode->id);
-                Tag::displayTo('number', $episode->number);
-                Tag::displayTo('airDate', $episode->airDate);
-                Tag::displayTo('outcome', $episode->outcome);
-                Tag::displayTo('summary', $episode->summary);
             }
+
+            $this->view->setVar('id', $episode->id);
+
+            Tag::displayTo('id', $episode->id);
+            Tag::displayTo('episodeId', $episode->number);
+            Tag::displayTo('episodeDate', $episode->airDate);
+            Tag::displayTo('outcome', $episode->outcome);
+            Tag::displayTo('summary', $episode->summary);
         }
     }
 
@@ -133,7 +149,7 @@ class EpisodesController extends ControllerBase
             if (!$episode) {
                 Flash::error('Episode not found', 'alert alert-error');
 
-                return $this->_forward('episodes');
+                return $this->_forward('episodes/');
             }
 
             if (!$episode->delete()) {
@@ -145,7 +161,7 @@ class EpisodesController extends ControllerBase
             } else {
                 Flash::success('Episode deleted', 'alert alert-success');
 
-                return $this->_forward('episodes');
+                return $this->_forward('episodes/');
             }
         }
     }

@@ -22,7 +22,7 @@ class PlayersController extends ControllerBase
         Tag::setTitle('Manage Players');
         parent::initialize();
 
-        $this->_bc->add('Players', 'Players');
+        $this->_bc->add('Players', 'players');
 
         $auth = Phalcon_Session::get('auth');
         $add  = '';
@@ -97,25 +97,40 @@ class PlayersController extends ControllerBase
         $auth = Phalcon_Session::get('auth');
 
         if ($auth) {
-            if (!$this->request->isPost()) {
 
-                $id      = $this->filter->sanitize($id, array('int'));
-                $player = Players::findFirst('id=' . $id);
+            $id     = $this->filter->sanitize($id, array('int'));
+            $player = Players::findFirst('id=' . $id);
 
-                if (!$player) {
-                    Flash::error('Episode not found', 'alert alert-error');
+            if (!$player) {
+                Flash::error('Player not found', 'alert alert-error');
 
-                    return $this->_forward('Players');
+                return $this->_forward('players/');
+            }
+
+            if ($this->request->isPost()) {
+
+                $this->_setPlayer($player);
+
+                if (!$player->save()) {
+                    foreach ($player->getMessages() as $message) {
+                        Flash::error((string) $message, 'alert alert-error');
+                    }
+                } else {
+                    Flash::success(
+                        'Player updated successfully',
+                        'alert alert-success'
+                    );
+                    $this->_forward('players/');
                 }
 
-                $this->view->setVar('id', $player->id);
-
-                Tag::displayTo('id', $player->id);
-                Tag::displayTo('number', $player->number);
-                Tag::displayTo('airDate', $player->airDate);
-                Tag::displayTo('outcome', $player->outcome);
-                Tag::displayTo('summary', $player->summary);
             }
+
+            $this->view->setVar('id', $player->id);
+
+            Tag::displayTo('id', $player->id);
+            Tag::displayTo('name', $player->name);
+            Tag::displayTo('active', $player->active);
+            Tag::displayTo('team', $player->team);
         }
     }
 
@@ -148,12 +163,15 @@ class PlayersController extends ControllerBase
 
     private function _setPlayer($player)
     {
+        $player->id     = $this->request->getPost('id', 'int');
         $player->name   = $this->request->getPost('name');
         $player->active = $this->request->getPost('active', 'int');
-        $player->team   = $this->request->getPost('team', 'int');
+        $player->team   = $this->request->getPost('team');
 
         $player->name = strip_tags($player->name);
         $player->team = strip_tags($player->team);
 
+        $player->name = addslashes($player->name);
+        $player->team = addslashes($player->team);
     }
 }
