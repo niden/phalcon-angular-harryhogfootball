@@ -12,7 +12,7 @@
  *
  */
 use Phalcon_Tag as Tag;
-use Phalcon_Flash as Flash;
+use niden_Session as Session;
 
 class PlayersController extends ControllerBase
 {
@@ -24,7 +24,7 @@ class PlayersController extends ControllerBase
 
         $this->_bc->add('Players', 'players');
 
-        $auth = Phalcon_Session::get('auth');
+        $auth = Session::get('auth');
         $add  = '';
 
         if ($auth) {
@@ -68,7 +68,7 @@ class PlayersController extends ControllerBase
 
     public function addAction()
     {
-        $auth = Phalcon_Session::get('auth');
+        $auth = Session::get('auth');
 
         if ($auth) {
 
@@ -79,14 +79,20 @@ class PlayersController extends ControllerBase
 
                 if (!$player->save()) {
                     foreach ($player->getMessages() as $message) {
-                        Flash::error((string) $message, 'alert alert-error');
+                        Session::setFlash(
+                            'error',
+                            (string) $message,
+                            'alert alert-error'
+                        );
                     }
                 } else {
-                    Flash::success(
+                    Session::setFlash(
+                        'success',
                         'Player created successfully',
                         'alert alert-success'
                     );
-                    $this->_forward('players/');
+
+                    $this->response->redirect('players/');
                 }
             }
         }
@@ -94,7 +100,7 @@ class PlayersController extends ControllerBase
 
     public function editAction($id)
     {
-        $auth = Phalcon_Session::get('auth');
+        $auth = Session::get('auth');
 
         if ($auth) {
 
@@ -102,9 +108,13 @@ class PlayersController extends ControllerBase
             $player = Players::findFirst('id=' . $id);
 
             if (!$player) {
-                Flash::error('Player not found', 'alert alert-error');
+                Session::setFlash(
+                    'error',
+                    'Player not found',
+                    'alert alert-error'
+                );
 
-                return $this->_forward('players/');
+                $this->response->redirect('players/');
             }
 
             if ($this->request->isPost()) {
@@ -113,14 +123,20 @@ class PlayersController extends ControllerBase
 
                 if (!$player->save()) {
                     foreach ($player->getMessages() as $message) {
-                        Flash::error((string) $message, 'alert alert-error');
+                        Session::setFlash(
+                            'error',
+                            (string) $message,
+                            'alert alert-error'
+                        );
                     }
                 } else {
-                    Flash::success(
+                    Session::setFlash(
+                        'success',
                         'Player updated successfully',
                         'alert alert-success'
                     );
-                    $this->_forward('players/');
+
+                    $this->response->redirect('players/');
                 }
 
             }
@@ -136,27 +152,38 @@ class PlayersController extends ControllerBase
 
     public function deleteAction($id)
     {
-        $auth = Phalcon_Session::get('auth');
+        $auth = Session::get('auth');
 
         if ($auth) {
             $id      = $this->filter->sanitize($id, array('int'));
             $player = Companies::findFirst('id=' . $id);
             if (!$player) {
-                Flash::error('Episode not found', 'alert alert-error');
+                Session::setFlash(
+                    'error',
+                    'Player not found',
+                    'alert alert-error'
+                );
 
-                return $this->_forward('Players');
+                $this->response->redirect('players/');
             }
 
             if (!$player->delete()) {
                 foreach ($player->getMessages() as $message) {
-                    Flash::error((string) $message, 'alert alert-error');
+                    Session::setFlash(
+                        'error',
+                        (string) $message,
+                        'alert alert-error'
+                    );
                 }
-
-                return $this->_forward('companies/search');
+                $this->response->redirect('players/');
             } else {
-                Flash::success('Episode deleted', 'alert alert-success');
+                Session::setFlash(
+                    'success',
+                    'Episode deleted successfully',
+                    'alert alert-success'
+                );
 
-                return $this->_forward('Players');
+                $this->response->redirect('players/');
             }
         }
     }

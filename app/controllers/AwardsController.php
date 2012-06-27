@@ -13,7 +13,7 @@
  */
 
 use Phalcon_Tag as Tag;
-use Phalcon_Flash as Flash;
+use niden_Session as Session;
 
 class AwardsController extends ControllerBase
 {
@@ -28,7 +28,7 @@ class AwardsController extends ControllerBase
 
         $this->_bc->add('Awards', 'awards');
 
-        $auth = Phalcon_Session::get('auth');
+        $auth = Session::get('auth');
         $add  = '';
 
         if ($auth) {
@@ -58,7 +58,7 @@ class AwardsController extends ControllerBase
      */
     public function addAction()
     {
-        $auth = Phalcon_Session::get('auth');
+        $auth = Session::get('auth');
 
         if ($auth) {
             $this->_bc->add('Add', 'awards/add');
@@ -86,16 +86,20 @@ class AwardsController extends ControllerBase
 
                 if (!$award->save()) {
                     foreach ($award->getMessages() as $message) {
-                        Flash::error((string) $message, 'alert alert-error');
+                        Session::setFlash(
+                            'error',
+                            (string) $message,
+                            'alert alert-error'
+                        );
                     }
                 } else {
-
-                    Flash::success(
+                    Session::setFlash(
+                        'success',
                         'Award created successfully',
                         'alert alert-success'
                     );
 
-                    $this->_forward('awards/');
+                    $this->response->redirect('awards/');
                 }
 
             }
@@ -138,7 +142,8 @@ class AwardsController extends ControllerBase
     {
 
         $connection = Phalcon_Db_Pool::getConnection();
-        $sql = 'SELECT COUNT(s.id) AS total, p.name AS playerName, p.team, s.award '
+        $sql = 'SELECT COUNT(s.id) AS total, p.name AS playerName, '
+             . 'p.team, s.award '
              . 'FROM scoring s '
              . 'INNER JOIN players p ON s.playerId = p.id '
              . 'WHERE s.award = %s '
