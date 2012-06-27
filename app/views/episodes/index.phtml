@@ -3,9 +3,6 @@
 <?php echo $this->getContent() ?>
 
 <ul class='pager'>
-    <li class='previous pull-left'>
-        <?php echo Tag::linkTo('episodes', '&larr; Go Back') ?>
-    </li>
     <li class='pull-right'>
         <?php echo $addButton; ?>
     </li>
@@ -28,8 +25,8 @@
             <td>{{episode.outcome}}</td>
             <td>{{episode.summary}}</td>
             <?php if ($addButton) { ?>
-            <td width='7%'><a href='/episodes/edit/{{episode.id}}'><i class='icon-pencil'></i> Edit</a></td>
-            <td width='7%'><a href='/episodes/delete/{{episode.id}}'><i class='icon-remove'></i> Delete</a></td>
+            <td width='1%'><a href='/episodes/edit/{{episode.id}}'><i class='icon-pencil'></i></a></td>
+            <td width='1%'><a href='/episodes/delete/{{episode.id}}'><i class='icon-remove'></i></a></td>
             <?php } ?>
         </tr>
     </tbody>

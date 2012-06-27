@@ -12,6 +12,9 @@
  *
  */
 
+use Phalcon_Flash as Flash;
+use niden_Session as Session;
+
 class ControllerBase extends Phalcon_Controller
 {
     protected $_bc = null;
@@ -28,6 +31,10 @@ class ControllerBase extends Phalcon_Controller
 
     public function beforeDispatch()
     {
+        $message = Session::getFlash();
+        if (is_array($message)) {
+            Flash::$message['class']($message['message'], $message['css']);
+        }
         $this->view->setVar('breadcrumbs', $this->_bc->generate());
     }
 }

@@ -28,6 +28,7 @@ try {
             'Elements'          => $library . 'Elements.php',
             'niden_Exception'   => $library . 'niden/Exception.php',
             'niden_Registry'    => $library . 'niden/Registry.php',
+            'niden_Session'     => $library . 'niden/Session.php',
             'niden_Logger'      => $library . 'niden/Logger.php',
             'niden_Breadcrumbs' => $library . 'niden/Breadcrumbs.php',
         )
@@ -46,6 +47,7 @@ try {
     $logger->info('Before Session');
     // Start the session
     Phalcon_Session::start();
+
     $logger->info('After Session');
 
     $logger->info('Before Dispatch');

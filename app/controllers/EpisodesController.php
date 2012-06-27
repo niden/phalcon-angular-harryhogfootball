@@ -11,8 +11,9 @@
  * @license     MIT - https://github.com/niden/phalcon-angular-harryhogfootball/blob/master/LICENSE
  *
  */
+
 use Phalcon_Tag as Tag;
-use Phalcon_Flash as Flash;
+use niden_Session as Session;
 
 class EpisodesController extends ControllerBase
 {
@@ -24,7 +25,7 @@ class EpisodesController extends ControllerBase
 
         $this->_bc->add('Episodes', 'episodes');
 
-        $auth = Phalcon_Session::get('auth');
+        $auth = Session::get('auth');
         $add  = '';
 
         if ($auth) {
@@ -50,22 +51,19 @@ class EpisodesController extends ControllerBase
     {
         $this->view->setRenderLevel(Phalcon_View::LEVEL_LAYOUT);
 
+        $data     = array();
         $episodes = Episodes::find();
-        if (count($episodes) == 0) {
-            Flash::notice('No episodes in the database', 'alert alert-info');
 
-            return $this->_forward('episodes');
-        }
-
-        $data = array();
-        foreach ($episodes as $episode) {
-            $data[] = array(
-                        'id'      => $episode->id,
-                        'number'  => $episode->number,
-                        'airDate' => $episode->airDate,
-                        'outcome' => ($episode->outcome) ? 'W' : 'L',
-                        'summary' => $episode->summary,
-                      );
+        if (count($episodes) > 0) {
+            foreach ($episodes as $episode) {
+                $data[] = array(
+                            'id'      => $episode->id,
+                            'number'  => $episode->number,
+                            'airDate' => $episode->airDate,
+                            'outcome' => ($episode->outcome) ? 'W' : 'L',
+                            'summary' => $episode->summary,
+                          );
+            }
         }
 
         echo json_encode(array('results' => $data));
@@ -73,7 +71,7 @@ class EpisodesController extends ControllerBase
 
     public function addAction()
     {
-        $auth = Phalcon_Session::get('auth');
+        $auth = Session::get('auth');
 
         if ($auth) {
             if ($this->request->isPost()) {
@@ -83,14 +81,20 @@ class EpisodesController extends ControllerBase
 
                 if (!$episode->save()) {
                     foreach ($episode->getMessages() as $message) {
-                        Flash::error((string) $message, 'alert alert-error');
+                        Session::setFlash(
+                            'error',
+                            (string) $message,
+                            'alert alert-error'
+                        );
                     }
                 } else {
-                    Flash::success(
+                    Session::setFlash(
+                        'success',
                         'Episode created successfully',
                         'alert alert-success'
                     );
-                    $this->_forward('episodes/');
+
+                    $this->response->redirect('episodes/');
                 }
             }
         }
@@ -98,7 +102,7 @@ class EpisodesController extends ControllerBase
 
     public function editAction($id)
     {
-        $auth = Phalcon_Session::get('auth');
+        $auth = Session::get('auth');
 
         if ($auth) {
 
@@ -106,9 +110,13 @@ class EpisodesController extends ControllerBase
             $episode = Episodes::findFirst('id=' . $id);
 
             if (!$episode) {
-                Flash::error('Episode not found', 'alert alert-error');
+                Session::setFlash(
+                    'error',
+                    'Episode not found',
+                    'alert alert-error'
+                );
 
-                return $this->_forward('episodes/');
+                return $this->response->redirect('episodes/');
             }
 
             if ($this->request->isPost()) {
@@ -117,14 +125,20 @@ class EpisodesController extends ControllerBase
 
                 if (!$episode->save()) {
                     foreach ($episode->getMessages() as $message) {
-                        Flash::error((string) $message, 'alert alert-error');
+                        Session::setFlash(
+                            'error',
+                            (string) $message,
+                            'alert alert-error'
+                        );
                     }
                 } else {
-                    Flash::success(
+                    Session::setFlash(
+                        'success',
                         'Episode updated successfully',
                         'alert alert-success'
                     );
-                    $this->_forward('episodes/');
+
+                    $this->response->redirect('episodes/');
                 }
 
             }
@@ -141,27 +155,39 @@ class EpisodesController extends ControllerBase
 
     public function deleteAction($id)
     {
-        $auth = Phalcon_Session::get('auth');
+        $auth = Session::get('auth');
 
         if ($auth) {
             $id      = $this->filter->sanitize($id, array('int'));
             $episode = Companies::findFirst('id=' . $id);
             if (!$episode) {
-                Flash::error('Episode not found', 'alert alert-error');
+                Session::setFlash(
+                    'error',
+                    'Episode not found',
+                    'alert alert-error'
+                );
 
-                return $this->_forward('episodes/');
+                return $this->response->redirect('episodes/');
             }
 
             if (!$episode->delete()) {
                 foreach ($episode->getMessages() as $message) {
-                    Flash::error((string) $message, 'alert alert-error');
+                    Session::setFlash(
+                        'error',
+                        (string) $message,
+                        'alert alert-error'
+                    );
                 }
 
-                return $this->_forward('companies/search');
+                return $this->response->redirect('episodes/');
             } else {
-                Flash::success('Episode deleted', 'alert alert-success');
+                Session::setFlash(
+                    'success',
+                    'Episode deleted successfully',
+                    'alert alert-success'
+                );
 
-                return $this->_forward('episodes/');
+                return $this->response->redirect('episodes/');
             }
         }
     }
