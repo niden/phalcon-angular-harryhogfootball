@@ -7,19 +7,25 @@
 </div>
 
 <?php
-
-echo Tag::form(
-    array(
-        'players/add',
-        'class' => 'form-horizontal',
-    )
-)
+    echo Tag::form(
+        array(
+            'players/add',
+            'class' => 'form-horizontal',
+        )
+    );
 ?>
 <fieldset>
     <div class='control-group'>
         <label class='control-label'>Name</label>
         <div class='controls'>
-            <?php echo Tag::textField(array('name', 'class' => 'input-xlarge')) ?>
+            <?php
+                echo Tag::textField(
+                    array(
+                        'name',
+                        'class' => 'input-xlarge'
+                    )
+                )
+            ?>
             <p class='help-block'>(required)</p>
         </div>
     </div>
@@ -27,13 +33,13 @@ echo Tag::form(
         <label class='control-label'>Active</label>
         <div class='controls'>
             <?php
-            echo Tag::selectStatic(
-                array(
-                    'active',
-                    array('1' => 'Yes', '0' => 'No'),
-                    'class' => 'input-xlarge'
+                echo Tag::selectStatic(
+                    array(
+                        'active',
+                        array('1' => 'Yes', '0' => 'No'),
+                        'class' => 'input-xlarge'
+                    )
                 )
-            )
             ?>
             <p class='help-block'>(required)</p>
         </div>
@@ -41,11 +47,26 @@ echo Tag::form(
     <div class='control-group'>
         <label class='control-label'>Info</label>
         <div class='controls'>
-            <?php echo Tag::textArea(array('team', 'rows' => '5', 'class' => 'input-xlarge')) ?>
+            <?php
+                echo Tag::textArea(
+                    array(
+                        'team',
+                        'rows' => '5',
+                        'class' => 'input-xlarge'
+                    )
+                )
+            ?>
         </div>
     </div>
     <div class='form-actions'>
-        <?php echo Tag::submitButton(array('Send', 'class' => 'btn btn-primary btn-large')) ?>
+        <?php
+            echo Tag::submitButton(
+                array(
+                    'Send',
+                    'class' => 'btn btn-primary btn-large'
+                )
+            )
+        ?>
     </div>
 </fieldset>
 </form>
