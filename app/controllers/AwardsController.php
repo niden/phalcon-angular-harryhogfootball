@@ -22,7 +22,6 @@ class AwardsController extends ControllerBase
      */
     public function initialize()
     {
-        $this->view->setTemplateAfter('main');
         Tag::setTitle('Manage Awards');
         parent::initialize();
 

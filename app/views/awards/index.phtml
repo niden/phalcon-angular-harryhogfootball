@@ -1,50 +1,58 @@
 <?php use Phalcon_Tag as Tag; ?>
 
 <?php echo $this->getContent() ?>
+            <ul class='pager'>
+                <li class='pull-right'>
+                    <?php echo $addButton; ?>
+                </li>
+            </ul>
 
-<ul class='pager'>
-    <li class='pull-right'>
-        <?php echo $addButton; ?>
-    </li>
-</ul>
-
-<div ng-controller='AwardsCtrl'>
-    <div class='span6'>
-        <table class='table table-bordered table-striped' align='center'>
-            <thead>
-            <tr>
-                <th>Game Balls Hall of Fame</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat='gb in hofData.gameballs'>
-                <td>
-                    <div>{{gb.total}} - {{gb.name}}</div>
-                    <div class='progress progress-info'>
-                        <div class='bar' style='width:{{gb.percent}}%;'></div>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class='span6'>
-        <table class='table table-bordered table-striped' align='center'>
-            <thead>
-            <tr>
-                <th>Kick In The Balls Hall of Fame</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat='kitb in hofData.kicks'>
-                <td>
-                    <div>{{kitb.total}} - {{kitb.name}}</div>
-                    <div class='progress progress-danger'>
-                        <div class='bar' style='width:{{kitb.percent}}%;'></div>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+            <div ng-controller='AwardsCtrl'>
+                <div>
+                    <ul class='nav nav-tabs'>
+                        <li class='active'><a href='#'>Summary</a></li>
+                        <li><a href='#'>Aaron</a></li>
+                        <li><a href='#'>Josh</a></li>
+                        <li><a href='#'>John</a></li>
+                        <li><a href='#'>Misc</a></li>
+                    </ul>
+                </div>
+                <div class='span5'>
+                    <table class='table table-bordered table-condensed' align='center'>
+                        <thead>
+                        <tr>
+                            <th>Game Balls Hall of Fame</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat='gb in hofData.gameballs'>
+                            <td>
+                                <div>{{gb.total}} - {{gb.name}}</div>
+                                <div class='progress progress-info'>
+                                    <div class='bar' style='width:{{gb.percent}}%;'></div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class='span5'>
+                    <table class='table table-bordered table-striped' align='center'>
+                        <thead>
+                        <tr>
+                            <th>Kick In The Balls Hall of Fame</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat='kitb in hofData.kicks'>
+                            <td>
+                                <div>{{kitb.total}} - {{kitb.name}}</div>
+                                <div class='progress progress-danger'>
+                                    <div class='bar' style='width:{{kitb.percent}}%;'></div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>

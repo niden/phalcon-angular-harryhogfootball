@@ -137,3 +137,7 @@ select {
 div.scaffold h2 {
 	margin: 10px;
 }
+
+.spinner {
+    padding-top: 3px;
+}

@@ -1,5 +1,32 @@
 // AngularJS code goes here
-var ngModule = angular.module('HHF', ['ngResource']);
+// HTTP Interceptor for the Ajax spinner
+var ngModule = angular.module('HHF', ['ngResource'])
+    .config(function ($httpProvider) {
+        $httpProvider.responseInterceptors.push('myHttpInterceptor');
+        var spinnerFunction = function (data, headersGetter) {
+            console.log('start spinner');
+            $('#spinner').show();
+            return data;
+        };
+        $httpProvider.defaults.transformRequest.push(spinnerFunction);
+    })
+
+    // register the interceptor as a service, intercepts ALL angular
+    // ajax http calls
+    .factory('myHttpInterceptor', function ($q, $window) {
+        return function (promise) {
+            return promise.then(function (response) {
+                // do something on success
+                $('#spinner').hide()
+                return response;
+
+            }, function (response) {
+                // do something on error
+                $('#spinner').hide()
+                return $q.reject(response);
+            });
+        };
+    })
 
 ngModule.controller('HoFCtrl', function ($scope, $resource) {
     $scope.hof = $resource('/awards/hof');
@@ -27,75 +54,3 @@ ngModule.controller('PlayersCtrl', function ($scope, $resource) {
     $scope.predicate = 'name';
 });
 
-// Utility directives
-
-// ng-visible directive
-ngModule.directive('ngVisible', function() {
-    return function(scope, element, attr) {
-        scope.$watch(attr.ngVisible, function(visible) {
-            element.css('display', visible ? '' : 'none');
-        });
-    };
-});
-
-
-var Profile = {
-    check: function (id) {
-        if ($.trim($("#" + id)[0].value) == '') {
-            $("#" + id)[0].focus();
-            $("#" + id + "_alert").show();
-
-            return false;
-        };
-
-        return true;
-    },
-    validate: function () {
-        if (SignUp.check("name") == false) {
-            return false;
-        }
-        if (SignUp.check("email") == false) {
-            return false;
-        }
-        $("#profileForm")[0].submit();
-    }
-};
-
-var SignUp = {
-    check: function (id) {
-        if ($.trim($("#" + id)[0].value) == '') {
-            $("#" + id)[0].focus();
-            $("#" + id + "_alert").show();
-
-            return false;
-        };
-
-        return true;
-    },
-    validate: function () {
-        if (SignUp.check("name") == false) {
-            return false;
-        }
-        if (SignUp.check("username") == false) {
-            return false;
-        }
-        if (SignUp.check("email") == false) {
-            return false;
-        }
-        if (SignUp.check("password") == false) {
-            return false;
-        }
-        if ($("#password")[0].value != $("#repeatPassword")[0].value) {
-            $("#repeatPassword")[0].focus();
-            $("#repeatPassword_alert").show();
-
-            return false;
-        }
-        $("#registerForm")[0].submit();
-    }
-}
-
-$(document).ready(function () {
-    $("#registerForm .alert").hide();
-    $("div.profile .alert").hide();
-});

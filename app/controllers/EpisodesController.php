@@ -19,7 +19,6 @@ class EpisodesController extends ControllerBase
 {
     public function initialize()
     {
-        $this->view->setTemplateAfter('main');
         Tag::setTitle('Manage Episodes');
         parent::initialize();
 
