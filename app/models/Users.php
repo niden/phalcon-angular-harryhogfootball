@@ -30,6 +30,11 @@ class Users extends Phalcon_Model_Base
     public $password;
 
     /**
+     * @var string
+     */
+    public $name;
+
+    /**
      * @param array $parameters
      *
      * @static

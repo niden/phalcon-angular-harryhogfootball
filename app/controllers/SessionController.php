@@ -13,7 +13,7 @@
  */
 
 use Phalcon_Tag as Tag;
-use Phalcon_Flash as Flash;
+use niden_Session as Session;
 
 class SessionController extends ControllerBase
 {
@@ -46,30 +46,38 @@ class SessionController extends ControllerBase
     {
         if ($this->request->isPost()) {
 
-            $email    = $this->request->getPost('email', 'email');
+            $username = $this->request->getPost('username', 'email');
             $password = $this->request->getPost('password');
 
             $password = sha1($password);
 
-            $user = Users::findFirst(
-                "username='$email' AND password='$password'"
-            );
+            $conditions = 'username = :name: AND password = :type:';
+            $parameters = array(
+                            'username' => $username,
+                            'password' => $password,
+                          );
+            $user = Users::findFirst(array($conditions, 'bind' => $parameters));
 
             if ($user != false) {
 
                 $this->_registerSession($user);
-                Flash::success(
-                    'Welcome ' . $user->username,
+                Session::setFlash(
+                    'success',
+                    'Welcome ' . $user->name,
                     'alert alert-success'
                 );
 
-                return $this->_forward('/index');
+                return $this->response->redirect('index');
             }
 
-            Flash::error('Wrong email/password', 'alert alert-error');
+            Session::setFlash(
+                'error',
+                'Wrong username/password combination',
+                'alert alert-error'
+            );
         }
 
-        return $this->_forward('/session');
+        return $this->response->redirect('session');
     }
 
     /**
@@ -80,9 +88,13 @@ class SessionController extends ControllerBase
     public function logoutAction()
     {
         unset($_SESSION['auth']);
-        Flash::success('Goodbye!', 'alert alert-success');
+        Session::setFlash(
+            'success',
+            'You are now logged out.',
+            'alert alert-success'
+        );
 
-        return $this->_forward('/index');
+        return $this->response->redirect('index');
     }
 
     /**
@@ -92,11 +104,12 @@ class SessionController extends ControllerBase
      */
     private function _registerSession($user)
     {
-        Phalcon_Session::set(
+        Session::set(
             'auth',
             array(
-                'id'   => $user->id,
-                'name' => $user->username,
+                'id'       => $user->id,
+                'username' => $user->username,
+                'name'     => $user->name,
             )
         );
     }
