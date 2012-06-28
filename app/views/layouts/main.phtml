@@ -27,7 +27,14 @@
         <div  ng-controller='BreadcrumbsCtrl'>
             <ul class='breadcrumb'>
                 <li ng-repeat='bc in breadcrumbs'>
-                    <a href='{{bc.link}}'>{{bc.text}}</a> <span style='display:{{bc.active}};' class='divider'>/</span>
+                    <div ng-switch on='bc.active' >
+                        <div ng-switch-when='true'>
+                            {{bc.text}}
+                        </div>
+                        <div ng-switch-default>
+                            <a href='{{bc.link}}'>{{bc.text}}</a> <span class='divider'>/</span>
+                        </div>
+                    </div>
                 </li>
             </ul>
         </div>
