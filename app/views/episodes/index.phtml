@@ -2,11 +2,13 @@
 
 <?php echo $this->getContent() ?>
 
-<ul class='pager'>
-    <li class='pull-right'>
-        <?php echo $addButton; ?>
-    </li>
-</ul>
+<div>
+    <ul class='nav nav-tabs'>
+        <li class='pull-right'>
+            <?php echo $addButton; ?>
+        </li>
+    </ul>
+</div>
 
 <div ng-controller='EpisodesCtrl'>
 <table class='table table-bordered table-striped ng-cloak' ng-cloak>

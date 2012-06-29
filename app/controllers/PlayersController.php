@@ -31,8 +31,7 @@ class PlayersController extends ControllerBase
             $add = Tag::linkTo(
                 array(
                     'players/add',
-                    'Add Player',
-                    'class' => 'btn btn-primary'
+                    'Add Player'
                 )
             );
         }

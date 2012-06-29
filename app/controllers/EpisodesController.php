@@ -32,8 +32,7 @@ class EpisodesController extends ControllerBase
             $add = Tag::linkTo(
                 array(
                     'episodes/add',
-                    'Add Episode',
-                    'class' => 'btn btn-primary'
+                    'Add Episode'
                 )
             );
         }

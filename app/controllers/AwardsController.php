@@ -31,12 +31,10 @@ class AwardsController extends ControllerBase
         $add  = '';
 
         if ($auth) {
-
             $add = Tag::linkTo(
                 array(
                     'awards/add',
-                    'Add Award',
-                    'class' => 'btn btn-primary'
+                    'Add Award'
                 )
             );
         }
