@@ -1,20 +1,23 @@
 <?php use Phalcon_Tag as Tag; ?>
 
 <?php echo $this->getContent() ?>
+            <div ng-controller='AwardsCtrl'>
+
             <ul class='pager'>
+                <li class='pull-left'>
+                    <div class='btn-group' data-toggle='buttons-radio'>
+                        <button class='btn btn-primary' ng-click='getFiltered(0)' ng-class="{true:'active',false:''}[area == 0]">Summary</button>
+                        <button class='btn btn-primary' ng-click='getFiltered(2)' ng-class="{true:'active',false:''}[area == 2]">Aaron</button>
+                        <button class='btn btn-primary' ng-click='getFiltered(3)' ng-class="{true:'active',false:''}[area == 3]">Josh</button>
+                        <button class='btn btn-primary' ng-click='getFiltered(4)' ng-class="{true:'active',false:''}[area == 4]">John</button>
+                    </div>
+                </li>
                 <li class='pull-right'>
                     <?php echo $addButton; ?>
                 </li>
             </ul>
 
             <div ng-controller='AwardsCtrl'>
-                <div class='btn-group' data-toggle='buttons-radio'>
-                    <button class='btn btn-primary' ng-click='getFiltered(0)' ng-class="{true:'active',false:''}[area == 0]">Summary</button>
-                    <button class='btn btn-primary' ng-click='getFiltered(2)' ng-class="{true:'active',false:''}[area == 2]">Aaron</button>
-                    <button class='btn btn-primary' ng-click='getFiltered(3)' ng-class="{true:'active',false:''}[area == 3]">Josh</button>
-                    <button class='btn btn-primary' ng-click='getFiltered(4)' ng-class="{true:'active',false:''}[area == 4]">John</button>
-                </div>
-
                 <div class='span5'>
                     <table class='table table-bordered table-condensed' align='center'>
                         <thead>
@@ -53,4 +56,6 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+
             </div>
