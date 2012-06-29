@@ -113,7 +113,7 @@ class AwardsController extends ControllerBase
         $this->view->setRenderLevel(Phalcon_View::LEVEL_LAYOUT);
         $request = $this->request;
 
-        $results = $this->_getHof();
+        $results = $this->_getHof($action);
 
         echo $results;
     }
@@ -126,7 +126,7 @@ class AwardsController extends ControllerBase
         $this->view->setRenderLevel(Phalcon_View::LEVEL_LAYOUT);
         $request = $this->request;
 
-            $results = $this->_getHof(5);
+            $results = $this->_getHof(null, 5);
 
             echo $results;
     }
@@ -137,15 +137,20 @@ class AwardsController extends ControllerBase
      * @param  null $limit
      * @return string
      */
-    private function _getHof($limit = null)
+    private function _getHof($action = null, $limit = null)
     {
         $connection = Phalcon_Db_Pool::getConnection();
         $sql = 'SELECT COUNT(s.id) AS total, p.name AS playerName, s.award '
              . 'FROM scoring s '
              . 'INNER JOIN players p ON s.playerId = p.id '
-             . 'WHERE s.award = %s '
-             . 'GROUP BY s.award, s.playerId '
-             . 'ORDER BY s.award ASC, total DESC, p.name ';
+             . 'WHERE s.award = %s ';
+
+        if (!empty($action)) {
+            $sql .= 'AND s.userId = ' . (int) $action. ' ';
+        }
+
+        $sql .= 'GROUP BY s.award, s.playerId '
+              . 'ORDER BY s.award ASC, total DESC, p.name ';
 
         if (!empty($limit)) {
             $sql .= 'LIMIT ' . (int) $limit;
