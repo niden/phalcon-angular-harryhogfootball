@@ -57,7 +57,6 @@ class PlayersController extends ControllerBase
                     'id'     => $player->id,
                     'name'   => $player->name,
                     'active' => ($player->active) ? 'Yes' : 'No',
-                    'team'   => $player->team,
                 );
             }
         }
@@ -145,7 +144,6 @@ class PlayersController extends ControllerBase
             Tag::displayTo('id', $player->id);
             Tag::displayTo('name', $player->name);
             Tag::displayTo('active', $player->active);
-            Tag::displayTo('team', $player->team);
         }
     }
 
@@ -192,12 +190,8 @@ class PlayersController extends ControllerBase
         $player->id     = $this->request->getPost('id', 'int');
         $player->name   = $this->request->getPost('name');
         $player->active = $this->request->getPost('active', 'int');
-        $player->team   = $this->request->getPost('team');
 
         $player->name = strip_tags($player->name);
-        $player->team = strip_tags($player->team);
-
         $player->name = addslashes($player->name);
-        $player->team = addslashes($player->team);
     }
 }

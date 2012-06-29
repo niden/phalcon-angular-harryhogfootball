@@ -30,9 +30,12 @@ class Players extends Phalcon_Model_Base
     public $active;
 
     /**
-     * @var string
+     * Initializes the class and sets any relationships with other models
      */
-    public $team;
+    public function initialize()
+    {
+        $this->belongsTo('playerId', 'Scoring', 'id');
+    }
 
     /**
      * @param array $parameters

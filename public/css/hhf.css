@@ -1,0 +1,12 @@
+
+body {
+    color: #333333;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.spinner {
+    padding-top: 3px;
+    display: none;
+}

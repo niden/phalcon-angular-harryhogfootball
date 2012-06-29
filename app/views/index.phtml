@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <?php echo Tag::getTitle(); ?>
         <?php echo Tag::stylesheetLink('css/bootstrap-combined.min.css'); ?>
-        <?php echo Tag::stylesheetLink('css/style.css'); ?>
+        <?php echo Tag::stylesheetLink('css/hhf.css'); ?>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="Harry Hog Football - Game balls and Kick in the Balls awards finder" />
         <meta name="author" content="niden.net" />
@@ -22,7 +22,7 @@
     </head>
     <body>
 
-    <div class='navbar navbar-fixed-top'>
+    <div class='navbar'>
         <div class='navbar-inner'>
             <div class='container-fluid'>
                 <a class='btn btn-navbar' data-toggle='collapse' data-target='.nav-collapse'>
@@ -39,7 +39,7 @@
                     </ul>
                     <ul class='nav pull-right'>
                         <li>
-                            <img id='spinner' src='img/loader.gif' alt='Loading...' />
+                            <img id='spinner' class='spinner' src='/img/loader.gif' alt='Loading...' />
                         </li>
                         <li>
                             <a href='{{menus.rightLink}}'>{{menus.rightText}}</a>
@@ -51,7 +51,7 @@
     </div>
 
     <div class='container-fluid'>
-        <div  ng-controller='BreadcrumbsCtrl'>
+        <div  class='row-fluid' ng-controller='BreadcrumbsCtrl'>
             <ul class='breadcrumb'>
                 <li ng-repeat='bc in breadcrumbs'>
                     <div ng-switch on='bc.active' >

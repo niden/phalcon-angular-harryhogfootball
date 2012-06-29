@@ -35,6 +35,14 @@ class Users extends Phalcon_Model_Base
     public $name;
 
     /**
+     * Initializes the class and sets any relationships with other models
+     */
+    public function initialize()
+    {
+        $this->belongsTo('userId', 'Scoring', 'id');
+    }
+
+    /**
      * @param array $parameters
      *
      * @static

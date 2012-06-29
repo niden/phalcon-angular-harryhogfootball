@@ -108,7 +108,7 @@ class AwardsController extends ControllerBase
     /**
      * Gets the Hall of Fame
      */
-    public function getAction()
+    public function getAction($action)
     {
         $this->view->setRenderLevel(Phalcon_View::LEVEL_LAYOUT);
         $request = $this->request;
@@ -139,10 +139,8 @@ class AwardsController extends ControllerBase
      */
     private function _getHof($limit = null)
     {
-
         $connection = Phalcon_Db_Pool::getConnection();
-        $sql = 'SELECT COUNT(s.id) AS total, p.name AS playerName, '
-             . 'p.team, s.award '
+        $sql = 'SELECT COUNT(s.id) AS total, p.name AS playerName, s.award '
              . 'FROM scoring s '
              . 'INNER JOIN players p ON s.playerId = p.id '
              . 'WHERE s.award = %s '
@@ -164,11 +162,7 @@ class AwardsController extends ControllerBase
         while ($item = $result->fetchArray()) {
             $kicksMax = (0 == $kicksMax) ? $item['total'] : $kicksMax;
             $name     = $item['playerName'];
-            if ($item['team']) {
-                $name .= ' (' . $item['team'] . ')';
-            }
-
-            $kicks[] = array(
+            $kicks[]  = array(
                 'total'   => $item['total'],
                 'name'    => $name,
                 'percent' => (int) ($item['total'] * 100 / $kicksMax),
@@ -188,11 +182,7 @@ class AwardsController extends ControllerBase
                             $item['total']       :
                             $gameballsMax;
             $name         = $item['playerName'];
-            if ($item['team']) {
-                $name .= ' (' . $item['team'] . ')';
-            }
-
-            $gameballs[] = array(
+            $gameballs[]  = array(
                 'total'   => $item['total'],
                 'name'    => $name,
                 'percent' => (int) ($item['total'] * 100 / $gameballsMax),

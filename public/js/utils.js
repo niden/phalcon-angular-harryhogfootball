@@ -4,7 +4,6 @@ var ngModule = angular.module('HHF', ['ngResource'])
     .config(function ($httpProvider) {
         $httpProvider.responseInterceptors.push('myHttpInterceptor');
         var spinnerFunction = function (data, headersGetter) {
-            console.log('start spinner');
             $('#spinner').show();
             return data;
         };
@@ -36,10 +35,24 @@ ngModule.controller('HoFCtrl', function ($scope, $resource) {
 });
 
 ngModule.controller('AwardsCtrl', function ($scope, $resource) {
-    $scope.hof = $resource('/awards/get');
-    $scope.hofData = $scope.hof.get();
-    $scope.gameballs = $scope.hofData.gameballs;
-    $scope.kicks = $scope.hofData.kicks;
+
+    getFiltered(0);
+
+    function getFiltered(area)
+    {
+        $scope.hof = $resource('/awards/get/'+area);
+        console.log('action ('+area+')');
+        $scope.hofData = $scope.hof.get();
+        $scope.hofData.area = area;
+    }
+
+/**
+
+     $scope.hof       = $resource('/awards/get/');
+     $scope.hofData   = $scope.hof.get();
+     $scope.gameballs = $scope.hofData.gameballs;
+     $scope.kicks     = $scope.hofData.kicks;
+*/
 });
 
 ngModule.controller('EpisodesCtrl', function ($scope, $resource) {

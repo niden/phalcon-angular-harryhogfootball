@@ -8,15 +8,17 @@
             </ul>
 
             <div ng-controller='AwardsCtrl'>
-                <div>
+                <div class='tab-content'>
                     <ul class='nav nav-tabs'>
-                        <li class='active'><a href='#'>Summary</a></li>
-                        <li><a href='#'>Aaron</a></li>
-                        <li><a href='#'>Josh</a></li>
-                        <li><a href='#'>John</a></li>
-                        <li><a href='#'>Misc</a></li>
+                        <li ng-class="{true:'active',false:''}[hofData.action == 0]">
+                            <button ng-click='getFiltered(0)'>Summary</button>
+                        </li>
+                        <li ng-class="{true:'active',false:''}[hofData.action == 2]">
+                            <a href='getFiltered(2)'>Aaron</a>
+                        </li>
                     </ul>
                 </div>
+
                 <div class='span5'>
                     <table class='table table-bordered table-condensed' align='center'>
                         <thead>

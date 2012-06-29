@@ -35,6 +35,14 @@ class Episodes extends Phalcon_Model_Base
     public $airDate;
 
     /**
+     * Initializes the class and sets any relationships with other models
+     */
+    public function initialize()
+    {
+        $this->belongsTo('episodeId', 'Scoring', 'id');
+    }
+
+    /**
      * @param array $parameters
      *
      * @static
