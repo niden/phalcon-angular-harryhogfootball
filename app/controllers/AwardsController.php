@@ -188,7 +188,7 @@ class AwardsController extends ControllerBase
                             $gameballsMax;
             $name         = $item['playerName'];
             $gameballs[]  = array(
-                'total'   => $item['total'],
+                'total'   => (int) $item['total'],
                 'name'    => $name,
                 'percent' => (int) ($item['total'] * 100 / $gameballsMax),
             );

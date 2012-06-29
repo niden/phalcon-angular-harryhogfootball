@@ -6,10 +6,18 @@
             <ul class='pager'>
                 <li class='pull-left'>
                     <div class='btn-group' data-toggle='buttons-radio'>
-                        <button class='btn btn-primary' ng-click='getFiltered(0)' ng-class="{true:'active',false:''}[area == 0]">Summary</button>
-                        <button class='btn btn-primary' ng-click='getFiltered(2)' ng-class="{true:'active',false:''}[area == 2]">Aaron</button>
-                        <button class='btn btn-primary' ng-click='getFiltered(3)' ng-class="{true:'active',false:''}[area == 3]">Josh</button>
-                        <button class='btn btn-primary' ng-click='getFiltered(4)' ng-class="{true:'active',false:''}[area == 4]">John</button>
+                        <button class='btn btn-primary'
+                                ng-click='getFiltered(0)'
+                                ng-class="{true:'active',false:''}[area == 0]">Summary</button>
+                        <button class='btn btn-primary'
+                                ng-click='getFiltered(2)'
+                                ng-class="{true:'active',false:''}[area == 2]">Aaron</button>
+                        <button class='btn btn-primary'
+                                ng-click='getFiltered(3)'
+                                ng-class="{true:'active',false:''}[area == 3]">Josh</button>
+                        <button class='btn btn-primary'
+                                ng-click='getFiltered(4)'
+                                ng-class="{true:'active',false:''}[area == 4]">John</button>
                     </div>
                 </li>
                 <li class='pull-right'>
@@ -17,18 +25,19 @@
                 </li>
             </ul>
 
-            <div ng-controller='AwardsCtrl'>
-                <div class='span5'>
+            <div>
+                <div class='span6 ng-cloak' ng-cloak>
                     <table class='table table-bordered table-condensed' align='center'>
                         <thead>
                         <tr>
-                            <th>Game Balls Hall of Fame</th>
+                            <th colspan='2'>Game Balls Hall of Fame</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat='gb in hofData.gameballs'>
+                            <td style='width:10px;'>{{gb.total}}</td>
                             <td>
-                                <div>{{gb.total}} - {{gb.name}}</div>
+                                <div>{{gb.name}}</div>
                                 <div class='progress progress-info'>
                                     <div class='bar' style='width:{{gb.percent}}%;'></div>
                                 </div>
@@ -37,17 +46,18 @@
                         </tbody>
                     </table>
                 </div>
-                <div class='span5'>
-                    <table class='table table-bordered table-striped' align='center'>
+                <div class='span6 ng-cloak' ng-cloak>
+                    <table class='table table-bordered table-condensed' align='center'>
                         <thead>
                         <tr>
-                            <th>Kick In The Balls Hall of Fame</th>
+                            <th colspan='2'>Kick In The Balls Hall of Fame</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat='kitb in hofData.kicks'>
+                            <td style='width:10px;'>{{kitb.total}}</td>
                             <td>
-                                <div>{{kitb.total}} - {{kitb.name}}</div>
+                                <div>{{kitb.name}}</div>
                                 <div class='progress progress-danger'>
                                     <div class='bar' style='width:{{kitb.percent}}%;'></div>
                                 </div>

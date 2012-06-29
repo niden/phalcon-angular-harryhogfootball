@@ -18,7 +18,7 @@
 </div>
 
 <div ng-controller='HoFCtrl'>
-    <div class="span3">
+    <div class='span3 ng-cloak' ng-cloak>
         <h2>Hall of Fame</h2>
         <div ng-repeat='gb in hofData.gameballs'>
             <div>{{gb.total}} - {{gb.name}}</div>
@@ -27,7 +27,7 @@
             </div>
         </div>
     </div>
-    <div class="span3">
+    <div class='span3 ng-cloak' ng-cloak>
         <h2>Hall of Shame</h2>
         <div ng-repeat='kitb in hofData.kicks'>
             <div>{{kitb.total}} - {{kitb.name}}</div>

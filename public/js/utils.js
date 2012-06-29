@@ -30,8 +30,6 @@ var ngModule = angular.module('HHF', ['ngResource'])
 ngModule.controller('HoFCtrl', function ($scope, $resource) {
     $scope.hof = $resource('/awards/hof');
     $scope.hofData = $scope.hof.get();
-    $scope.gameballs = $scope.hofData.gameballs;
-    $scope.kicks = $scope.hofData.kicks;
 });
 
 ngModule.controller('AwardsCtrl', function($scope, $resource) {

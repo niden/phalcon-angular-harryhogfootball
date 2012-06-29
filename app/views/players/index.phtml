@@ -9,12 +9,11 @@
 </ul>
 
 <div ng-controller='PlayersCtrl'>
-    <table class='table table-bordered table-striped' align='center'>
+    <table class='table table-bordered table-striped ng-cloak' ng-cloak>
         <thead>
         <tr>
             <th><a href='' ng-click="predicate='name'; reverse=!reverse">Name</a></th>
             <th><a href='' ng-click="predicate='active'; reverse=!reverse">Active</a></th>
-            <th><a href='' ng-click="predicate='team'; reverse=!reverse">Info</a></th>
         </tr>
         </thead>
         <tbody>
