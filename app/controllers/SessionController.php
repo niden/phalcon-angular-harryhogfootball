@@ -22,7 +22,6 @@ class SessionController extends ControllerBase
      */
     public function initialize()
     {
-        $this->view->setTemplateAfter('main');
         Tag::setTitle('Log In');
         parent::initialize();
     }
@@ -33,7 +32,7 @@ class SessionController extends ControllerBase
     public function indexAction()
     {
         if (!$this->request->isPost()) {
-            Tag::setDefault('email', 'user@email.com');
+            Tag::setDefault('username', 'user@email.com');
             Tag::setDefault('password', 'hhf');
         }
     }
@@ -51,7 +50,7 @@ class SessionController extends ControllerBase
 
             $password = sha1($password);
 
-            $conditions = 'username = :name: AND password = :type:';
+            $conditions = 'username = :username: AND password = :password:';
             $parameters = array(
                             'username' => $username,
                             'password' => $password,
