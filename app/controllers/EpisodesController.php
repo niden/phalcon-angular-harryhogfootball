@@ -58,7 +58,7 @@ class EpisodesController extends ControllerBase
                             'id'      => $episode->id,
                             'number'  => $episode->number,
                             'airDate' => $episode->airDate,
-                            'outcome' => ($episode->outcome) ? 'W' : 'L',
+                            'outcome' => ($episode->outcome == 1) ? 'W' : 'L',
                             'summary' => $episode->summary,
                           );
             }

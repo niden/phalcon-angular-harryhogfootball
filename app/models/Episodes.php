@@ -12,6 +12,8 @@
  *
  */
 
+use niden_Session as Session;
+
 class Episodes extends Phalcon_Model_Base
 {
     /**

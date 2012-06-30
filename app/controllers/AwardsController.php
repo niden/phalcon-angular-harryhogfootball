@@ -155,7 +155,7 @@ class AwardsController extends ControllerBase
         }
 
         // Kicks
-        $query = sprintf($sql, 0);
+        $query = sprintf($sql, -1);
         $result = $connection->query($query);
         $result->setFetchMode(Phalcon_Db::DB_ASSOC);
 
@@ -166,7 +166,7 @@ class AwardsController extends ControllerBase
             $kicksMax = (0 == $kicksMax) ? $item['total'] : $kicksMax;
             $name     = $item['playerName'];
             $kicks[]  = array(
-                'total'   => $item['total'],
+                'total'   => (int) $item['total'],
                 'name'    => $name,
                 'percent' => (int) ($item['total'] * 100 / $kicksMax),
             );

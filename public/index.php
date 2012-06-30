@@ -26,6 +26,7 @@ try {
         array(
             'ControllerBase'    => $app     . 'controllers/ControllerBase.php',
             'Elements'          => $library . 'Elements.php',
+            'niden_Models_Base' => $library . 'niden/Models/Base.php',
             'niden_Exception'   => $library . 'niden/Exception.php',
             'niden_Registry'    => $library . 'niden/Registry.php',
             'niden_Session'     => $library . 'niden/Session.php',
