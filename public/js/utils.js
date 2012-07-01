@@ -36,7 +36,6 @@ ngModule.controller('AwardsCtrl', function($scope, $resource) {
 
     $scope.getFiltered = function getFiltered(area) {
         $scope.hof = $resource('/awards/get/'+area);
-        console.log('action ('+area+')');
         $scope.hofData = $scope.hof.get();
         $scope.area = area;
     };
