@@ -75,7 +75,7 @@ class EpisodesController extends ControllerBase
             if ($this->request->isPost()) {
 
                 $episode = new Episodes();
-                $this->_setEpisode($episode);
+                $this->_setEpisode($episode, $auth);
 
                 if (!$episode->save()) {
                     foreach ($episode->getMessages() as $message) {
@@ -119,7 +119,7 @@ class EpisodesController extends ControllerBase
 
             if ($this->request->isPost()) {
 
-                $this->_setEpisode($episode);
+                $this->_setEpisode($episode, $auth);
 
                 if (!$episode->save()) {
                     foreach ($episode->getMessages() as $message) {
@@ -190,13 +190,24 @@ class EpisodesController extends ControllerBase
         }
     }
 
-    private function _setEpisode($episode)
+    /**
+     * Private helper setting episode fields
+     *
+     * @param $episode
+     * @param $auth
+     */
+    private function _setEpisode($episode, $auth)
     {
+        $datetime = date('Y-m-d H:i:s');
+
         $episode->id      = $this->request->getPost('episodeId', 'int');
         $episode->number  = $this->request->getPost('episodeId', 'int');
         $episode->airDate = $this->request->getPost('episodeDate', 'int');
         $episode->summary = $this->request->getPost('summary');
         $episode->outcome = $this->request->getPost('outcome', 'int');
+
+        $episode->lastUpdate       = $datetime;
+        $episode->lastUpdateUserId = (int) $auth['id'];
 
         $episode->summary = strip_tags($episode->summary);
         $episode->summary = addslashes($episode->summary);

@@ -72,7 +72,7 @@ class PlayersController extends ControllerBase
             if ($this->request->isPost()) {
 
                 $player = new Players();
-                $this->_setPlayer($player);
+                $this->_setPlayer($player, $auth);
 
                 if (!$player->save()) {
                     foreach ($player->getMessages() as $message) {
@@ -116,7 +116,7 @@ class PlayersController extends ControllerBase
 
             if ($this->request->isPost()) {
 
-                $this->_setPlayer($player);
+                $this->_setPlayer($player, $auth);
 
                 if (!$player->save()) {
                     foreach ($player->getMessages() as $message) {
@@ -184,11 +184,16 @@ class PlayersController extends ControllerBase
         }
     }
 
-    private function _setPlayer($player)
+    private function _setPlayer($player, $auth)
     {
+        $datetime = date('Y-m-d H:i:s');
+
         $player->id     = $this->request->getPost('id', 'int');
         $player->name   = $this->request->getPost('name');
         $player->active = $this->request->getPost('active', 'int');
+
+        $player->lastUpdate       = $datetime;
+        $player->lastUpdateUserId = (int) $auth['id'];
 
         $player->name = strip_tags($player->name);
         $player->name = addslashes($player->name);

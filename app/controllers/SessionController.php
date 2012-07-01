@@ -66,7 +66,7 @@ class SessionController extends ControllerBase
                     'alert alert-success'
                 );
 
-                return $this->response->redirect('index');
+                return $this->response->redirect('/');
             }
 
             Session::setFlash(
@@ -93,7 +93,7 @@ class SessionController extends ControllerBase
             'alert alert-success'
         );
 
-        return $this->response->redirect('index');
+        return $this->response->redirect('/');
     }
 
     /**
@@ -103,8 +103,7 @@ class SessionController extends ControllerBase
      */
     private function _registerSession($user)
     {
-        Session::set(
-            'auth',
+        Session::set('auth',
             array(
                 'id'       => $user->id,
                 'username' => $user->username,

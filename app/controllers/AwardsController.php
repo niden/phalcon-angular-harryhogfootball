@@ -75,11 +75,16 @@ class AwardsController extends ControllerBase
 
             if ($this->request->isPost()) {
 
-                $award = new Scoring();
+                $datetime = date('Y-m-d H:i:s');
+
+                $award = new Awards();
                 $award->userId    = $this->request->getPost('userId', 'int');
                 $award->episodeId = $this->request->getPost('episodeId', 'int');
                 $award->playerId  = $this->request->getPost('playerId', 'int');
                 $award->award     = $this->request->getPost('award', 'int');
+
+                $award->lastUpdate       = $datetime;
+                $award->lastUpdateUserId = (int) $auth['id'];
 
                 if (!$award->save()) {
                     foreach ($award->getMessages() as $message) {
@@ -132,23 +137,24 @@ class AwardsController extends ControllerBase
     /**
      * Private function getting results for the HOF
      *
+     * @param  null $action
      * @param  null $limit
      * @return string
      */
     private function _getHof($action = null, $limit = null)
     {
         $connection = Phalcon_Db_Pool::getConnection();
-        $sql = 'SELECT COUNT(s.id) AS total, p.name AS playerName, s.award '
-             . 'FROM scoring s '
-             . 'INNER JOIN players p ON s.playerId = p.id '
-             . 'WHERE s.award = %s ';
+        $sql = 'SELECT COUNT(a.id) AS total, p.name AS playerName, a.award '
+             . 'FROM awards a '
+             . 'INNER JOIN players p ON a.playerId = p.id '
+             . 'WHERE a.award = %s ';
 
         if (!empty($action)) {
-            $sql .= 'AND s.userId = ' . (int) $action. ' ';
+            $sql .= 'AND a.userId = ' . (int) $action. ' ';
         }
 
-        $sql .= 'GROUP BY s.award, s.playerId '
-              . 'ORDER BY s.award ASC, total DESC, p.name ';
+        $sql .= 'GROUP BY a.award, a.playerId '
+              . 'ORDER BY a.award ASC, total DESC, p.name ';
 
         if (!empty($limit)) {
             $sql .= 'LIMIT ' . (int) $limit;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Scoring.php
+ * Awards.php
  * Scoring
  *
  * The model for the scoring table
@@ -12,7 +12,9 @@
  *
  */
 
-class Scoring extends Phalcon_Model_Base
+use niden_Session as Session;
+
+class Awards extends Phalcon_Model_Base
 {
     /**
     * @var integer
@@ -40,6 +42,26 @@ class Scoring extends Phalcon_Model_Base
     public $award;
 
     /**
+     * @var string
+     */
+    public $createdAt;
+
+    /**
+     * @var integer
+     */
+    public $createdAtUserId;
+
+    /**
+     * @var string
+     */
+    public $lastUpdate;
+
+    /**
+     * @var integer
+     */
+    public $lastUpdateUserId;
+
+    /**
      * Initializes the class and sets any relationships with other models
      */
     public function initialize()
@@ -51,6 +73,17 @@ class Scoring extends Phalcon_Model_Base
         $this->hasOne('userId', 'Users', 'id', $fk);
         $this->hasOne('episodeId', 'Episodes', 'id', $fk);
         $this->hasOne('playerId', 'Players', 'id', $fk);
+    }
+
+    public function beforeSave()
+    {
+        if (empty($this->createdAtUserId)) {
+            $auth     = Session::get('auth');
+            $datetime = date('Y-m-d H:i:s');
+
+            $this->createdAt        = $datetime;
+            $this->createdAtUserId  = (int) $auth['id'];
+        }
     }
 
     /**

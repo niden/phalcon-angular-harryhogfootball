@@ -12,6 +12,8 @@
  *
  */
 
+use niden_Session as Session;
+
 class Players extends Phalcon_Model_Base
 {
     /**
@@ -30,11 +32,42 @@ class Players extends Phalcon_Model_Base
     public $active;
 
     /**
+     * @var string
+     */
+    public $createdAt;
+
+    /**
+     * @var integer
+     */
+    public $createdAtUserId;
+
+    /**
+     * @var string
+     */
+    public $lastUpdate;
+
+    /**
+     * @var integer
+     */
+    public $lastUpdateUserId;
+
+    /**
      * Initializes the class and sets any relationships with other models
      */
     public function initialize()
     {
         $this->belongsTo('playerId', 'Scoring', 'id');
+    }
+
+    public function beforeSave()
+    {
+        if (empty($this->createdAtUserId)) {
+            $auth     = Session::get('auth');
+            $datetime = date('Y-m-d H:i:s');
+
+            $this->createdAt        = $datetime;
+            $this->createdAtUserId  = (int) $auth['id'];
+        }
     }
 
     /**
