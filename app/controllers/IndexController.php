@@ -5,14 +5,14 @@
  *
  * The index controller and its actions
  *
- * @author      Nikos Dimopoulos <nikos@niden.net>
+ * @author      Nikos Dimopoulos <nikos@NDN.net>
  * @since       2012-06-21
  * @category    Controllers
- * @license     MIT - https://github.com/niden/phalcon-angular-harryhogfootball/blob/master/LICENSE
+ * @license     MIT - https://github.com/NDN/phalcon-angular-harryhogfootball/blob/master/LICENSE
  *
  */
 
-class IndexController extends ControllerBase
+class IndexController extends NDN_Controller
 {
     public function initialize()
     {

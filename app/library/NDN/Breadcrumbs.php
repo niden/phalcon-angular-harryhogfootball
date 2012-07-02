@@ -5,14 +5,14 @@
  *
  * Handles the breadcrumbs for the application
  *
- * @author      Nikos Dimopoulos <nikos@niden.net>
+ * @author      Nikos Dimopoulos <nikos@NDN.net>
  * @since       6/22/12
  * @category    Library
- * @license     MIT - https://github.com/niden/phalcon-angular-harryhogfootball/blob/master/LICENSE
+ * @license     MIT - https://github.com/NDN/phalcon-angular-harryhogfootball/blob/master/LICENSE
  *
  */
 
-class niden_Breadcrumbs
+class NDN_Breadcrumbs
 {
     /**
      * @var array

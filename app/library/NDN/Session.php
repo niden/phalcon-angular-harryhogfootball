@@ -5,14 +5,14 @@
  *
  * Session pattern implementation
  *
- * @author      Nikos Dimopoulos <nikos@niden.net>
+ * @author      Nikos Dimopoulos <nikos@NDN.net>
  * @since       6/24/12
  * @category    Library
- * @license     MIT - https://github.com/niden/phalcon-angular-harryhogfootball/blob/master/LICENSE
+ * @license     MIT - https://github.com/NDN/phalcon-angular-harryhogfootball/blob/master/LICENSE
  *
  */
 
-class niden_Session extends Phalcon_Session
+class NDN_Session extends Phalcon_Session
 {
     public static function setFlash($class, $message, $css)
     {

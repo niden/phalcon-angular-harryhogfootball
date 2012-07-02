@@ -5,17 +5,17 @@
  *
  * The session/login controller and its actions
  *
- * @author      Nikos Dimopoulos <nikos@niden.net>
+ * @author      Nikos Dimopoulos <nikos@NDN.net>
  * @since       2012-06-21
  * @category    Controllers
- * @license     MIT - https://github.com/niden/phalcon-angular-harryhogfootball/blob/master/LICENSE
+ * @license     MIT - https://github.com/NDN/phalcon-angular-harryhogfootball/blob/master/LICENSE
  *
  */
 
 use Phalcon_Tag as Tag;
-use niden_Session as Session;
+use NDN_Session as Session;
 
-class SessionController extends ControllerBase
+class SessionController extends NDN_Controller
 {
     /**
      * Initializes the controller
@@ -86,7 +86,8 @@ class SessionController extends ControllerBase
      */
     public function logoutAction()
     {
-        unset($_SESSION['auth']);
+        Session::remove('auth');
+
         Session::setFlash(
             'success',
             'You are now logged out.',
@@ -103,7 +104,8 @@ class SessionController extends ControllerBase
      */
     private function _registerSession($user)
     {
-        Session::set('auth',
+        Session::set(
+            'auth',
             array(
                 'id'       => $user->id,
                 'username' => $user->username,

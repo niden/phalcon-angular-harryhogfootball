@@ -15,7 +15,7 @@
 
 use Phalcon_Flash as Flash;
 
-class ContactController extends ControllerBase
+class ContactController extends NDN_Controller
 {
     /**
      * Initialization of the controller. Setting main template and title

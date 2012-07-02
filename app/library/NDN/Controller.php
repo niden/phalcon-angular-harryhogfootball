@@ -1,21 +1,22 @@
 <?php
 /**
- * ControllerBase.php
- * ControllerBase
+ * Controller.php
+ * NDN_Controller
  *
  * The base controller and its actions
  *
- * @author      Nikos Dimopoulos <nikos@niden.net>
- * @since       2012-06-22
+ * @author      Nikos Dimopoulos <nikos@NDN.net>
+ * @since       2012-07-01
  * @category    Controllers
- * @license     MIT - https://github.com/niden/phalcon-angular-harryhogfootball/blob/master/LICENSE
+ * @license     MIT - https://github.com/NDN/phalcon-angular-harryhogfootball/blob/master/LICENSE
  *
  */
 
+use Phalcon_Tag as Tag;
 use Phalcon_Flash as Flash;
-use niden_Session as Session;
+use NDN_Session as Session;
 
-class ControllerBase extends Phalcon_Controller
+class NDN_Controller extends Phalcon_Controller
 {
     protected $_bc = null;
 
@@ -24,9 +25,9 @@ class ControllerBase extends Phalcon_Controller
      */
     public function initialize()
     {
-        Phalcon_Tag::prependTitle('HHF G&KB Awards | ');
+        Tag::prependTitle('HHF G&KB Awards | ');
 
-        $this->_bc = new niden_Breadcrumbs();
+        $this->_bc = new NDN_Breadcrumbs();
     }
 
     public function beforeDispatch()

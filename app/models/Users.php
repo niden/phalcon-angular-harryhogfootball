@@ -5,10 +5,10 @@
  *
  * The model for the users table
  *
- * @author      Nikos Dimopoulos <nikos@niden.net>
+ * @author      Nikos Dimopoulos <nikos@NDN.net>
  * @since       2012-06-21
  * @category    Models
- * @license     MIT - https://github.com/niden/phalcon-angular-harryhogfootball/blob/master/LICENSE
+ * @license     MIT - https://github.com/NDN/phalcon-angular-harryhogfootball/blob/master/LICENSE
  *
  */
 

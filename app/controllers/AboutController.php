@@ -2,7 +2,7 @@
 
 use Phalcon_Tag as Tag;
 
-class AboutController extends ControllerBase
+class AboutController extends NDN_Controller
 {
     public function initialize()
     {

@@ -24,14 +24,14 @@ try {
     // Register some classes
     $loader->registerClasses(
         array(
-            'ControllerBase'    => $app     . 'controllers/ControllerBase.php',
-            'Elements'          => $library . 'Elements.php',
-            'niden_Models_Base' => $library . 'niden/Models/Base.php',
-            'niden_Exception'   => $library . 'niden/Exception.php',
-            'niden_Registry'    => $library . 'niden/Registry.php',
-            'niden_Session'     => $library . 'niden/Session.php',
-            'niden_Logger'      => $library . 'niden/Logger.php',
-            'niden_Breadcrumbs' => $library . 'niden/Breadcrumbs.php',
+            'Elements'        => $library . 'Elements.php',
+            'NDN_Controller'  => $library . 'NDN/Controller.php',
+            'NDN_Model'       => $library . 'NDN/Model.php',
+            'NDN_Exception'   => $library . 'NDN/Exception.php',
+            'NDN_Registry'    => $library . 'NDN/Registry.php',
+            'NDN_Session'     => $library . 'NDN/Session.php',
+            'NDN_Logger'      => $library . 'NDN/Logger.php',
+            'NDN_Breadcrumbs' => $library . 'NDN/Breadcrumbs.php',
         )
     );
 
@@ -40,14 +40,15 @@ try {
 
     // Get the config
     $config = new Phalcon_Config_Adapter_Ini($app . 'config/config.ini');
-    niden_Registry::set('config', $config);
+    NDN_Registry::set('config', $config);
 
-    $logger = new niden_Logger($config);
-    niden_Registry::set('logger', $logger);
+    $logger = new NDN_Logger($config);
+    NDN_Registry::set('logger', $logger);
 
     $logger->info('Before Session');
+
     // Start the session
-    Phalcon_Session::start();
+    NDN_Session::start();
 
     $logger->info('After Session');
 

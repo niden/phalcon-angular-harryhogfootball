@@ -5,14 +5,14 @@
  *
  * Registry pattern implementation
  *
- * @author      Nikos Dimopoulos <nikos@niden.net>
+ * @author      Nikos Dimopoulos <nikos@NDN.net>
  * @since       6/24/12
  * @category    Library
- * @license     MIT - https://github.com/niden/phalcon-angular-harryhogfootball/blob/master/LICENSE
+ * @license     MIT - https://github.com/NDN/phalcon-angular-harryhogfootball/blob/master/LICENSE
  *
  */
 
-class niden_Registry extends ArrayObject
+class NDN_Registry extends ArrayObject
 {
     /**
      * The core of the registry, one object to rule them all
@@ -44,7 +44,7 @@ class niden_Registry extends ArrayObject
     public static function getInstance()
     {
         if (self::$_registry === null) {
-            self::$_registry = new niden_Registry();
+            self::$_registry = new NDN_Registry();
         }
 
         return self::$_registry;
@@ -56,14 +56,14 @@ class niden_Registry extends ArrayObject
      * @static
      * @param  string $index The index key
      * @return mixed
-     * @throws niden_Exception if no data stored in the registry
+     * @throws NDN_Exception if no data stored in the registry
      */
     public static function get($index)
     {
         $instance = self::getInstance();
 
         if (!$instance->offsetExists($index)) {
-            throw new niden_Exception(
+            throw new NDN_Exception(
                 "No entry is registered for key '$index'"
             );
         }

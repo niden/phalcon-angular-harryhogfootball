@@ -1,9 +1,9 @@
 <?php
 /**
- * Contacts.php
- * Contacts
+ * Model.php
+ * NDN_Model
  *
- * The model for the contacts table
+ * The base model for all tables
  *
  * @author      Nikos Dimopoulos <nikos@NDN.net>
  * @since       2012-06-21
@@ -12,49 +12,41 @@
  *
  */
 
-class Contacts extends Phalcon_Model_Base
+use NDN_Session as Session;
+
+class NDN_Model extends Phalcon_Model_Base
 {
-
-    /**
-     * @var integer
-     */
-    public $id;
-
     /**
      * @var string
-     */
-    public $name;
-
-    /**
-     * @var string
-     */
-    public $email;
-
-    /**
-     * @var string
-     */
-    public $comments;
-
-    /**
-     * @var integer
      */
     public $createdAt;
 
     /**
-     * Validations and business logic 
+     * @var integer
      */
-    public function validation()
-    {
-        $this->validate(
-            'Email',
-            array(
-                'field' => 'email',
-                'required' => true
-            )
-        );
+    public $createdAtUserId;
 
-        if ($this->validationHasFailed() == true) {
-            return false;
+    /**
+     * @var string
+     */
+    public $lastUpdate;
+
+    /**
+     * @var integer
+     */
+    public $lastUpdateUserId;
+
+    /**
+     * beforeSave hook - called prior to any Save (insert/update)
+     */
+    public function beforeSave()
+    {
+        if (empty($this->createdAtUserId)) {
+            $auth     = Session::get('auth');
+            $datetime = date('Y-m-d H:i:s');
+
+            $this->createdAt        = $datetime;
+            $this->createdAtUserId  = (int) $auth['id'];
         }
     }
 
@@ -62,7 +54,7 @@ class Contacts extends Phalcon_Model_Base
      * @param array $parameters
      *
      * @static
-     * @return Phalcon_Model_Resultset Contacts[]
+     * @return Phalcon_Model_Resultset Model[]
      */
     static public function find($parameters = array())
     {
@@ -73,11 +65,10 @@ class Contacts extends Phalcon_Model_Base
      * @param array $parameters
      *
      * @static
-     * @return  Phalcon_Model_Base   Contacts
+     * @return  Phalcon_Model_Base   Models
      */
     static public function findFirst($parameters = array())
     {
         return parent::findFirst($parameters);
     }
 }
-

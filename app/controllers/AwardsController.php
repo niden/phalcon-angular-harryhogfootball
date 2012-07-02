@@ -5,17 +5,17 @@
  *
  * The awards controller and its actions
  *
- * @author      Nikos Dimopoulos <nikos@niden.net>
+ * @author      Nikos Dimopoulos <nikos@NDN.net>
  * @since       2012-06-24
  * @category    Controllers
- * @license     MIT - https://github.com/niden/phalcon-angular-harryhogfootball/blob/master/LICENSE
+ * @license     MIT - https://github.com/NDN/phalcon-angular-harryhogfootball/blob/master/LICENSE
  *
  */
 
 use Phalcon_Tag as Tag;
-use niden_Session as Session;
+use NDN_Session as Session;
 
-class AwardsController extends ControllerBase
+class AwardsController extends NDN_Controller
 {
     /**
      * Initializes the controller
