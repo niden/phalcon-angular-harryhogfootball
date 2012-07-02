@@ -5,7 +5,7 @@
  *
  * The players controller and its actions
  *
- * @author      Nikos Dimopoulos <nikos@NDN.net>
+ * @author      Nikos Dimopoulos <nikos@niden.net>
  * @since       2012-06-26
  * @category    Controllers
  * @license     MIT - https://github.com/NDN/phalcon-angular-harryhogfootball/blob/master/LICENSE

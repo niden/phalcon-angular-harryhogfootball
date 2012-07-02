@@ -5,7 +5,7 @@
  *
  * The model for the players table
  *
- * @author      Nikos Dimopoulos <nikos@NDN.net>
+ * @author      Nikos Dimopoulos <nikos@niden.net>
  * @since       2012-06-21
  * @category    Models
  * @license     MIT - https://github.com/NDN/phalcon-angular-harryhogfootball/blob/master/LICENSE

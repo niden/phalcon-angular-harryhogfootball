@@ -5,13 +5,13 @@
  *
  * The contact controller and its actions
  *
- * @author      Nikolaos Dimopoulos <ndimopoulos@avectra.com>
- * @since       6/20/12
- * @name        ContactController
- * @package     HHF
- * @subpackage  Controllers
+ * @author      Nikos Dimopoulos <nikos@niden.net>
+ * @since       2012-06-24
+ * @category    Controllers
+ * @license     MIT - https://github.com/NDN/phalcon-angular-harryhogfootball/blob/master/LICENSE
  *
  */
+
 
 use Phalcon_Flash as Flash;
 
