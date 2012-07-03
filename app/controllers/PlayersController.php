@@ -38,6 +38,7 @@ class PlayersController extends NDN_Controller
         }
 
         $this->view->setVar('addButton', $add);
+        $this->view->setVar('top_menu', $this->_constructMenu($this));
     }
 
     public function indexAction()

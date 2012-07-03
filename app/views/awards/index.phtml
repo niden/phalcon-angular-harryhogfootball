@@ -5,11 +5,14 @@
 
             <div>
                 <ul class='nav nav-tabs'>
+                    <li ng-class="{true:'active',false:''}[area == 1]">
+                    <a ng-click='getFiltered(1)'>
+                        <i class='icon-list-alt'></i> Summary</a>
+                    </li>
                     <li ng-class="{true:'active',false:''}[area == 0]">
                         <a ng-click='getFiltered(0)'>
-                            <i class='icon-list-alt'></i> Summary</a>
+                            <i class='icon-list-alt'></i> Summary (Active Players)</a>
                     </li>
-                    <li class='divider'></li>
                     <li ng-class="{true:'active',false:''}[area == 2]">
                         <a ng-click='getFiltered(2)'>
                             <i class='icon-user'></i> Aaron</a>

@@ -17,6 +17,9 @@ use NDN_Session as Session;
 
 class EpisodesController extends NDN_Controller
 {
+    /**
+     * initialization
+     */
     public function initialize()
     {
         Tag::setTitle('Manage Episodes');
@@ -38,13 +41,20 @@ class EpisodesController extends NDN_Controller
         }
 
         $this->view->setVar('addButton', $add);
+        $this->view->setVar('top_menu', $this->_constructMenu($this));
     }
 
+    /**
+     * index Action
+     */
     public function indexAction()
     {
 
     }
 
+    /**
+     * get Action
+     */
     public function getAction()
     {
         $this->view->setRenderLevel(Phalcon_View::LEVEL_LAYOUT);
@@ -67,6 +77,9 @@ class EpisodesController extends NDN_Controller
         echo json_encode(array('results' => $data));
     }
 
+    /**
+     * add Action
+     */
     public function addAction()
     {
         $auth = Session::get('auth');
@@ -98,6 +111,11 @@ class EpisodesController extends NDN_Controller
         }
     }
 
+    /**
+     * edit Action
+     *
+     * @param integer $id
+     */
     public function editAction($id)
     {
         $auth = Session::get('auth');

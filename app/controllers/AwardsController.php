@@ -40,6 +40,7 @@ class AwardsController extends NDN_Controller
         }
 
         $this->view->setVar('addButton', $add);
+        $this->view->setVar('top_menu', $this->_constructMenu($this));
     }
 
     /**
@@ -60,14 +61,9 @@ class AwardsController extends NDN_Controller
         if ($auth) {
             $this->_bc->add('Add', 'awards/add');
 
-            $episodes    = new Episodes();
-            $allEpisodes = $episodes->find(array('order' => 'airDate DESC'));
-
-            $users    = new Users();
-            $allUsers = $users->find(array('order' => 'username'));
-
-            $players    = new Players();
-            $allPlayers = $players->find(array('order' => 'active DESC, name'));
+            $allEpisodes = Episodes::find(array('order' => 'airDate DESC'));
+            $allUsers    = Users::find(array('order' => 'username'));
+            $allPlayers  = Players::find(array('order' => 'active DESC, name'));
 
             $this->view->setVar('users', $allUsers);
             $this->view->setVar('episodes', $allEpisodes);
@@ -149,8 +145,15 @@ class AwardsController extends NDN_Controller
              . 'INNER JOIN players p ON a.playerId = p.id '
              . 'WHERE a.award = %s ';
 
-        if (!empty($action)) {
-            $sql .= 'AND a.userId = ' . (int) $action. ' ';
+        switch ($action) {
+            case 1:
+                $sql .= 'AND p.active = 1 ';
+                break;
+            case 2:
+            case 3:
+            case 4:
+                $sql .= 'AND a.userId = ' . (int) $action. ' ';
+                break;
         }
 
         $sql .= 'GROUP BY a.award, a.playerId '

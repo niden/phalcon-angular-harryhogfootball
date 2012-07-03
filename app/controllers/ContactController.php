@@ -26,6 +26,7 @@ class ContactController extends NDN_Controller
         parent::initialize();
 
         $this->_bc->add('Contact Us', 'contact');
+        $this->view->setVar('top_menu', $this->_constructMenu($this));
     }
 
     /**

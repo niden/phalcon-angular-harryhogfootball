@@ -18,8 +18,12 @@ class IndexController extends NDN_Controller
     {
         Phalcon_Tag::setTitle('Welcome');
         parent::initialize();
+        $this->view->setVar('top_menu', $this->_constructMenu($this));
     }
 
+    /**
+     * index Action
+     */
     public function indexAction()
     {
 

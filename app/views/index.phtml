@@ -12,7 +12,7 @@
 
         <script type='text/javascript'>
         function MenuCtrl($scope) {
-            $scope.menus = <?php echo Elements::getMenu($this); ?>;
+            $scope.menus = <?php echo $top_menu; ?>;
         }
         function BreadcrumbsCtrl($scope) {
             $scope.breadcrumbs = <?php echo $breadcrumbs; ?>;

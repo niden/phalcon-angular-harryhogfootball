@@ -24,6 +24,7 @@ class SessionController extends NDN_Controller
     {
         Tag::setTitle('Log In');
         parent::initialize();
+        $this->view->setVar('top_menu', $this->_constructMenu($this));
     }
 
     /**

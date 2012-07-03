@@ -21,6 +21,15 @@ class NDN_Registry extends ArrayObject
     private static $_registry = null;
 
     /**
+     * A prefix for the registry keys. This allows using the same object
+     * but with different prefixes that could effectively be different
+     * registries
+     *
+     * @var string
+     */
+    protected static $_prefix = '';
+
+    /**
      * Constructs a parent ArrayObject with default ARRAY_AS_PROPS to allow
      * access as an object
      *
@@ -62,7 +71,7 @@ class NDN_Registry extends ArrayObject
     {
         $instance = self::getInstance();
 
-        if (!$instance->offsetExists($index)) {
+        if (!$instance->offsetExists(self::$_prefix .  $index)) {
             throw new NDN_Exception(
                 "No entry is registered for key '$index'"
             );
@@ -81,7 +90,7 @@ class NDN_Registry extends ArrayObject
     public static function set($index, $value)
     {
         $instance = self::getInstance();
-        $instance->offsetSet($index, $value);
+        $instance->offsetSet(self::$_prefix .  $index, $value);
     }
 
     /**
@@ -95,7 +104,7 @@ class NDN_Registry extends ArrayObject
         if (self::$_registry === null) {
             return false;
         }
-        return self::$_registry->offsetExists($index);
+        return self::$_registry->offsetExists(self::$_prefix .  $index);
     }
 
     /**
@@ -106,7 +115,7 @@ class NDN_Registry extends ArrayObject
      */
     public function offsetExists($index)
     {
-        return array_key_exists($index, $this);
+        return array_key_exists(self::$_prefix .  $index, $this);
     }
 
 }
