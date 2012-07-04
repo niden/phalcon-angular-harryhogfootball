@@ -67,7 +67,7 @@ class SessionController extends NDN_Controller
                     'alert alert-success'
                 );
 
-                return $this->response->redirect('/');
+                return $this->response->redirect('');
             }
 
             Session::setFlash(
@@ -77,7 +77,7 @@ class SessionController extends NDN_Controller
             );
         }
 
-        return $this->response->redirect('session');
+        return $this->response->redirect('');
     }
 
     /**
@@ -95,7 +95,7 @@ class SessionController extends NDN_Controller
             'alert alert-success'
         );
 
-        return $this->response->redirect('/');
+        return $this->response->redirect('');
     }
 
     /**
