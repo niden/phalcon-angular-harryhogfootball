@@ -1,0 +1,21 @@
+<?php use Phalcon_Tag as Tag; ?>
+
+<?php echo $this->getContent() ?>
+<div ng-controller='StatisticsCtrl'>
+    <ul class='nav nav-pills'>
+        <li>
+            <i class='icon-list-alt'></i> Episode</a>
+            <select ng-model='episodeId' ng-options='i.id as i.number for i in episodes'>
+            </select>
+        </li>
+        <li class='divider'></li>
+        <li>
+        <i class='icon-user'></i> User</a>
+            <select ng-model='userId' ng-options='i.number for i in users'>
+            </select>
+        </li>
+        <li class='divider'></li>
+
+     </ul>
+
+</div>
