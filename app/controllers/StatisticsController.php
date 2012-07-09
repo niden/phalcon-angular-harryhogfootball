@@ -34,6 +34,7 @@ class StatisticsController extends NDN_Controller
      */
     public function indexAction()
     {
+
         $data[] = array('id' => '-1', 'number' => 'All');
 
         $episodes = Episodes::find(array('order' => 'airDate DESC'));

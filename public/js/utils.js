@@ -1,5 +1,5 @@
 // AngularJS code goes here
-// HTTP Interceptor for the Ajax spinner
+// HTTP Interceptor for the Ajax spinner - by Adam Webber - angularjs groups
 var ngModule = angular.module('HHF', ['ngResource'])
     .config(function ($httpProvider) {
         $httpProvider.responseInterceptors.push('myHttpInterceptor');
@@ -26,6 +26,24 @@ var ngModule = angular.module('HHF', ['ngResource'])
             });
         };
     })
+
+// Dots by Andy Joslin - angularjs groups
+ngModule.directive('dots', function() {
+    return function(scope, elm, attrs) {
+        var delay = +attrs.delay || 300;
+        var count = +attrs.count || 3;
+        var char = attrs.char || '.';
+        //put dots at the end of given element
+        var $dots=$("<span>").appendTo(elm);
+        setInterval(function() {
+            if ($dots.text().length < count) {
+                $dots.append(char);
+            } else {
+                $dots.html('');
+            }
+        }, delay);
+    };
+});
 
 ngModule.controller('HoFCtrl', function ($scope, $resource) {
     $scope.hof = $resource('/awards/hof');
