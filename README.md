@@ -6,7 +6,15 @@ Application written with PhalconPHP (http://phalconphp.com) and AngularJS
 Harry Hog Football (http://harryhogfootball.com), the ultimate podcast for
 Redskins Fans.
 
-Installation
+### Requirements
+
+To run this application on your machine, you need at least:
+
+    PHP >= 5.3.6
+    Apache Web Server with mod rewrite enabled
+    Latest Phalcon Framework extension enabled (0.4.x)
+
+### Installation
 
 You need to have PhalconPHP installed on your web server as an extension. For
 installation instructions, please follow this guide : http://phalconphp.com/documentation/install.
@@ -15,16 +23,22 @@ extension must also be enabled.
 
 Download or clone the application and upload it to your web server.
 
-Create a new database as follows:
+### Configuration
 
-<db instructions>
+Check your database configuration and website's base URI.
 
-Edit app/config/config.ini with the username/password/database you chose.
+    app/config/config.php
 
-Run the migrations using
 
-phalcon run-migration
+Create a new database and initialize the schema:
 
-Alternatively you can import the schema.sql file, located in the schema folder
+    php -r '
+    require "app/config/config.php";
 
-<need to add the schema file>
+    $n = $config->database->name;
+    $u = $config->database->username;
+    $p = $config->database->password;
+
+    echo `echo "CREATE DATABASE {$n}" | mysql -u {$u} -p {$p}`;
+    echo `cat app/schema/schema.sql | mysql -u {$u} -p {$p} {$n}`;
+    '
