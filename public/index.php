@@ -48,6 +48,7 @@ try {
     // Start the session
     NDN_Session::start();
 
+    // This is used only for nginx.
     if (isset($_GET["_url"])) {
         $_GET["_url"] = preg_replace("#^/#", "", $_GET["_url"]);
     }
