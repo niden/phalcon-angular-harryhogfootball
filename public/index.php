@@ -42,24 +42,20 @@ try {
     $config = new Phalcon_Config_Adapter_Ini($app . 'config/config.ini');
     NDN_Registry::set('config', $config);
 
-    $logger = new NDN_Logger($config);
-    NDN_Registry::set('logger', $logger);
-
-    $logger->info('Before Session');
+//    $logger = new NDN_Logger($config);
+//    NDN_Registry::set('logger', $logger);
 
     // Start the session
     NDN_Session::start();
 
-    $logger->info('After Session');
-
-    $logger->info('Before Dispatch');
+    if (isset($_GET["_url"])) {
+        $_GET["_url"] = preg_replace("#^/#", "", $_GET["_url"]);
+    }
 
     $front = Phalcon_Controller_Front::getInstance();
     $front->setConfig($config);
 
     echo $front->dispatchLoop()->getContent();
-
-    $logger->info('After Session');
 
 } catch (Phalcon_Exception $e) {
     echo "PhalconException: ", $e->getMessage();
