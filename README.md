@@ -23,22 +23,29 @@ extension must also be enabled.
 
 Download or clone the application and upload it to your web server.
 
+### Database Setup
+
+    echo "CREATE DATABASE hhf CHARACTER SET utf8 COLLATE utf8_general_ci;" |mysql -u root -p
+
+    echo "GRANT ALL PRIVILEGES ON hhf.* TO hhf_user@localhost IDENTIFIED BY '12345';" |mysql arrestify -u root -p
+
+Please change the username and password on the line above to meet your requirements.
+
+### Schema
+
+You can import the schema using the following command:
+
+    mysql -u root -p hhf < app/schema/schema.sql
+
+Make sure the path of the schema file matches your setup.
+
+The default username is "admin@hhf.ld" and the default password is "a" (without the quotes)
+
 ### Configuration
 
-Check your database configuration and website's base URI.
+Edit the configuration file with your information.
 
-    app/config/config.php
+    app/config/config.ini
 
 
-Create a new database and initialize the schema:
 
-    php -r '
-    require "app/config/config.php";
-
-    $n = $config->database->name;
-    $u = $config->database->username;
-    $p = $config->database->password;
-
-    echo `echo "CREATE DATABASE {$n}" | mysql -u {$u} -p {$p}`;
-    echo `cat app/schema/schema.sql | mysql -u {$u} -p {$p} {$n}`;
-    '
