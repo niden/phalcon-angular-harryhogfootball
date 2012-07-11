@@ -47,5 +47,22 @@ Edit the configuration file with your information.
 
     app/config/config.ini
 
+### Apache configuration
+
+Here is a sample configuration for Apache. Note that the DocumentRoot points to the public folder
+
+    <VirtualHost *:80>
+            ServerAdmin webmaster@localhost
+            ServerName hhf.ld
+
+            DocumentRoot /home/www/hhf.ld/public
+            <Directory /home/www/hhf.ld>
+                    Options -Indexes FollowSymLinks
+                    AllowOverride All
+                    Order allow,deny
+                    Allow from all
+            </Directory>
+    </VirtualHost>
+
 
 
