@@ -6,6 +6,7 @@
     <h2>Episodes</h2>
 </div>
 
+<div ng-controller='addEditEpisodeCtrl'>
 <?php
 
 echo Tag::form(
@@ -28,7 +29,16 @@ echo Tag::form(
     <div class='control-group'>
         <label class='control-label'>Date</label>
         <div class='controls'>
-            <?php echo Tag::textField(array('episodeDate', 'class' => 'input-xlarge')) ?>
+            <?php
+            echo Tag::textField(
+                array(
+                    'episodeDate',
+                    'class'   => 'input-medium',
+                    'id'      => 'episodeDate',
+                    'ui-date' => 'dateOptions',
+                )
+            )
+            ?>
             <p class='help-block'>(required)</p>
         </div>
     </div>
@@ -59,3 +69,5 @@ echo Tag::form(
     </div>
 </fieldset>
 </form>
+
+</div>

@@ -1,6 +1,6 @@
 // AngularJS code goes here
 // HTTP Interceptor for the Ajax spinner - by Adam Webber - angularjs groups
-var ngModule = angular.module('HHF', ['ngResource'])
+var ngModule = angular.module('HHF', ['ngResource', 'ui'])
     .config(function ($httpProvider) {
         $httpProvider.responseInterceptors.push('myHttpInterceptor');
         var spinnerFunction = function (data, headersGetter) {
@@ -32,12 +32,12 @@ ngModule.directive('dots', function() {
     return function(scope, elm, attrs) {
         var delay = +attrs.delay || 300;
         var count = +attrs.count || 3;
-        var char = attrs.char || '.';
+        var chars = attrs.char || '.';
         //put dots at the end of given element
         var $dots=$("<span>").appendTo(elm);
         setInterval(function() {
             if ($dots.text().length < count) {
-                $dots.append(char);
+                $dots.append(chars);
             } else {
                 $dots.html('');
             }
@@ -64,6 +64,13 @@ ngModule.controller('EpisodesCtrl', function ($scope, $resource) {
     $scope.episodes = $resource('/episodes/get');
     $scope.episodesData = $scope.episodes.get();
     $scope.predicate = '-airDate';
+});
+
+ngModule.controller('addEditEpisodeCtrl', function ($scope) {
+    $scope.name = 'episodeDate';
+    $scope.dateOptions = {
+        dateFormat: 'yy-mm-dd'
+    }
 });
 
 ngModule.controller('PlayersCtrl', function ($scope, $resource) {
