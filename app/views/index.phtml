@@ -1,11 +1,12 @@
 <?php use Phalcon_Tag as Tag; ?>
+<?php use NDN_Registry as Reg; ?>
 <!DOCTYPE html>
 <html ng-app='HHF'>
     <head>
         <meta charset="utf-8">
         <?php echo Tag::getTitle(); ?>
-        <?php echo Tag::stylesheetLink('css/bootstrap-combined.min.css'); ?>
-        <?php echo Tag::stylesheetLink('css/jquery-ui.css'); ?>
+        <?php echo Tag::stylesheetLink(Reg::get('config')->cdn->css->bootstrap, Reg::get('config')->cdn->local); ?>
+        <?php echo Tag::stylesheetLink(Reg::get('config')->cdn->css->jquery_ui, Reg::get('config')->cdn->local); ?>
         <?php echo Tag::stylesheetLink('css/hhf.css'); ?>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="Harry Hog Football - Game balls and Kick in the Balls awards finder" />
@@ -75,12 +76,12 @@
         </footer>
     </div>
 
-    <?php echo Tag::javascriptInclude('js/jquery.min.js') ?>
-    <?php echo Tag::javascriptInclude('js/jquery-ui.min.js') ?>
-    <?php echo Tag::javascriptInclude('js/bootstrap.min.js') ?>
-    <?php echo Tag::javascriptInclude('js/angular-1.0.0.min.js') ?>
-    <?php echo Tag::javascriptInclude('js/angular-resource-1.0.0.min.js') ?>
-    <?php echo Tag::javascriptInclude('js/angular-ui.js') ?>
+    <?php echo Tag::javascriptInclude(Reg::get('config')->cdn->js->jquery, Reg::get('config')->cdn->local) ?>
+    <?php echo Tag::javascriptInclude(Reg::get('config')->cdn->js->jquery_ui, Reg::get('config')->cdn->local) ?>
+    <?php echo Tag::javascriptInclude(Reg::get('config')->cdn->js->bootstrap, Reg::get('config')->cdn->local) ?>
+    <?php echo Tag::javascriptInclude(Reg::get('config')->cdn->js->angular, Reg::get('config')->cdn->local) ?>
+    <?php echo Tag::javascriptInclude(Reg::get('config')->cdn->js->angular_resource, Reg::get('config')->cdn->local) ?>
+    <?php echo Tag::javascriptInclude(Reg::get('config')->cdn->js->angular_ui, Reg::get('config')->cdn->local) ?>
     <?php echo Tag::javascriptInclude('js/utils.js') ?>
 
     </body>
