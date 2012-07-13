@@ -110,35 +110,7 @@ class AwardsController extends NDN_Controller
     public function getAction($action, $limit = null)
     {
         $this->view->setRenderLevel(Phalcon_View::LEVEL_LAYOUT);
-        $request = $this->request;
 
-        $results = $this->_getHof($action, $limit);
-
-        echo $results;
-    }
-
-    /**
-     * Gets the Hall of Fame for the home page
-     */
-    public function hofAction()
-    {
-        $this->view->setRenderLevel(Phalcon_View::LEVEL_LAYOUT);
-        $request = $this->request;
-
-            $results = $this->_getHof(null, 5);
-
-            echo $results;
-    }
-
-    /**
-     * Private function getting results for the HOF
-     *
-     * @param  null $action
-     * @param  null $limit
-     * @return string
-     */
-    private function _getHof($action = null, $limit = null)
-    {
         $connection = Phalcon_Db_Pool::getConnection();
         $sql = 'SELECT COUNT(a.id) AS total, p.name AS playerName, a.award '
              . 'FROM awards a '
@@ -202,6 +174,7 @@ class AwardsController extends NDN_Controller
         }
 
         $result = array('gameballs' => $gameballs, 'kicks' => $kicks);
-        return json_encode($result);
+
+        echo json_encode($result);
     }
 }
