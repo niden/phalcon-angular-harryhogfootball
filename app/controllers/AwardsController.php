@@ -107,12 +107,12 @@ class AwardsController extends NDN_Controller
     /**
      * Gets the Hall of Fame
      */
-    public function getAction($action)
+    public function getAction($action, $limit = null)
     {
         $this->view->setRenderLevel(Phalcon_View::LEVEL_LAYOUT);
         $request = $this->request;
 
-        $results = $this->_getHof($action);
+        $results = $this->_getHof($action, $limit);
 
         echo $results;
     }

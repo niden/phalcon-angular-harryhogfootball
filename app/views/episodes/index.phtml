@@ -10,7 +10,7 @@
     </ul>
 </div>
 
-<div ng-controller='EpisodesCtrl'>
+<div ng-controller='MainCtrl'>
 <table class='table table-bordered table-striped ng-cloak' ng-cloak>
     <thead>
     <tr>
@@ -21,7 +21,7 @@
     </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="episode in episodesData.results | orderBy:predicate:reverse">
+        <tr ng-repeat="episode in data.results | orderBy:predicate:reverse">
             <td>{{episode.number}}</td>
             <td width='7%'>{{episode.airDate}}</td>
             <td>{{episode.outcome}}</td>

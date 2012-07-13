@@ -154,7 +154,7 @@ class PlayersController extends NDN_Controller
 
         if ($auth) {
             $id      = $this->filter->sanitize($id, array('int'));
-            $player = Companies::findFirst('id=' . $id);
+            $player = Players::findFirst('id=' . $id);
             if (!$player) {
                 Session::setFlash(
                     'error',

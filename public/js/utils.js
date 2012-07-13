@@ -45,25 +45,45 @@ ngModule.directive('dots', function() {
     };
 });
 
-ngModule.controller('HoFCtrl', function ($scope, $resource) {
-    $scope.hof = $resource('/awards/hof');
-    $scope.hofData = $scope.hof.get();
-});
+ngModule.controller('MainCtrl', function ($scope, $resource, $location) {
 
-ngModule.controller('AwardsCtrl', function($scope, $resource) {
-
+    // Check just in case
     $scope.getFiltered = function getFiltered(area) {
-        $scope.hof = $resource('/awards/get/'+area);
-        $scope.hofData = $scope.hof.get();
-        $scope.area = area;
-    };
-    $scope.getFiltered(0);
-});
 
-ngModule.controller('EpisodesCtrl', function ($scope, $resource) {
-    $scope.episodes = $resource('/episodes/get');
-    $scope.episodesData = $scope.episodes.get();
-    $scope.predicate = '-airDate';
+        var fullUrl = $location.absUrl();
+
+        var baseUrl = $location.protocol() + '://' + $location.host();
+        var path    = fullUrl.replace(baseUrl, '');
+        var getPath = '';
+
+        var getSort = '';
+
+        switch (path) {
+            case '/awards':
+                getPath = path + '/get/' + area;
+                break;
+            case '/players':
+                getPath = path + '/get';
+                getSort = 'name';
+                break;
+            case '/episodes':
+                getPath = path + '/get';
+                getSort = '-airDate';
+                break;
+            case '/':
+                getPath = '/awards/get/0/5';
+                break;
+       }
+
+        if (path != '') {
+            $scope.res       = $resource(getPath);
+            $scope.data      = $scope.res.get();
+            $scope.area      = area;
+            $scope.predicate = getSort;
+        }
+    }
+
+    $scope.getFiltered(0);
 });
 
 ngModule.controller('addEditEpisodeCtrl', function ($scope) {
@@ -72,10 +92,3 @@ ngModule.controller('addEditEpisodeCtrl', function ($scope) {
         dateFormat: 'yy-mm-dd'
     }
 });
-
-ngModule.controller('PlayersCtrl', function ($scope, $resource) {
-    $scope.players = $resource('/players/get');
-    $scope.playersData = $scope.players.get();
-    $scope.predicate = 'name';
-});
-

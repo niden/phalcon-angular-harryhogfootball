@@ -175,7 +175,7 @@ class EpisodesController extends NDN_Controller
 
         if ($auth) {
             $id      = $this->filter->sanitize($id, array('int'));
-            $episode = Companies::findFirst('id=' . $id);
+            $episode = Episodes::findFirst('id=' . $id);
             if (!$episode) {
                 Session::setFlash(
                     'error',

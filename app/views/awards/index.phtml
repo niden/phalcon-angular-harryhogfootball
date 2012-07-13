@@ -1,7 +1,7 @@
 <?php use Phalcon_Tag as Tag; ?>
 
 <?php echo $this->getContent() ?>
-            <div ng-controller='AwardsCtrl'>
+            <div ng-controller='MainCtrl'>
 
             <div>
                 <ul class='nav nav-tabs'>
@@ -40,7 +40,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat='gb in hofData.gameballs'>
+                        <tr ng-repeat='gb in data.gameballs'>
                             <td style='width:10px;'>{{gb.total}}</td>
                             <td>
                                 <div>{{gb.name}}</div>
@@ -60,7 +60,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat='kitb in hofData.kicks'>
+                        <tr ng-repeat='kitb in data.kicks'>
                             <td style='width:10px;'>{{kitb.total}}</td>
                             <td>
                                 <div>{{kitb.name}}</div>

@@ -10,7 +10,7 @@
     </ul>
 </div>
 
-<div ng-controller='PlayersCtrl'>
+<div ng-controller='MainCtrl'>
     <table class='table table-bordered table-striped ng-cloak' ng-cloak>
         <thead>
         <tr>
@@ -19,7 +19,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="player in playersData.results | orderBy:predicate:reverse">
+        <tr ng-repeat="player in data.results | orderBy:predicate:reverse">
             <td>{{player.name}}</td>
             <td>{{player.active}}</td>
             <?php if ($addButton) { ?>
