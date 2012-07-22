@@ -37,7 +37,7 @@ class Bootstrap
 
     // Protected functions
 
-    protected function initFrontController($options = array())
+    protected static function initFrontController($options = array())
     {
         $config = Registry::get('config');
         $front  = \Phalcon\Controller\Front::getInstance();
@@ -46,7 +46,7 @@ class Bootstrap
         return $front;
     }
 
-    protected function initEnvironment($options = array())
+    protected static function initEnvironment($options = array())
     {
         // Setting some settings based on the environment
         $config = Registry::get('config');
@@ -72,12 +72,12 @@ class Bootstrap
 
     }
 
-    protected function initRegistry($options = array())
+    protected static function initRegistry($options = array())
     {
         Registry::clear();
     }
 
-    protected function initConfig($options = array())
+    protected static function initConfig($options = array())
     {
         $configFile = ROOT_PATH . '/app/config/config.ini';
 
@@ -91,7 +91,9 @@ class Bootstrap
     protected static function initTimezone($options = array())
     {
         $config   = Registry::get('config');
-        $timezone = (isset($config->timezone)) ? $config->timezone : 'US/Eastern';
+        $timezone = (isset($config->timezone)) ?
+                        $config->timezone      :
+                        'US/Eastern';
 
         date_default_timezone_set($timezone);
 

@@ -18,14 +18,13 @@ class Error
 {
     public static function normal($type, $message, $file, $line)
     {
-        $error = array(
-            'type'    => $type,
-            'message' => $message,
-            'file'    => $file,
-            'line'    => $line,
-        );
-
         // Log it
+        self::logError(
+            $type,
+            $message,
+            $file,
+            $line
+        );
 
         // Display it under regular circumstances
     }
@@ -33,6 +32,13 @@ class Error
     public static function exception($exception)
     {
         // Log the error
+        self::logError(
+            'Exception',
+            $exception->getMessage(),
+            $exception->getFile(),
+            $exception->getLine(),
+            $exception->getTraceAsString()
+        );
 
         // Display it
     }
@@ -43,11 +49,34 @@ class Error
         if ($error) {
 
             // Log it
+            self::logError(
+                $error['type'],
+                $error['message'],
+                $error['file'],
+                $error['line']
+            );
 
             // Display it
 
         } else {
             return true;
+        }
+    }
+
+    protected static function logError($type, $message, $file, $line, $trace = '')
+    {
+        $logger = Registry::get('logger');
+
+        if ($logger) {
+
+            $template = "[%s] %s (File: %s Line: [%s])";
+            if ($trace) {
+                $template . PHP_EOL . $trace;
+            }
+
+            $logMessage = sprintf($template, $type, $message, $file, $line);
+
+            $logger->error($logMessage);
         }
     }
 }

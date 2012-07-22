@@ -32,5 +32,6 @@ try {
     echo Bootstrap::run(array());
 
 } catch (\Phalcon\Exception $e) {
-    echo "PhalconException: ", $e->getMessage();
+    Error::exception($e);
+    header('Location: /');
 }
