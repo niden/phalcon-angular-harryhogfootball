@@ -12,26 +12,28 @@
  *
  */
 
-class NDN_Logger extends Phalcon_Logger
+namespace NDN;
+
+class Logger extends \Phalcon\Logger
 {
     /**
      * Constructor. Overrides default behavior to initialize the logger
      * from the config
      *
-     * @param Phalcon_Config $config
-     * @param array          $options
-     * @throws NDN_Exception
+     * @param  \Phalcon\Config $config
+     * @param  array           $options
+     * @throws \NDN\Exception
      */
-    public function __construct(Phalcon_Config $config, $options = null)
+    public function __construct(\Phalcon\Config $config, $options = null)
     {
         if (empty($config->logger->adapter)) {
-            throw new NDN_Exception(
+            throw new Exception(
                 'Cannot instantiate Logger: Adapter config setting missing'
             );
         }
 
         if (empty($config->logger->file)) {
-            throw new NDN_Exception(
+            throw new Exception(
                 'Cannot instantiate Logger: File config setting missing'
             );
         }

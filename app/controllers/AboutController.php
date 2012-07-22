@@ -12,9 +12,9 @@
  *
  */
 
-use Phalcon_Tag as Tag;
+use \Phalcon\Tag as Tag;
 
-class AboutController extends NDN_Controller
+class AboutController extends \NDN\Controller
 {
     public function initialize()
     {

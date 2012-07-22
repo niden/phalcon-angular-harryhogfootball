@@ -12,9 +12,9 @@
  *
  */
 
-use NDN_Session as Session;
+namespace NDN;
 
-class NDN_Model extends Phalcon_Model_Base
+class Model extends \Phalcon\Model\Base
 {
     /**
      * @var string

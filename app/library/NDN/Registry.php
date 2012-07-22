@@ -12,7 +12,9 @@
  *
  */
 
-class NDN_Registry extends ArrayObject
+namespace NDN;
+
+class Registry extends \ArrayObject
 {
     /**
      * The core of the registry, one object to rule them all
@@ -53,7 +55,7 @@ class NDN_Registry extends ArrayObject
     public static function getInstance()
     {
         if (self::$_registry === null) {
-            self::$_registry = new NDN_Registry();
+            self::init();
         }
 
         return self::$_registry;
@@ -63,16 +65,18 @@ class NDN_Registry extends ArrayObject
      * Getter
      *
      * @static
+     *
      * @param  string $index The index key
+     *
      * @return mixed
-     * @throws NDN_Exception if no data stored in the registry
+     * @throws \NDN\Exception if no data stored in the registry
      */
     public static function get($index)
     {
         $instance = self::getInstance();
 
         if (!$instance->offsetExists(self::$_prefix .  $index)) {
-            throw new NDN_Exception(
+            throw new Exception(
                 "No entry is registered for key '$index'"
             );
         }
@@ -108,6 +112,17 @@ class NDN_Registry extends ArrayObject
     }
 
     /**
+     * Clears the internal storage object and generates a new one
+     *
+     * @static
+     */
+    public static function clear()
+    {
+        self::$_registry = null;
+        self::init();
+    }
+
+    /**
      * Workaround for http://bugs.php.net/bug.php?id=40442
      *
      * @param  string $index The index key
@@ -118,4 +133,13 @@ class NDN_Registry extends ArrayObject
         return array_key_exists(self::$_prefix .  $index, $this);
     }
 
+    /**
+     * Initializes the object
+     *
+     * @static
+     */
+    protected static function init()
+    {
+        self::$_registry = new Registry();
+    }
 }

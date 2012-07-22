@@ -12,7 +12,7 @@
  *
  */
 
-class Awards extends NDN_Model
+class Awards extends \NDN\Model
 {
     /**
     * @var integer

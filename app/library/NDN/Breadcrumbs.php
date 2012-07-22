@@ -12,7 +12,9 @@
  *
  */
 
-class NDN_Breadcrumbs
+namespace NDN;
+
+class Breadcrumbs
 {
     /**
      * @var array

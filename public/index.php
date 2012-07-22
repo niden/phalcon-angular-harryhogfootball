@@ -1,5 +1,7 @@
 <?php
 
+namespace NDN;
+
 error_reporting(E_ALL);
 
 try {
@@ -19,45 +21,16 @@ try {
     $library = ROOT_PATH . '/app/library/';
 
     // Creates the autoloader
-    $loader = new Phalcon_Loader();
+    $loader = new \Phalcon\Loader();
 
     // Register some classes
-    $loader->registerClasses(
-        array(
-            'Elements'        => $library . 'Elements.php',
-            'NDN_Controller'  => $library . 'NDN/Controller.php',
-            'NDN_Model'       => $library . 'NDN/Model.php',
-            'NDN_Exception'   => $library . 'NDN/Exception.php',
-            'NDN_Registry'    => $library . 'NDN/Registry.php',
-            'NDN_Session'     => $library . 'NDN/Session.php',
-            'NDN_Logger'      => $library . 'NDN/Logger.php',
-            'NDN_Breadcrumbs' => $library . 'NDN/Breadcrumbs.php',
-        )
+    $loader->registerNamespaces(
+        array("NDN" => $library . "NDN/")
     );
-
-    //register autoloader
     $loader->register();
 
-    // Get the config
-    $config = new Phalcon_Config_Adapter_Ini($app . 'config/config.ini');
-    NDN_Registry::set('config', $config);
+    echo Bootstrap::run(array());
 
-//    $logger = new NDN_Logger($config);
-//    NDN_Registry::set('logger', $logger);
-
-    // Start the session
-    NDN_Session::start();
-
-    // This is used only for nginx.
-    if (isset($_GET["_url"])) {
-        $_GET["_url"] = preg_replace("#^/#", "", $_GET["_url"]);
-    }
-
-    $front = Phalcon_Controller_Front::getInstance();
-    $front->setConfig($config);
-
-    echo $front->dispatchLoop()->getContent();
-
-} catch (Phalcon_Exception $e) {
+} catch (\Phalcon\Exception $e) {
     echo "PhalconException: ", $e->getMessage();
 }

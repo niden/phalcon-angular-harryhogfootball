@@ -12,10 +12,11 @@
  *
  */
 
-use Phalcon_Tag as Tag;
-use NDN_Session as Session;
+use \Phalcon\Tag as Tag;
+use \NDN\Session as Session;
+use \NDN\Registry as Registry;
 
-class AwardsController extends NDN_Controller
+class AwardsController extends \NDN\Controller
 {
     /**
      * Initializes the controller
@@ -48,7 +49,6 @@ class AwardsController extends NDN_Controller
      */
     public function indexAction()
     {
-
     }
 
     /**
@@ -109,9 +109,8 @@ class AwardsController extends NDN_Controller
      */
     public function getAction($action, $limit = null)
     {
-        $this->view->setRenderLevel(Phalcon_View::LEVEL_LAYOUT);
+        $this->view->setRenderLevel(\Phalcon\View::LEVEL_LAYOUT);
 
-        $connection = Phalcon_Db_Pool::getConnection();
         $sql = 'SELECT COUNT(a.id) AS total, p.name AS playerName, a.award '
              . 'FROM awards a '
              . 'INNER JOIN players p ON a.playerId = p.id '
@@ -135,45 +134,59 @@ class AwardsController extends NDN_Controller
             $sql .= 'LIMIT ' . (int) $limit;
         }
 
-        // Kicks
-        $query = sprintf($sql, -1);
-        $result = $connection->query($query);
-        $result->setFetchMode(Phalcon_Db::DB_ASSOC);
+        // Do some data caching based on the query that was sent to us
+        $hash  = sha1($sql);
+        $cache  = Registry::get('cache');
+        $result = $cache->get($hash);
 
-        $kicks    = array();
-        $kicksMax = 0;
+        // If $result is null then the content will be created or will refreshed
+        if ($result === null) {
 
-        while ($item = $result->fetchArray()) {
-            $kicksMax = (0 == $kicksMax) ? $item['total'] : $kicksMax;
-            $name     = $item['playerName'];
-            $kicks[]  = array(
-                'total'   => (int) $item['total'],
-                'name'    => $name,
-                'percent' => (int) ($item['total'] * 100 / $kicksMax),
-            );
+            $connection = \Phalcon\Db\Pool::getConnection();
+
+            // Kicks
+            $query = sprintf($sql, -1);
+            $result = $connection->query($query);
+            $result->setFetchMode(\Phalcon\Db::DB_ASSOC);
+
+            $kicks    = array();
+            $kicksMax = 0;
+
+            while ($item = $result->fetchArray()) {
+                $kicksMax = (0 == $kicksMax) ? $item['total'] : $kicksMax;
+                $name     = $item['playerName'];
+                $kicks[]  = array(
+                    'total'   => (int) $item['total'],
+                    'name'    => $name,
+                    'percent' => (int) ($item['total'] * 100 / $kicksMax),
+                );
+            }
+
+            // Game balls
+            $query = sprintf($sql, 1);
+            $result = $connection->query($query);
+            $result->setFetchMode(\Phalcon\Db::DB_ASSOC);
+
+            $gameballs    = array();
+            $gameballsMax = 0;
+
+            while ($item = $result->fetchArray()) {
+                $gameballsMax = (0 == $gameballsMax) ?
+                                $item['total']       :
+                                $gameballsMax;
+                $name         = $item['playerName'];
+                $gameballs[]  = array(
+                    'total'   => (int) $item['total'],
+                    'name'    => $name,
+                    'percent' => (int) ($item['total'] * 100 / $gameballsMax),
+                );
+            }
+
+            $result = array('gameballs' => $gameballs, 'kicks' => $kicks);
+
+            // Store it in the cache
+            $cache->save($hash, $result);
         }
-
-        // Game balls
-        $query = sprintf($sql, 1);
-        $result = $connection->query($query);
-        $result->setFetchMode(Phalcon_Db::DB_ASSOC);
-
-        $gameballs    = array();
-        $gameballsMax = 0;
-
-        while ($item = $result->fetchArray()) {
-            $gameballsMax = (0 == $gameballsMax) ?
-                            $item['total']       :
-                            $gameballsMax;
-            $name         = $item['playerName'];
-            $gameballs[]  = array(
-                'total'   => (int) $item['total'],
-                'name'    => $name,
-                'percent' => (int) ($item['total'] * 100 / $gameballsMax),
-            );
-        }
-
-        $result = array('gameballs' => $gameballs, 'kicks' => $kicks);
 
         echo json_encode($result);
     }

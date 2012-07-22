@@ -12,7 +12,7 @@
  *
  */
 
-class Players extends NDN_Model
+class Players extends \NDN\Model
 {
     /**
      * @var integer

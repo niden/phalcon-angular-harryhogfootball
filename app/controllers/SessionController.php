@@ -12,10 +12,10 @@
  *
  */
 
-use Phalcon_Tag as Tag;
-use NDN_Session as Session;
+use \Phalcon\Tag as Tag;
+use \NDN\Session as Session;
 
-class SessionController extends NDN_Controller
+class SessionController extends \NDN\Controller
 {
     /**
      * Initializes the controller
@@ -60,7 +60,7 @@ class SessionController extends NDN_Controller
 
             if ($user != false) {
 
-                $this->_registerSession($user);
+                $this->registerSession($user);
                 Session::setFlash(
                     'success',
                     'Welcome ' . $user->name,
@@ -103,7 +103,7 @@ class SessionController extends NDN_Controller
      *
      * @param Users $user
      */
-    private function _registerSession($user)
+    private function registerSession($user)
     {
         Session::set(
             'auth',

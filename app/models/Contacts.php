@@ -12,7 +12,7 @@
  *
  */
 
-class Contacts extends Phalcon_Model_Base
+class Contacts extends \Phalcon\Model\Base
 {
 
     /**

@@ -12,7 +12,7 @@
  *
  */
 
-class Episodes extends NDN_Model
+class Episodes extends \NDN\Model
 {
     /**
      * @var integer

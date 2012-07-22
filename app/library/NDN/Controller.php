@@ -12,11 +12,13 @@
  *
  */
 
-use Phalcon_Tag as Tag;
-use Phalcon_Flash as Flash;
-use NDN_Session as Session;
+namespace NDN;
 
-class NDN_Controller extends Phalcon_Controller
+use \Phalcon\Flash as Flash;
+use \Phalcon\Tag as Tag;
+
+
+class Controller extends \Phalcon\Controller
 {
     protected $_bc = null;
 
@@ -27,7 +29,7 @@ class NDN_Controller extends Phalcon_Controller
     {
         Tag::prependTitle('HHF G&KB Awards | ');
 
-        $this->_bc = new NDN_Breadcrumbs();
+        $this->_bc = new Breadcrumbs();
     }
 
     /**
@@ -72,7 +74,7 @@ class NDN_Controller extends Phalcon_Controller
             );
         }
 
-        $menu = new StdClass();
+        $menu = new \StdClass();
         $menu->current = $active;
         $menu->left    = $leftMenu;
 

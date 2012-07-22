@@ -12,7 +12,9 @@
  *
  */
 
-class NDN_Session extends Phalcon_Session
+namespace NDN;
+
+class Session extends \Phalcon\Session
 {
     public static function setFlash($class, $message, $css)
     {

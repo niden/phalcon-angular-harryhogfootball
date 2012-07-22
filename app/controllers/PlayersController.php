@@ -12,10 +12,10 @@
  *
  */
 
-use Phalcon_Tag as Tag;
-use NDN_Session as Session;
+use \Phalcon\Tag as Tag;
+use \NDN\Session as Session;
 
-class PlayersController extends NDN_Controller
+class PlayersController extends \NDN\Controller
 {
     public function initialize()
     {
@@ -48,7 +48,7 @@ class PlayersController extends NDN_Controller
 
     public function getAction()
     {
-        $this->view->setRenderLevel(Phalcon_View::LEVEL_LAYOUT);
+        $this->view->setRenderLevel(\Phalcon\View::LEVEL_LAYOUT);
         $data = array();
 
         $players = Players::find();

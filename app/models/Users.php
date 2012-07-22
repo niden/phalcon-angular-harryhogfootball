@@ -12,7 +12,7 @@
  *
  */
 
-class Users extends Phalcon_Model_Base
+class Users extends \Phalcon\Model\Base
 {
     /**
      * @var integer

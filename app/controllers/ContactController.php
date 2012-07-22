@@ -12,17 +12,17 @@
  *
  */
 
+use \Phalcon\Flash as Flash;
+use \Phalcon\Tag as Tag;
 
-use Phalcon_Flash as Flash;
-
-class ContactController extends NDN_Controller
+class ContactController extends \NDN\Controller
 {
     /**
      * Initialization of the controller. Setting main template and title
      */
     public function initialize()
     {
-        Phalcon_Tag::setTitle('Contact us');
+        Tag::setTitle('Contact us');
         parent::initialize();
 
         $this->_bc->add('Contact Us', 'contact');

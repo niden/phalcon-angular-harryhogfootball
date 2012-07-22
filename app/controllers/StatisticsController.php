@@ -22,7 +22,7 @@ class StatisticsController extends NDN_Controller
      */
     public function initialize()
     {
-        Tag::setTitle('Manage Statistics');
+        Tag::setTitle('Statistics');
         parent::initialize();
 
         $this->_bc->add('Statistics', 'statistics');

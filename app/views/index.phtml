@@ -1,5 +1,5 @@
-<?php use Phalcon_Tag as Tag; ?>
-<?php use NDN_Registry as Reg; ?>
+<?php use \Phalcon\Tag as Tag; ?>
+<?php use \NDN\Registry as Reg; ?>
 <!DOCTYPE html>
 <html ng-app='HHF'>
     <head>
@@ -34,6 +34,7 @@
                 </a>
                 <a class='brand' href='/'>HHF GKB Awards</a>
                 <div class='nav-collapse' ng-controller='MenuCtrl'>
+                    <menu location='pull-left'></menu>
                     <ul class='nav pull-left'>
                         <li ng-repeat='menu in menus.left' ng-class="{true:'active', false:''}[menu.active]">
                             <a href='{{menu.link}}'>{{menu.text}}</a>

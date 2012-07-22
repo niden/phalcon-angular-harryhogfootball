@@ -12,7 +12,9 @@
  *
  */
 
-class NDN_Exception extends Exception
+namespace NDN;
+
+class Exception extends \Exception
 {
 
 }
