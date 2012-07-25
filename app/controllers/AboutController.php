@@ -22,7 +22,7 @@ class AboutController extends \NDN\Controller
         parent::initialize();
 
         $this->_bc->add('About', 'about');
-        $this->view->setVar('top_menu', $this->_constructMenu($this));
+        $this->view->setVar('top_menu', $this->constructMenu($this));
     }
 
     public function indexAction()

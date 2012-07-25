@@ -13,6 +13,9 @@
  */
 
 use \Phalcon\Tag as Tag;
+use \Phalcon\View as View;
+use \Phalcon\Db as Db;
+use \Phalcon\Db\Pool as DbPool;
 use \NDN\Session as Session;
 use \NDN\Registry as Registry;
 
@@ -41,7 +44,7 @@ class AwardsController extends \NDN\Controller
         }
 
         $this->view->setVar('addButton', $add);
-        $this->view->setVar('top_menu', $this->_constructMenu($this));
+        $this->view->setVar('top_menu', $this->constructMenu($this));
     }
 
     /**
@@ -97,6 +100,8 @@ class AwardsController extends \NDN\Controller
                         'alert alert-success'
                     );
 
+                    $this->invalidateCache();
+
                     $this->response->redirect('awards/');
                 }
 
@@ -109,7 +114,7 @@ class AwardsController extends \NDN\Controller
      */
     public function getAction($action, $limit = null)
     {
-        $this->view->setRenderLevel(\Phalcon\View::LEVEL_LAYOUT);
+        $this->view->setRenderLevel(View::LEVEL_LAYOUT);
 
         $sql = 'SELECT COUNT(a.id) AS total, p.name AS playerName, a.award '
              . 'FROM awards a '
@@ -135,19 +140,19 @@ class AwardsController extends \NDN\Controller
         }
 
         // Do some data caching based on the query that was sent to us
-        $hash  = sha1($sql);
+        $hash  = $this->getCacheHash('model', sha1($sql));
         $cache  = Registry::get('cache');
         $result = $cache->get($hash);
 
         // If $result is null then the content will be created or will refreshed
         if ($result === null) {
 
-            $connection = \Phalcon\Db\Pool::getConnection();
+            $connection = DbPool::getConnection();
 
             // Kicks
             $query = sprintf($sql, -1);
             $result = $connection->query($query);
-            $result->setFetchMode(\Phalcon\Db::DB_ASSOC);
+            $result->setFetchMode(Db::DB_ASSOC);
 
             $kicks    = array();
             $kicksMax = 0;
@@ -165,7 +170,7 @@ class AwardsController extends \NDN\Controller
             // Game balls
             $query = sprintf($sql, 1);
             $result = $connection->query($query);
-            $result->setFetchMode(\Phalcon\Db::DB_ASSOC);
+            $result->setFetchMode(Db::DB_ASSOC);
 
             $gameballs    = array();
             $gameballsMax = 0;
@@ -182,12 +187,31 @@ class AwardsController extends \NDN\Controller
                 );
             }
 
-            $result = array('gameballs' => $gameballs, 'kicks' => $kicks);
+            $result = json_encode(
+                array('gameballs' => $gameballs, 'kicks' => $kicks)
+            );
 
             // Store it in the cache
             $cache->save($hash, $result);
         }
 
-        echo json_encode($result);
+        echo $result;
+    }
+
+    private function invalidateCache()
+    {
+        $config   = Registry::get('config');
+        $cache    = Registry::get('cache');
+        $cacheDir = $config->models->cache->cacheDir;
+        $name     = strtolower($this->getName());
+
+        foreach (glob($cacheDir . '*' . $name) as $filename) {
+
+            // Remove the path $cacheDir and 'model.'
+            $entry = str_replace($cacheDir, '', $filename);
+
+            // $entry has the cache key
+            $cache->remove($entry);
+        }
     }
 }

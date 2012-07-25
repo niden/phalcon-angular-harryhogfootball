@@ -13,7 +13,9 @@
  */
 
 use \Phalcon\Tag as Tag;
+use \Phalcon\View as View;
 use \NDN\Session as Session;
+use \NDN\Registry as Registry;
 
 class EpisodesController extends \NDN\Controller
 {
@@ -41,7 +43,7 @@ class EpisodesController extends \NDN\Controller
         }
 
         $this->view->setVar('addButton', $add);
-        $this->view->setVar('top_menu', $this->_constructMenu($this));
+        $this->view->setVar('top_menu', $this->constructMenu($this));
     }
 
     /**
@@ -57,24 +59,35 @@ class EpisodesController extends \NDN\Controller
      */
     public function getAction()
     {
-        $this->view->setRenderLevel(\Phalcon\View::LEVEL_LAYOUT);
+        $this->view->setRenderLevel(View::LEVEL_LAYOUT);
 
-        $data     = array();
-        $episodes = Episodes::find();
+        $data     = '';
 
-        if (count($episodes) > 0) {
-            foreach ($episodes as $episode) {
-                $data[] = array(
-                            'id'      => $episode->id,
-                            'number'  => $episode->number,
-                            'airDate' => $episode->airDate,
-                            'outcome' => ($episode->outcome == 1) ? 'W' : 'L',
-                            'summary' => $episode->summary,
-                          );
+        $cache   = Registry::get('cache');
+        $results = $cache->get($this->getCacheHash('model'));
+
+        if (!$results) {
+
+            $episodes = Episodes::find();
+
+            if (count($episodes) > 0) {
+                foreach ($episodes as $episode) {
+                    $data[] = array(
+                        'id'      => $episode->id,
+                        'number'  => $episode->number,
+                        'airDate' => $episode->airDate,
+                        'outcome' => $this->translateOutcome($episode->outcome),
+                        'summary' => $episode->summary,
+                    );
+                }
             }
+
+            $results = json_encode(array('results' => $data));
+
+            $cache->save($this->getCacheHash('model'), $results);
         }
 
-        echo json_encode(array('results' => $data));
+        echo $results;
     }
 
     /**
@@ -88,7 +101,7 @@ class EpisodesController extends \NDN\Controller
             if ($this->request->isPost()) {
 
                 $episode = new Episodes();
-                $this->_setEpisode($episode, $auth);
+                $this->setEpisode($episode, $auth);
 
                 if (!$episode->save()) {
                     foreach ($episode->getMessages() as $message) {
@@ -104,6 +117,10 @@ class EpisodesController extends \NDN\Controller
                         'Episode created successfully',
                         'alert alert-success'
                     );
+
+                    // Invalidate the cache
+                    $cache  = Registry::get('cache');
+                    $cache->remove($this->getCacheHash('model'));
 
                     $this->response->redirect('episodes/');
                 }
@@ -137,7 +154,7 @@ class EpisodesController extends \NDN\Controller
 
             if ($this->request->isPost()) {
 
-                $this->_setEpisode($episode, $auth);
+                $this->setEpisode($episode, $auth);
 
                 if (!$episode->save()) {
                     foreach ($episode->getMessages() as $message) {
@@ -153,6 +170,10 @@ class EpisodesController extends \NDN\Controller
                         'Episode updated successfully',
                         'alert alert-success'
                     );
+
+                    // Invalidate the cache
+                    $cache  = Registry::get('cache');
+                    $cache->remove($this->getCacheHash('model'));
 
                     $this->response->redirect('episodes/');
                 }
@@ -208,13 +229,29 @@ class EpisodesController extends \NDN\Controller
         }
     }
 
+    private function translateOutcome($outcome)
+    {
+        switch ($outcome) {
+            case -1:
+                $result = 'L';
+                break;
+            case 0;
+                $result = '-';
+                break;
+            case 1;
+                $result = 'W';
+                break;
+        }
+
+        return $result;
+    }
     /**
      * Private helper setting episode fields
      *
      * @param $episode
      * @param $auth
      */
-    private function _setEpisode($episode, $auth)
+    private function setEpisode($episode, $auth)
     {
         $datetime = date('Y-m-d H:i:s');
 

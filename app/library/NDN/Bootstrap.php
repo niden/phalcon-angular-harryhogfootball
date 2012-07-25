@@ -14,6 +14,10 @@
 
 namespace NDN;
 
+use \Phalcon\Controller\Front as Front;
+use \Phalcon\Config\Adapter\Ini as Config;
+use \Phalcon\Cache as Cache;
+
 class Bootstrap
 {
     public static function run($options)
@@ -40,7 +44,7 @@ class Bootstrap
     protected static function initFrontController($options = array())
     {
         $config = Registry::get('config');
-        $front  = \Phalcon\Controller\Front::getInstance();
+        $front  = Front::getInstance();
         $front->setConfig($config);
 
         return $front;
@@ -51,11 +55,12 @@ class Bootstrap
         // Setting some settings based on the environment
         $config = Registry::get('config');
 
-        $debug = (isset($config->debug)) ? (bool) $config->debug : false;
+        $debug = (isset($config->phalcon->debug)) ?
+                 (bool) $config->phalcon->debug   : false;
 
         if ($debug) {
             ini_set('display_errors', true);
-            error_reporting( -1 );
+            error_reporting(E_ALL);
         } else {
             ini_set('display_errors', false);
 //            error_reporting( -1 );
@@ -82,7 +87,7 @@ class Bootstrap
         $configFile = ROOT_PATH . '/app/config/config.ini';
 
         // Create the new object
-        $config = new \Phalcon\Config\Adapter\Ini($configFile);
+        $config = new Config($configFile);
 
         // Store it in the registry
         Registry::set('config', $config);
@@ -119,7 +124,7 @@ class Bootstrap
         $backEndOptions  = array('cacheDir' => $cacheDir);
 
         // Create the data cache
-        $cache = \Phalcon\Cache::factory(
+        $cache = Cache::factory(
             'Data',
             $config->models->cache->adapter,
             $frontEndOptions,

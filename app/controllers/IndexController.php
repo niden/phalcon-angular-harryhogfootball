@@ -12,13 +12,15 @@
  *
  */
 
+use \Phalcon\Tag as Tag;
+
 class IndexController extends \NDN\Controller
 {
     public function initialize()
     {
-        \Phalcon\Tag::setTitle('Welcome');
+        Tag::setTitle('Welcome');
         parent::initialize();
-        $this->view->setVar('top_menu', $this->_constructMenu($this));
+        $this->view->setVar('top_menu', $this->constructMenu($this));
     }
 
     /**

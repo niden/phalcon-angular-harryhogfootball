@@ -44,7 +44,23 @@ class Controller extends \Phalcon\Controller
         $this->view->setVar('breadcrumbs', $this->_bc->generate());
     }
 
-    protected function _constructMenu($controller)
+    protected function getCacheHash($prefix = '', $key = '')
+    {
+        $name = strtolower($this->getName());
+
+        $hash  = ($prefix) ? $prefix: '';
+        $hash .= ($key)    ? $key:    '';
+        $hash .= $name;
+
+        return $hash;
+    }
+
+    protected function getName()
+    {
+        return str_replace('Controller', '', get_class($this));
+    }
+
+    protected function constructMenu($controller)
     {
         $commonMenu = array(
             'index'      => 'Home',

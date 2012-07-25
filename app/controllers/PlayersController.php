@@ -13,7 +13,9 @@
  */
 
 use \Phalcon\Tag as Tag;
+use \Phalcon\View as View;
 use \NDN\Session as Session;
+use \NDN\Registry as Registry;
 
 class PlayersController extends \NDN\Controller
 {
@@ -38,7 +40,7 @@ class PlayersController extends \NDN\Controller
         }
 
         $this->view->setVar('addButton', $add);
-        $this->view->setVar('top_menu', $this->_constructMenu($this));
+        $this->view->setVar('top_menu', $this->constructMenu($this));
     }
 
     public function indexAction()
@@ -48,21 +50,33 @@ class PlayersController extends \NDN\Controller
 
     public function getAction()
     {
-        $this->view->setRenderLevel(\Phalcon\View::LEVEL_LAYOUT);
-        $data = array();
+        $this->view->setRenderLevel(View::LEVEL_LAYOUT);
 
-        $players = Players::find();
-        if (count($players) >= 0) {
-            foreach ($players as $player) {
-                $data[] = array(
-                    'id'     => $player->id,
-                    'name'   => $player->name,
-                    'active' => ($player->active) ? 'Yes' : 'No',
-                );
+        // Invalidate the cache
+        $cache   = Registry::get('cache');
+        $results = $cache->get($this->getCacheHash('model'));
+
+        if ($results === null) {
+
+            $players = Players::find();
+
+            if (count($players) >= 0) {
+                foreach ($players as $player) {
+                    $results[] = array(
+                                    'id'         => $player->id,
+                                    'name'       => $player->name,
+                                    'active'     => $player->active,
+                                    'activeText' => $this->transformActive($player->active),
+                                 );
+                }
             }
+
+            $results = json_encode(array('results' => $results));
+
+            $cache->save($this->getCacheHash('model'), $results);
         }
 
-        echo json_encode(array('results' => $data));
+        echo $results;
     }
 
     public function addAction()
@@ -74,7 +88,7 @@ class PlayersController extends \NDN\Controller
             if ($this->request->isPost()) {
 
                 $player = new Players();
-                $this->_setPlayer($player, $auth);
+                $this->setPlayer($player, $auth);
 
                 if (!$player->save()) {
                     foreach ($player->getMessages() as $message) {
@@ -90,6 +104,10 @@ class PlayersController extends \NDN\Controller
                         'Player created successfully',
                         'alert alert-success'
                     );
+
+                    // Invalidate the cache
+                    $cache  = Registry::get('cache');
+                    $cache->remove($this->getCacheHash('model'));
 
                     $this->response->redirect('players/');
                 }
@@ -118,7 +136,7 @@ class PlayersController extends \NDN\Controller
 
             if ($this->request->isPost()) {
 
-                $this->_setPlayer($player, $auth);
+                $this->setPlayer($player, $auth);
 
                 if (!$player->save()) {
                     foreach ($player->getMessages() as $message) {
@@ -134,6 +152,10 @@ class PlayersController extends \NDN\Controller
                         'Player updated successfully',
                         'alert alert-success'
                     );
+
+                    // Invalidate the cache
+                    $cache  = Registry::get('cache');
+                    $cache->remove($this->getCacheHash('model'));
 
                     $this->response->redirect('players/');
                 }
@@ -186,7 +208,12 @@ class PlayersController extends \NDN\Controller
         }
     }
 
-    private function _setPlayer($player, $auth)
+    private function transformActive($active)
+    {
+        return ($active) ? 'Active' : '';
+    }
+
+    private function setPlayer($player, $auth)
     {
         $datetime = date('Y-m-d H:i:s');
 

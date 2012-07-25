@@ -26,7 +26,7 @@ class StatisticsController extends NDN_Controller
         parent::initialize();
 
         $this->_bc->add('Statistics', 'statistics');
-        $this->view->setVar('top_menu', $this->_constructMenu($this));
+        $this->view->setVar('top_menu', $this->constructMenu($this));
     }
 
     /**
