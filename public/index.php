@@ -1,37 +1,26 @@
 <?php
 
-namespace NDN;
-
 error_reporting(E_ALL);
 
 try {
 
     if (!defined('ROOT_PATH')) {
-
-        if (isset($_SERVER['DOCUMENT_ROOT'])) {
-            // This is defined BY APACHE. It doesn't appear in IIS or anything
-            define('ROOT_PATH', dirname($_SERVER['DOCUMENT_ROOT']));
-        } else {
-            // This is the default. It is not install specific unfortunately
-            define('ROOT_PATH', dirname(dirname(__FILE__)));
-        }
+        define('ROOT_PATH', dirname(dirname(__FILE__)));
     }
 
-    $app     = ROOT_PATH . '/app/';
-    $library = ROOT_PATH . '/app/library/';
+    // Using require once because I want to get the specific
+    // bootloader class here. The loader will be initialized
+    // in my bootstrap class
+    require_once ROOT_PATH . '/app/library/NDN/Bootstrap.php';
+    require_once ROOT_PATH . '/app/library/NDN/Error.php';
 
-    // Creates the autoloader
-    $loader = new \Phalcon\Loader();
+    $di  = new \Phalcon\DI\FactoryDefault();
+    $app = new \NDN\Bootstrap($di);
 
-    // Register some classes
-    $loader->registerNamespaces(
-        array("NDN" => $library . "NDN/")
-    );
-    $loader->register();
-
-    echo Bootstrap::run(array());
+    echo $app->run(array());
 
 } catch (\Phalcon\Exception $e) {
-    Error::exception($e);
-    header('Location: /');
+    echo $e->getMessage();
+    //\NDN\Error::exception($e);
+    //header('Location: /');
 }
