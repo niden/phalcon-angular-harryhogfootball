@@ -24,7 +24,7 @@
                             <i class='icon-user'></i> John</a>
                     </li>
                     <li class='pull-right'>
-                        <?php echo $addButton; ?>
+                        {{ addButton }}
                     </li>
                 </ul>
             </div>

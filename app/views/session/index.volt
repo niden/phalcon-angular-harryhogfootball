@@ -1,39 +1,25 @@
-<?php use \Phalcon\Tag as Tag; ?>
-
-<?php echo $this->getContent() ?>
-
+{{  content() }}
     <div class="span6">
         <div class="page-header">
             <h2>Log In</h2>
         </div>
-        <?php echo Tag::form(array('session/login', 'class' => 'form-inline')) ?>
+        {{ form('session/login', 'class':'form-inline') }}
             <fieldset>
                 <div class="control-group">
                     <label class="control-label">Username</label>
                     <div class="controls">
-                        <?php echo Tag::textField(array(
-                            'username',
-                            'size' => "30",
-                            'class' => "input-xlarge",
-                        )) ?>
+                        {{ text_field('username', 'size':30, 'class':'input-xlarge') }}
                     </div>
                 </div>
                 <div class="control-group">
                     <label class="control-label">Password</label>
                     <div class="controls">
-                        <?php echo Tag::passwordField(array(
-                            'password',
-                            'size' => "30",
-                            'class' => "input-xlarge",
-                        )) ?>
+                        {{ password_field('password', 'size':30, 'class':'input-xlarge') }}
                     </div>
                 </div>
                 <div class="form-actions">
-                    <?php echo Tag::submitButton(array(
-                        'Login',
-                        'class' => 'btn btn-primary btn-large',
-                    )) ?>
+                    {{ submit_button('Login', 'class':'btn btn-primary btn-large') }}
                 </div>
             </fieldset>
-        </form>
+        {{ end_form }}
     </div>

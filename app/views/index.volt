@@ -3,47 +3,38 @@
     <head>
         <meta charset="utf-8">
         {{ get_title() }}
-        <?php echo Tag::stylesheetLink(Reg::get('config')->cdn->css->bootstrap, Reg::get('config')->cdn->local); ?>
-        <?php echo Tag::stylesheetLink(Reg::get('config')->cdn->css->jquery_ui, Reg::get('config')->cdn->local); ?>
-        <?php echo Tag::stylesheetLink('css/hhf.css'); ?>
+        {{ stylesheet_link(config.cdn.css.bootstrap, config.cdn.local) }}
+        {{ stylesheet_link(config.cdn.css.jquery_ui, config.cdn.local) }}
+        {{ stylesheet_link('css/hhf.css') }}
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="Harry Hog Football - Game balls and Kick in the Balls awards finder" />
         <meta name="author" content="niden.net" />
-
-        <script type='text/javascript'>
-        function MenuCtrl($scope) {
-            $scope.menus = <?php echo $top_menu; ?>;
-        }
-        function BreadcrumbsCtrl($scope) {
-            $scope.breadcrumbs = <?php echo $breadcrumbs; ?>;
-        }
-        </script>
-
     </head>
     <body>
 
+
+    <div id="spinner" style="display: none;">
+        {{ image('img/ajax-loader.gif') }} Loading ...
+    </div>
+
     <div class='navbar'>
         <div class='navbar-inner'>
-            <div class='container-fluid ng-cloak' ng-cloak>
+            <div class='container-fluid'>
                 <a class='btn btn-navbar' data-toggle='collapse' data-target='.nav-collapse'>
                     <span class='icon-bar'></span>
                     <span class='icon-bar'></span>
                     <span class='icon-bar'></span>
                 </a>
                 <a class='brand' href='/'>HHF GKB Awards</a>
-                <div class='nav-collapse' ng-controller='MenuCtrl'>
-                    <menu location='pull-left'></menu>
+                <div class='nav-collapse'>
                     <ul class='nav pull-left'>
-                        <li ng-repeat='menu in menus.left' ng-class="{true:'active', false:''}[menu.active]">
-                            <a href='{{menu.link}}'>{{menu.text}}</a>
+                        {% for menu in menus['left'] %}
+                        <li{% if (menu['active']) %} class="active"{% endif %}>
+                            <a href='{{ menu['link'] }}'>{{ menu['text'] }}</a>
                         </li>
-                    </ul>
-                    <ul class='nav pull-right'>
+                        {% endfor %}
                         <li>
-                            <img id='spinner' class='spinner' src='/img/loader.gif' alt='Loading...' />
-                        </li>
-                        <li>
-                            <a href='{{menus.rightLink}}'>{{menus.rightText}}</a>
+                            <a href='{{ menus['rightLink'] }}'>{{ menus['rightText'] }}</a>
                         </li>
                     </ul>
                 </div>
@@ -52,17 +43,16 @@
     </div>
 
     <div class='container-fluid'>
-        <div class='row-fluid ng-cloak' ng-cloak ng-controller='BreadcrumbsCtrl'>
+        <div class='row-fluid'>
             <ul class='breadcrumb'>
-                <li ng-repeat='bc in breadcrumbs'>
-                    <div ng-switch on='bc.active' >
-                        <div ng-switch-when='true'>
-                            {{bc.text}}
-                        </div>
-                        <div ng-switch-default>
-                            <a href='{{bc.link}}'>{{bc.text}}</a> <span class='divider'>/</span>
-                        </div>
-                    </div>
+                <li>
+                    {% for bc in breadcrumbs %}
+                    {% if (bc['active']) %}
+                    {{ bc['text'] }}
+                    {% else %}
+                    <a href='{{ bc['link'] }}'>{{ bc['text'] }}</a> <span class='divider'>/</span>
+                    {% endif %}
+                    {% endfor %}
                 </li>
             </ul>
         </div>
@@ -75,13 +65,13 @@
         </footer>
     </div>
 
-    <?php echo Tag::javascriptInclude(Reg::get('config')->cdn->js->jquery, Reg::get('config')->cdn->local) ?>
-    <?php echo Tag::javascriptInclude(Reg::get('config')->cdn->js->jquery_ui, Reg::get('config')->cdn->local) ?>
-    <?php echo Tag::javascriptInclude(Reg::get('config')->cdn->js->bootstrap, Reg::get('config')->cdn->local) ?>
-    <?php echo Tag::javascriptInclude(Reg::get('config')->cdn->js->angular, Reg::get('config')->cdn->local) ?>
-    <?php echo Tag::javascriptInclude(Reg::get('config')->cdn->js->angular_resource, Reg::get('config')->cdn->local) ?>
-    <?php echo Tag::javascriptInclude(Reg::get('config')->cdn->js->angular_ui, Reg::get('config')->cdn->local) ?>
-    <?php echo Tag::javascriptInclude('js/utils.js') ?>
+    {{ javascript_include(config.cdn.js.jquery, config.cdn.local) }}
+    {{ javascript_include(config.cdn.js.jquery_ui, config.cdn.local) }}
+    {{ javascript_include(config.cdn.js.bootstrap, config.cdn.local) }}
+    {{ javascript_include(config.cdn.js.angular, config.cdn.local) }}
+    {{ javascript_include(config.cdn.js.angular_resource, config.cdn.local) }}
+    {{ javascript_include(config.cdn.js.angular_ui, config.cdn.local) }}
+    {{ javascript_include('js/utils.js') }}
 
     </body>
 </html>

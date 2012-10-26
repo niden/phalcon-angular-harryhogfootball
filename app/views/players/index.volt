@@ -5,7 +5,7 @@
 <div>
     <ul class='nav nav-tabs'>
         <li class='pull-right'>
-            <?php echo $addButton; ?>
+            {{ addButton }}
         </li>
     </ul>
 </div>
@@ -20,16 +20,16 @@
         </thead>
         <tbody>
         <tr ng-repeat="player in data.results | orderBy:predicate:reverse">
-            <td>{{player.name}}</td>
+            <td>[[player.name]]</td>
             <td>
                 <span ng-show="player.active" class='label label-success'>
-                    {{player.activeText}}
+                    [[player.activeText]]
                 </span>
             </td>
-            <?php if ($addButton) { ?>
-            <td width='1%'><a href='/players/edit/{{player.id}}'><i class='icon-pencil'></i></a></td>
-            <td width='1%'><a href='/players/delete/{{player.id}}'><i class='icon-remove'></i></a></td>
-            <?php } ?>
+            {% if (addButton) %}
+            <td width='1%'><a href='/players/edit/[[player.id]]'><i class='icon-pencil'></i></a></td>
+            <td width='1%'><a href='/players/delete/[[player.id]]'><i class='icon-remove'></i></a></td>
+            {% endif %}
         </tr>
         </tbody>
     </table>

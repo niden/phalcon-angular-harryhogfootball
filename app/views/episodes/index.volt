@@ -5,7 +5,7 @@
 <div>
     <ul class='nav nav-tabs'>
         <li class='pull-right'>
-            <?php echo $addButton; ?>
+            {{ addButton }}
         </li>
     </ul>
 </div>
@@ -22,14 +22,14 @@
     </thead>
     <tbody>
         <tr ng-repeat="episode in data.results | orderBy:predicate:reverse">
-            <td>{{episode.number}}</td>
-            <td width='7%'>{{episode.airDate}}</td>
-            <td>{{episode.outcome}}</td>
-            <td>{{episode.summary}}</td>
-            <?php if ($addButton) { ?>
-            <td width='1%'><a href='/episodes/edit/{{episode.id}}'><i class='icon-pencil'></i></a></td>
-            <td width='1%'><a href='/episodes/delete/{{episode.id}}'><i class='icon-remove'></i></a></td>
-            <?php } ?>
+            <td>[[episode.number]]</td>
+            <td width='7%'>[[episode.airDate]]</td>
+            <td>[[episode.outcome]]</td>
+            <td>[[episode.summary]]</td>
+            {% if (addButton) %}
+            <td width='1%'><a href='/episodes/edit/[[episode.id]]'><i class='icon-pencil'></i></a></td>
+            <td width='1%'><a href='/episodes/delete/[[episode.id]]'><i class='icon-remove'></i></a></td>
+            {% endif %}
         </tr>
     </tbody>
 </table>
