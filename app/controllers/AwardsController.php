@@ -13,11 +13,7 @@
  */
 
 use \Phalcon\Tag as Tag;
-use \Phalcon\View as View;
-use \Phalcon\Db as Db;
-use \Phalcon\Db\Pool as DbPool;
-use \NDN\Session as Session;
-use \NDN\Registry as Registry;
+use \Phalcon\Mvc\View as View;
 
 class AwardsController extends \NDN\Controller
 {
@@ -31,7 +27,7 @@ class AwardsController extends \NDN\Controller
 
         $this->_bc->add('Awards', 'awards');
 
-        $auth = Session::get('auth');
+        $auth = $this->session->get('auth');
         $add  = '';
 
         if ($auth) {
@@ -44,7 +40,7 @@ class AwardsController extends \NDN\Controller
         }
 
         $this->view->setVar('addButton', $add);
-        $this->view->setVar('top_menu', $this->constructMenu($this));
+        $this->view->setVar('menus', $this->constructMenu($this));
     }
 
     /**
@@ -112,78 +108,75 @@ class AwardsController extends \NDN\Controller
     /**
      * Gets the Hall of Fame
      */
-    public function getAction($action, $limit = null)
+    public function getAction($action = 0, $limit = null)
     {
         $this->view->setRenderLevel(View::LEVEL_LAYOUT);
 
-        $sql = 'SELECT COUNT(a.id) AS total, p.name AS playerName, a.award '
-             . 'FROM awards a '
-             . 'INNER JOIN players p ON a.playerId = p.id '
-             . 'WHERE a.award = %s ';
+        $sql = 'SELECT COUNT(Awards.id) AS total, Players.name AS player_name, Awards.award '
+             . 'FROM Awards '
+             . 'INNER JOIN Players '
+             . 'WHERE Awards.award = %s ';
 
         switch ($action) {
             case 1:
-                $sql .= 'AND p.active = 1 ';
+                $sql .= 'AND Players.active = 1 ';
                 break;
             case 2:
             case 3:
             case 4:
-                $sql .= 'AND a.userId = ' . (int) $action. ' ';
+                $sql .= 'AND Awards.userId = ' . (int) $action. ' ';
                 break;
         }
 
-        $sql .= 'GROUP BY a.award, a.playerId '
-              . 'ORDER BY a.award ASC, total DESC, p.name ';
+        $sql .= 'GROUP BY Awards.award, Awards.playerId '
+              . 'ORDER BY Awards.award ASC, total DESC, Players.name ';
 
         if (!empty($limit)) {
             $sql .= 'LIMIT ' . (int) $limit;
         }
 
         // Do some data caching based on the query that was sent to us
-        $hash  = $this->getCacheHash('model', sha1($sql));
-        $cache  = Registry::get('cache');
-        $result = $cache->get($hash);
+        $hash   = $this->getCacheHash('model', sha1($sql));
+        $result = $this->cache->get($hash);
 
         // If $result is null then the content will be created or will refreshed
         if ($result === null) {
 
-            $connection = DbPool::getConnection();
-
             // Kicks
-            $query = sprintf($sql, -1);
-            $result = $connection->query($query);
-            $result->setFetchMode(Db::DB_ASSOC);
+            $kickSql = sprintf($sql, -1);
+            $query   = $this->modelsManager->createQuery($kickSql);
+            $result  = $query->execute();
 
             $kicks    = array();
             $kicksMax = 0;
 
-            while ($item = $result->fetchArray()) {
-                $kicksMax = (0 == $kicksMax) ? $item['total'] : $kicksMax;
-                $name     = $item['playerName'];
+            foreach ($result as $item) {
+                $kicksMax = (0 == $kicksMax) ? $item->total : $kicksMax;
+                $name     = $item->player_name;
                 $kicks[]  = array(
-                    'total'   => (int) $item['total'],
+                    'total'   => (int) $item->total,
                     'name'    => $name,
-                    'percent' => (int) ($item['total'] * 100 / $kicksMax),
+                    'percent' => (int) ($item->total * 100 / $kicksMax),
                 );
             }
 
             // Game balls
-            $query = sprintf($sql, 1);
-            $result = $connection->query($query);
-            $result->setFetchMode(Db::DB_ASSOC);
+            $gameSql = sprintf($sql, 1);
+            $query   = $this->modelsManager->createQuery($gameSql);
+            $result  = $query->execute();
 
             $gameballs    = array();
             $gameballsMax = 0;
 
-            while ($item = $result->fetchArray()) {
+            foreach ($result as $item) {
                 $gameballsMax = (0 == $gameballsMax) ?
-                                $item['total']       :
+                                $item->total         :
                                 $gameballsMax;
-                $name         = $item['playerName'];
+                $name         = $item->player_name;
                 $gameballs[]  = array(
-                    'total'   => (int) $item['total'],
+                    'total'   => (int) $item->total,
                     'name'    => $name,
-                    'percent' => (int) ($item['total'] * 100 / $gameballsMax),
+                    'percent' => (int) ($item->total * 100 / $gameballsMax),
                 );
             }
 
@@ -192,7 +185,7 @@ class AwardsController extends \NDN\Controller
             );
 
             // Store it in the cache
-            $cache->save($hash, $result);
+            $this->cache->save($hash, $result);
         }
 
         echo $result;

@@ -44,12 +44,6 @@ class Awards extends \NDN\Model
      */
     public function initialize()
     {
-        $message = 'This record cannot be deleted because of referential '
-                 . 'integrity rules';
-        $fk = array('foreignKey' => array('message' => $message));
-
-        $this->hasOne('userId', 'Users', 'id', $fk);
-        $this->hasOne('episodeId', 'Episodes', 'id', $fk);
-        $this->hasOne('playerId', 'Players', 'id', $fk);
+        $this->belongsTo('playerId', 'Players', 'id');
     }
 }

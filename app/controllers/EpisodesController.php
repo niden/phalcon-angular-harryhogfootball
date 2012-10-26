@@ -13,9 +13,7 @@
  */
 
 use \Phalcon\Tag as Tag;
-use \Phalcon\View as View;
-use \NDN\Session as Session;
-use \NDN\Registry as Registry;
+use \Phalcon\Mvc\View as View;
 
 class EpisodesController extends \NDN\Controller
 {
@@ -29,7 +27,7 @@ class EpisodesController extends \NDN\Controller
 
         $this->_bc->add('Episodes', 'episodes');
 
-        $auth = Session::get('auth');
+        $auth = $this->session->get('auth');
         $add  = '';
 
         if ($auth) {
@@ -43,7 +41,7 @@ class EpisodesController extends \NDN\Controller
         }
 
         $this->view->setVar('addButton', $add);
-        $this->view->setVar('top_menu', $this->constructMenu($this));
+        $this->view->setVar('menus', $this->constructMenu($this));
     }
 
     /**
@@ -62,9 +60,7 @@ class EpisodesController extends \NDN\Controller
         $this->view->setRenderLevel(View::LEVEL_LAYOUT);
 
         $data     = '';
-
-        $cache   = Registry::get('cache');
-        $results = $cache->get($this->getCacheHash('model'));
+        $results = $this->cache->get($this->getCacheHash('model'));
 
         if (!$results) {
 
@@ -84,7 +80,7 @@ class EpisodesController extends \NDN\Controller
 
             $results = json_encode(array('results' => $data));
 
-            $cache->save($this->getCacheHash('model'), $results);
+            $this->cache->save($this->getCacheHash('model'), $results);
         }
 
         echo $results;

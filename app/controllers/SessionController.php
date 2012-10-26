@@ -13,7 +13,6 @@
  */
 
 use \Phalcon\Tag as Tag;
-use \NDN\Session as Session;
 
 class SessionController extends \NDN\Controller
 {
@@ -24,7 +23,7 @@ class SessionController extends \NDN\Controller
     {
         Tag::setTitle('Log In');
         parent::initialize();
-        $this->view->setVar('top_menu', $this->constructMenu($this));
+        $this->view->setVar('menus', $this->constructMenu($this));
     }
 
     /**

@@ -34,6 +34,6 @@ class Players extends \NDN\Model
      */
     public function initialize()
     {
-        $this->belongsTo('playerId', 'Scoring', 'id');
+        $this->hasMany('id', 'Awards', 'playerId');
     }
 }

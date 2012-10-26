@@ -20,7 +20,7 @@ class IndexController extends \NDN\Controller
     {
         Tag::setTitle('Welcome');
         parent::initialize();
-        $this->view->setVar('top_menu', $this->constructMenu($this));
+        $this->view->setVar('menus', $this->constructMenu($this));
     }
 
     /**
