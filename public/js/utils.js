@@ -1,6 +1,10 @@
 // AngularJS code goes here
 // HTTP Interceptor for the Ajax spinner - by Adam Webber - angularjs groups
 var ngModule = angular.module('HHF', ['ngResource', 'ui'])
+    .config(function($interpolateProvider) {
+        $interpolateProvider.startSymbol('[[');
+        $interpolateProvider.endSymbol(']]');
+    })
     .config(function ($httpProvider) {
         $httpProvider.responseInterceptors.push('myHttpInterceptor');
         var spinnerFunction = function (data, headersGetter) {
@@ -24,26 +28,6 @@ var ngModule = angular.module('HHF', ['ngResource', 'ui'])
                 $('#spinner').hide()
                 return $q.reject(response);
             });
-        };
-    })
-
-    // This prints our menu
-    .directive('menu', function() {
-        return {
-            restrict: 'E',
-            replace: true,
-            scope: {
-                location: '@'
-            },
-            controller: function($scope) {
-                var myMenus = $scope.menus;
-                console.log(myMenus);
-            },
-            template: '<ul class="nav {{location}}">' +
-                          '<li ng-repeat="m in myMenus.left">' +
-                              '<a href="{{m.link}}">{{m.text}}</a>' +
-                          '</li>' +
-                      '</ul>'
         };
     })
 
