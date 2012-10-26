@@ -1,10 +1,8 @@
-<?php use \Phalcon\Tag as Tag; ?>
-<?php use \NDN\Registry as Reg; ?>
 <!DOCTYPE html>
 <html ng-app='HHF'>
     <head>
         <meta charset="utf-8">
-        <?php echo Tag::getTitle(); ?>
+        {{ get_title() }}
         <?php echo Tag::stylesheetLink(Reg::get('config')->cdn->css->bootstrap, Reg::get('config')->cdn->local); ?>
         <?php echo Tag::stylesheetLink(Reg::get('config')->cdn->css->jquery_ui, Reg::get('config')->cdn->local); ?>
         <?php echo Tag::stylesheetLink('css/hhf.css'); ?>

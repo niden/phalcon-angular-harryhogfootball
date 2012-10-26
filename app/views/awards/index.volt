@@ -39,11 +39,11 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat='gb in data.gameballs'>
-                            <td style='width:10px;'>{{gb.total}}</td>
+                            <td style='width:10px;'>[[gb.total]]</td>
                             <td>
-                                <div>{{gb.name}}</div>
+                                <div>[[gb.name]]</div>
                                 <div class='progress progress-info'>
-                                    <div class='bar' style='width:{{gb.percent}}%;'></div>
+                                    <div class='bar' style='width:[[gb.percent]]%;'></div>
                                 </div>
                             </td>
                         </tr>
@@ -59,11 +59,11 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat='kitb in data.kicks'>
-                            <td style='width:10px;'>{{kitb.total}}</td>
+                            <td style='width:10px;'>[[kitb.total]]</td>
                             <td>
-                                <div>{{kitb.name}}</div>
+                                <div>[[kitb.name]]</div>
                                 <div class='progress progress-danger'>
-                                    <div class='bar' style='width:{{kitb.percent}}%;'></div>
+                                    <div class='bar' style='width:[[kitb.percent]]%;'></div>
                                 </div>
                             </td>
                         </tr>
