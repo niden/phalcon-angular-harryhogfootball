@@ -67,6 +67,6 @@ class Breadcrumbs
 
         $this->_elements[$lastKey]['active'] = true;
 
-        return json_encode($this->_elements);
+        return $this->_elements;
     }
 }

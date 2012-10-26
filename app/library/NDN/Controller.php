@@ -14,11 +14,9 @@
 
 namespace NDN;
 
-use \Phalcon\Flash as Flash;
 use \Phalcon\Tag as Tag;
 
-
-class Controller extends \Phalcon\Controller
+class Controller extends \Phalcon\Mvc\Controller
 {
     protected $_bc = null;
 
@@ -30,17 +28,7 @@ class Controller extends \Phalcon\Controller
         Tag::prependTitle('HHF G&KB Awards | ');
 
         $this->_bc = new Breadcrumbs();
-    }
-
-    /**
-     * Hook called before dispatch
-     */
-    public function beforeDispatch()
-    {
-        $message = Session::getFlash();
-        if (is_array($message)) {
-            Flash::$message['class']($message['message'], $message['css']);
-        }
+        $this->view->setVar('config', $this->config);
         $this->view->setVar('breadcrumbs', $this->_bc->generate());
     }
 
@@ -71,7 +59,8 @@ class Controller extends \Phalcon\Controller
             'contact'    => 'Contact Us',
         );
 
-        $auth = Session::get('auth');
+        $session = $this->getDi()->get('session');
+        $auth    = $session->get('auth');
 
         $class          = get_class($controller);
         $class          = str_replace('Controller', '', $class);
@@ -90,17 +79,16 @@ class Controller extends \Phalcon\Controller
             );
         }
 
-        $menu = new \StdClass();
-        $menu->current = $active;
-        $menu->left    = $leftMenu;
+        $menu['current'] = $active;
+        $menu['left']    = $leftMenu;
 
         if ($auth != false) {
             $sessionCaption .= ' ' . $auth['name'];
         }
 
-        $menu->rightLink = $sessionAction;
-        $menu->rightText = $sessionCaption;
+        $menu['rightLink'] = $sessionAction;
+        $menu['rightText'] = $sessionCaption;
 
-        return json_encode($menu);
+        return $menu;
     }
 }

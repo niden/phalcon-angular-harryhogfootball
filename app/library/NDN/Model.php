@@ -14,7 +14,7 @@
 
 namespace NDN;
 
-class Model extends \Phalcon\Model\Base
+class Model extends \Phalcon\Mvc\Model
 {
     /**
      * @var string

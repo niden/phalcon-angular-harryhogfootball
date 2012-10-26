@@ -14,6 +14,8 @@
 
 namespace NDN;
 
+use \Phalcon\DI\FactoryDefault as Di;
+
 class Error
 {
     public static function normal($type, $message, $file, $line)
@@ -65,18 +67,25 @@ class Error
 
     protected static function logError($type, $message, $file, $line, $trace = '')
     {
-        $logger = Registry::get('logger');
-
-        if ($logger) {
-
-            $template = "[%s] %s (File: %s Line: [%s])";
-            if ($trace) {
+        $di        = Di::getDefault();
+        $template = "[%s] %s (File: %s Line: [%s])";
+        if ($trace) {
                 $template . PHP_EOL . $trace;
             }
 
-            $logMessage = sprintf($template, $type, $message, $file, $line);
+        $logMessage = sprintf($template, $type, $message, $file, $line);
 
-            $logger->error($logMessage);
+        if ($di->has('logger')) {
+
+            $logger = $di->get('logger');
+            if ($logger) {
+
+                $logger->error($logMessage);
+            } else {
+                throw new Exception($logMessage);
+            }
+        } else {
+            throw new Exception($logMessage);
         }
     }
 }
