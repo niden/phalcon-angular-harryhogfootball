@@ -70,8 +70,8 @@ class EpisodesController extends \NDN\Controller
                 foreach ($episodes as $episode) {
                     $data[] = array(
                         'id'      => $episode->id,
-                        'number'  => $episode->number,
-                        'airDate' => $episode->airDate,
+                        'number'  => substr("0000" . $episode->id, -3),
+                        'airDate' => $episode->airdate,
                         'outcome' => $this->translateOutcome($episode->outcome),
                         'summary' => $episode->summary,
                     );
@@ -91,7 +91,7 @@ class EpisodesController extends \NDN\Controller
      */
     public function addAction()
     {
-        $auth = Session::get('auth');
+        $auth = $this->session->get('auth');
 
         if ($auth) {
             if ($this->request->isPost()) {
@@ -115,8 +115,7 @@ class EpisodesController extends \NDN\Controller
                     );
 
                     // Invalidate the cache
-                    $cache  = Registry::get('cache');
-                    $cache->remove($this->getCacheHash('model'));
+                    $this->cache->remove($this->getCacheHash('model'));
 
                     $this->response->redirect('episodes/');
                 }
@@ -131,7 +130,7 @@ class EpisodesController extends \NDN\Controller
      */
     public function editAction($id)
     {
-        $auth = Session::get('auth');
+        $auth = $this->session->get('auth');
 
         if ($auth) {
 
@@ -168,8 +167,7 @@ class EpisodesController extends \NDN\Controller
                     );
 
                     // Invalidate the cache
-                    $cache  = Registry::get('cache');
-                    $cache->remove($this->getCacheHash('model'));
+                    $this->cache->remove($this->getCacheHash('model'));
 
                     $this->response->redirect('episodes/');
                 }
@@ -251,7 +249,6 @@ class EpisodesController extends \NDN\Controller
     {
         $datetime = date('Y-m-d H:i:s');
 
-        $episode->id      = $this->request->getPost('episodeId', 'int');
         $episode->number  = $this->request->getPost('episodeId', 'int');
         $episode->airDate = $this->request->getPost('episodeDate', 'int');
         $episode->summary = $this->request->getPost('summary');

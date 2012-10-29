@@ -1,48 +1,31 @@
-<?php use \Phalcon\Tag as Tag; ?>
-
-<?php echo $this->getContent() ?>
+{{ content() }}
 
 <div class='page-header'>
     <h2>Episodes</h2>
 </div>
 
 <div ng-controller='addEditEpisodeCtrl'>
-<?php
+{{ form('episodes/add', 'class': 'form-horizontal') }}
 
-echo Tag::form(
-    array(
-        'episodes/add',
-        'class' => 'form-horizontal',
-    )
-)
-?>
 <fieldset>
     <div class='control-group'>
         <label class='control-label'>Episode</label>
         <div class='controls'>
-            <?php echo Tag::textField(array('episodeId', 'class' => 'input-xlarge')) ?>
+            {{ text_field('episodeId', 'class': 'input-xlarge') }}
             <p class='help-block'>(required)</p>
         </div>
     </div>
     <div class='control-group'>
         <label class='control-label'>Date</label>
         <div class='controls'>
-            <?php
-                echo Tag::textField(
-                    array(
-                        'episodeDate',
-                        'class'   => 'input-medium',
-                        'id'      => 'episodeDate',
-                        'ui-date' => 'dateOptions',
-                    )
-                )
-            ?>
+            {{ text_field('episodeDate', 'class': 'input-medium', 'id': 'episodeDate', 'ui-date': 'dateOptions') }}
             <p class='help-block'>(required)</p>
         </div>
     </div>
     <div class='control-group'>
         <label class='control-label'>Summary</label>
         <div class='controls'>
+            {{ select_static('outcome', 'class': 'input-xlarge') }}
             <?php
                 echo Tag::selectStatic(
                     array(
@@ -58,14 +41,14 @@ echo Tag::form(
     <div class='control-group'>
         <label class='control-label'>Summary</label>
         <div class='controls'>
-            <?php echo Tag::textArea(array('summary', 'rows' => '5', 'class' => 'input-xlarge')) ?>
+            {{ text_area('summary', 'rows': 5, 'class': 'input-xlarge') }}
             <p class='help-block'>(required)</p>
         </div>
     </div>
     <div class='form-actions'>
-        <?php echo Tag::submitButton(array('Send', 'class' => 'btn btn-primary btn-large')) ?>
+        {{ submit_button('Send', 'class': 'btn btn-primary btn-large') }}
     </div>
 </fieldset>
-</form>
+{{ end_form }}
 
 </div>

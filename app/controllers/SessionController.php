@@ -60,7 +60,7 @@ class SessionController extends \NDN\Controller
             if ($user != false) {
 
                 $this->registerSession($user);
-                Session::setFlash(
+                $this->flash->message(
                     'success',
                     'Welcome ' . $user->name,
                     'alert alert-success'
@@ -69,7 +69,7 @@ class SessionController extends \NDN\Controller
                 return $this->response->redirect('');
             }
 
-            Session::setFlash(
+            $this->flash->message(
                 'error',
                 'Wrong username/password combination',
                 'alert alert-error'
@@ -86,9 +86,8 @@ class SessionController extends \NDN\Controller
      */
     public function logoutAction()
     {
-        Session::remove('auth');
-
-        Session::setFlash(
+        $this->session->remove('auth');
+        $this->flash->message(
             'success',
             'You are now logged out.',
             'alert alert-success'
@@ -104,7 +103,7 @@ class SessionController extends \NDN\Controller
      */
     private function registerSession($user)
     {
-        Session::set(
+        $this->session->set(
             'auth',
             array(
                 'id'       => $user->id,

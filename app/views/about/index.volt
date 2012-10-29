@@ -1,4 +1,3 @@
-
 <p><h1>About HHF GKB Awards</h1></p>
 
 <p>

@@ -15,30 +15,11 @@
 class Episodes extends \NDN\Model
 {
     /**
-     * @var integer
-     */
-    public $id;
-
-    /**
-     * @var string
-     */
-    public $number;
-
-    /**
-     * @var string
-     */
-    public $summary;
-
-    /**
-     * @var integer
-     */
-    public $airDate;
-
-    /**
      * Initializes the class and sets any relationships with other models
      */
     public function initialize()
     {
-        $this->belongsTo('episodeId', 'Scoring', 'id');
+        $this->setBehavior('Timestamp');
+        $this->belongsTo('episodeId', 'Awards', 'id');
     }
 }

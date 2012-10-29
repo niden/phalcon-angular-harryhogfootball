@@ -15,25 +15,11 @@
 class Players extends \NDN\Model
 {
     /**
-     * @var integer
-     */
-    public $id;
-
-    /**
-     * @var string
-     */
-    public $name;
-
-    /**
-     * @var integer
-     */
-    public $active;
-
-    /**
      * Initializes the class and sets any relationships with other models
      */
     public function initialize()
     {
+        $this->setBehavior('Timestamp');
         $this->hasMany('id', 'Awards', 'playerId');
     }
 }

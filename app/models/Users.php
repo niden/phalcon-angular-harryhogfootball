@@ -12,55 +12,13 @@
  *
  */
 
-class Users extends \Phalcon\Model\Base
+class Users extends \NDN\Model
 {
-    /**
-     * @var integer
-     */
-    public $id;
-
-    /**
-     * @var string
-     */
-    public $username;
-
-    /**
-     * @var string
-     */
-    public $password;
-
-    /**
-     * @var string
-     */
-    public $name;
-
     /**
      * Initializes the class and sets any relationships with other models
      */
     public function initialize()
     {
         $this->belongsTo('userId', 'Scoring', 'id');
-    }
-
-    /**
-     * @param array $parameters
-     *
-     * @static
-     * @return Phalcon_Model_Resultset Users[]
-     */
-    static public function find($parameters = array())
-    {
-        return parent::find($parameters);
-    }
-
-    /**
-     * @param array $parameters
-     *
-     * @static
-     * @return  Phalcon_Model_Base   Users
-     */
-    static public function findFirst($parameters = array())
-    {
-        return parent::findFirst($parameters);
     }
 }

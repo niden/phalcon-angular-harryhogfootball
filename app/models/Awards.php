@@ -12,38 +12,18 @@
  *
  */
 
+use \Phalcon\Mvc\Model\MetaData;
+use \Phalcon\Db\Column;
+
 class Awards extends \NDN\Model
 {
-    /**
-    * @var integer
-    */
-    public $id;
-
-    /**
-     * @var integer
-     */
-    public $episodeId;
-
-    /**
-     * @var integer
-     */
-    public $userId;
-
-    /**
-     * @var integer
-     */
-    public $playerId;
-
-    /**
-     * @var integer
-     */
-    public $award;
-
     /**
      * Initializes the class and sets any relationships with other models
      */
     public function initialize()
     {
+        $this->setBehavior('Timestamp');
+        $this->belongsTo('episodeId', 'Episodes', 'id');
         $this->belongsTo('playerId', 'Players', 'id');
     }
 }
