@@ -16,37 +16,27 @@ namespace NDN;
 
 class Model extends \Phalcon\Mvc\Model
 {
-    /**
-     * @var string
-     */
-    public $createdAt;
+    protected $behaviors = array();
 
-    /**
-     * @var integer
-     */
-    public $createdAtUserId;
+    public function setBehavior($behavior)
+    {
+        $this->behaviors[$behavior] = true;
+    }
 
-    /**
-     * @var string
-     */
-    public $lastUpdate;
-
-    /**
-     * @var integer
-     */
-    public $lastUpdateUserId;
-
-    /**
-     * beforeSave hook - called prior to any Save (insert/update)
-     */
     public function beforeSave()
     {
-        if (empty($this->createdAtUserId)) {
-            $auth     = Session::get('auth');
-            $datetime = date('Y-m-d H:i:s');
+        $path = dirname(__FILE__);
 
-            $this->createdAt        = $datetime;
-            $this->createdAtUserId  = (int) $auth['id'];
+        foreach ($this->behaviors as $behavior => $active)
+        {
+            if ($active &&
+                file_exists($path . '/Models/Behaviors/' . $behavior . '.php'))
+            {
+                $className = '\NDN\Models\Behaviors\\' . $behavior;
+                $class     = new $className;
+
+                $class->beforeSave($this);
+            }
         }
     }
 

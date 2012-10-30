@@ -16,7 +16,7 @@ namespace NDN;
 
 use \Phalcon\Config\Adapter\Ini as Config;
 use \Phalcon\Loader as Loader;
-use \Phalcon\Flash\Direct as Flash;
+use \Phalcon\Flash\Session as Flash;
 use \Phalcon\Logger\Adapter\File as Logger;
 use \Phalcon\Db\Adapter\Pdo\Mysql as Mysql;
 use \Phalcon\Mvc\Model\Metadata\Memory as MetadataMemory;
@@ -327,6 +327,9 @@ class Bootstrap
             'session',
             function() {
                 $session = new Session();
+                if (!$session->isStarted()) {
+                    $session->start();
+                }
                 return $session;
             }
         );

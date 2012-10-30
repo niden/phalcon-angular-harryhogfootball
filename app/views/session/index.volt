@@ -21,5 +21,5 @@
                     {{ submit_button('Login', 'class':'btn btn-primary btn-large') }}
                 </div>
             </fieldset>
-        {{ end_form }}
+        {{ end_form() }}
     </div>

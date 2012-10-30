@@ -29,6 +29,7 @@ class Controller extends \Phalcon\Mvc\Controller
 
         $this->_bc = new Breadcrumbs();
         $this->view->setVar('config', $this->config);
+        $this->view->setVar('session', $this->session);
         $this->view->setVar('breadcrumbs', $this->_bc->generate());
     }
 

@@ -78,7 +78,7 @@ class PlayersController extends \NDN\Controller
 
     public function addAction()
     {
-        $auth = Session::get('auth');
+        $auth = $this->session->get('auth');
 
         if ($auth) {
 
@@ -89,22 +89,13 @@ class PlayersController extends \NDN\Controller
 
                 if (!$player->save()) {
                     foreach ($player->getMessages() as $message) {
-                        Session::setFlash(
-                            'error',
-                            (string) $message,
-                            'alert alert-error'
-                        );
+                        $this->flash->error((string) $message);
                     }
                 } else {
-                    Session::setFlash(
-                        'success',
-                        'Player created successfully',
-                        'alert alert-success'
-                    );
+                    $this->flash->success('Player created successfully');
 
                     // Invalidate the cache
-                    $cache  = Registry::get('cache');
-                    $cache->remove($this->getCacheHash('model'));
+                    $this->cache->remove($this->getCacheHash('model'));
 
                     $this->response->redirect('players/');
                 }
@@ -114,7 +105,7 @@ class PlayersController extends \NDN\Controller
 
     public function editAction($id)
     {
-        $auth = Session::get('auth');
+        $auth = $this->session->get('auth');
 
         if ($auth) {
 

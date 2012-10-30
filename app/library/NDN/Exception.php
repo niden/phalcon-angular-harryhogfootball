@@ -14,7 +14,7 @@
 
 namespace NDN;
 
-class Exception extends \Phalcon\Exception
+class Exception extends \Exception
 {
 
 }

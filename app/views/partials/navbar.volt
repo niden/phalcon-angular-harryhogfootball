@@ -22,3 +22,5 @@
         </div>
     </div>
 </div>
+
+<?php $this->flash->output() ?>
