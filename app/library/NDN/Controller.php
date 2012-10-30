@@ -60,7 +60,7 @@ class Controller extends \Phalcon\Mvc\Controller
             'contact'    => 'Contact Us',
         );
 
-        $session = $this->getDi()->get('session');
+        $session = $this->getDi()->getShared('session');
         $auth    = $session->get('auth');
 
         $class          = get_class($controller);

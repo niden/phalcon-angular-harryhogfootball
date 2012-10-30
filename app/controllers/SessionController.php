@@ -43,6 +43,8 @@ class SessionController extends \NDN\Controller
      */
     public function loginAction()
     {
+        $this->view->disable();
+
         if ($this->request->isPost()) {
 
             $username = $this->request->getPost('username', 'email');
@@ -78,6 +80,8 @@ class SessionController extends \NDN\Controller
      */
     public function logoutAction()
     {
+        $this->view->disable();
+
         $this->session->remove('auth');
         $this->flash->success('You are now logged out.');
 

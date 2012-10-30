@@ -60,7 +60,7 @@ class Bootstrap
 
         } catch (\Phalcon\Exception $e) {
             echo $e->getMessage();
-        } catch (PDOException $e){
+        } catch (\PDOException $e) {
             echo $e->getMessage();
         }
     }
@@ -123,7 +123,8 @@ class Bootstrap
         $config = $this->_di->get('config');
 
         $debug = (isset($config->phalcon->debug)) ?
-            (bool) $config->phalcon->debug   : false;
+                 (bool) $config->phalcon->debug   :
+                 false;
 
         if ($debug) {
             ini_set('display_errors', true);
