@@ -14,6 +14,9 @@
 
 namespace NDN;
 
+use \Phalcon\DI\FactoryDefault as Di;
+
+
 class Model extends \Phalcon\Mvc\Model
 {
     protected $behaviors = array();
@@ -26,6 +29,7 @@ class Model extends \Phalcon\Mvc\Model
     public function beforeSave()
     {
         $path = dirname(__FILE__);
+        $di   = Di::getDefault();
 
         foreach ($this->behaviors as $behavior => $active)
         {
@@ -33,7 +37,7 @@ class Model extends \Phalcon\Mvc\Model
                 file_exists($path . '/Models/Behaviors/' . $behavior . '.php'))
             {
                 $className = '\NDN\Models\Behaviors\\' . $behavior;
-                $class     = new $className;
+                $class     = new $className($di);
 
                 $class->beforeSave($this);
             }

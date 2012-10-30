@@ -31,13 +31,14 @@ class Timestamp
      */
     public function beforeSave($record)
     {
+        $auth     = $this->di->getShared('session')->get('auth');
+        $userId   = (isset($auth['id'])) ? (int) $auth['id'] : 0;
+        $datetime = date('Y-m-d H:i:s');
         if (empty($record->createdAtUserId)) {
-            $auth     = $this->di->get('session')->get('auth');
-            $userId   = (isset($auth['id'])) ? (int) $auth['id'] : 0;
-            $datetime = date('Y-m-d H:i:s');
-
             $record->createdAt        = $datetime;
             $record->createdAtUserId  = $userId;
         }
+        $record->lastUpdate       = $datetime;
+        $record->lastUpdateUserId = $userId;
     }
 }
