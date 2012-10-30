@@ -95,7 +95,7 @@ class PlayersController extends \NDN\Controller
                     $this->flash->success('Player created successfully');
 
                     // Invalidate the cache
-                    $this->cache->remove($this->getCacheHash('model'));
+                    $this->cache->delete($this->getCacheHash('model'));
 
                     $this->response->redirect('players/');
                 }
@@ -113,12 +113,7 @@ class PlayersController extends \NDN\Controller
             $player = Players::findFirst('id=' . $id);
 
             if (!$player) {
-                Session::setFlash(
-                    'error',
-                    'Player not found',
-                    'alert alert-error'
-                );
-
+                $this->flash->error('Player not found');
                 $this->response->redirect('players/');
             }
 
@@ -128,23 +123,13 @@ class PlayersController extends \NDN\Controller
 
                 if (!$player->save()) {
                     foreach ($player->getMessages() as $message) {
-                        Session::setFlash(
-                            'error',
-                            (string) $message,
-                            'alert alert-error'
-                        );
+                        $this->flash->error((string) $message);
                     }
                 } else {
-                    Session::setFlash(
-                        'success',
-                        'Player updated successfully',
-                        'alert alert-success'
-                    );
+                    $this->flash->success('Player updated successfully');
 
                     // Invalidate the cache
-                    $cache  = Registry::get('cache');
-                    $cache->remove($this->getCacheHash('model'));
-
+                    $this->cache->delete($this->getCacheHash('model'));
                     $this->response->redirect('players/');
                 }
 
@@ -198,7 +183,7 @@ class PlayersController extends \NDN\Controller
 
     private function transformActive($active)
     {
-        return ($active) ? 'Active' : '';
+        return ($active == 1) ? 'Active' : '';
     }
 
     private function setPlayer($player, $auth)
