@@ -1,0 +1,45 @@
+{{ content() }}
+<div class='page-header'>
+    <h2>Episodes</h2>
+</div>
+
+<div ng-controller='addEditEpisodeCtrl'>
+{{ form('episodes/edit/' ~ id, 'class': 'form-horizontal') }}
+<fieldset>
+
+    {{ hidden_field('id', 'value': id) }}
+    <div class='control-group'>
+        <label class='control-label'>Episode</label>
+        <div class='controls'>
+           {{ text_field('episode_id', 'class': 'input-xlarge') }}
+            <p class='help-block'>(required)</p>
+        </div>
+    </div>
+    <div class='control-group'>
+        <label class='control-label'>Date</label>
+        <div class='controls'>
+            {{ text_field('episode_date', 'class': 'input-medium', 'id': 'episode_date', 'ui-date': 'dateOptions') }}
+            <p class='help-block'>(required)</p>
+        </div>
+    </div>
+    <div class='control-group'>
+        <label class='control-label'>Summary</label>
+        <div class='controls'>
+            {{ select_static('outcome', ['0': '', '1': 'Win', '-1': 'Loss'], 'class': 'input-xlarge') }}
+            <p class='help-block'>(required)</p>
+        </div>
+    </div>
+    <div class='control-group'>
+        <label class='control-label'>Summary</label>
+        <div class='controls'>
+            {{ text_area('summary', 'rows': 5, 'class': 'input-xlarge') }}
+            <p class='help-block'>(required)</p>
+        </div>
+    </div>
+    <div class='form-actions'>
+        {{ submit_button('Send', 'class': 'btn btn-primary btn-large') }}
+    </div>
+</fieldset>
+{{ end_form() }}
+
+</div>

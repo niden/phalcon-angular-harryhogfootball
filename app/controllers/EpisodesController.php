@@ -101,21 +101,13 @@ class EpisodesController extends \NDN\Controller
 
                 if (!$episode->save()) {
                     foreach ($episode->getMessages() as $message) {
-                        Session::setFlash(
-                            'error',
-                            (string) $message,
-                            'alert alert-error'
-                        );
+                        $this->flash->error((string) $message);
                     }
                 } else {
-                    Session::setFlash(
-                        'success',
-                        'Episode created successfully',
-                        'alert alert-success'
-                    );
+                    $this->flash->success('Episode created successfully');
 
                     // Invalidate the cache
-                    $this->cache->remove($this->getCacheHash('model'));
+                    $this->cache->delete($this->getCacheHash('model'));
 
                     $this->response->redirect('episodes/');
                 }
@@ -138,12 +130,7 @@ class EpisodesController extends \NDN\Controller
             $episode = Episodes::findFirst('id=' . $id);
 
             if (!$episode) {
-                Session::setFlash(
-                    'error',
-                    'Episode not found',
-                    'alert alert-error'
-                );
-
+                $this->flash->error('Episode not found');
                 return $this->response->redirect('episodes/');
             }
 
@@ -153,21 +140,13 @@ class EpisodesController extends \NDN\Controller
 
                 if (!$episode->save()) {
                     foreach ($episode->getMessages() as $message) {
-                        Session::setFlash(
-                            'error',
-                            (string) $message,
-                            'alert alert-error'
-                        );
+                        $this->flash((string) $message);
                     }
                 } else {
-                    Session::setFlash(
-                        'success',
-                        'Episode updated successfully',
-                        'alert alert-success'
-                    );
+                    $this->flash->success('Episode updated successfully');
 
                     // Invalidate the cache
-                    $this->cache->remove($this->getCacheHash('model'));
+                    $this->cache->delete($this->getCacheHash('model'));
 
                     $this->response->redirect('episodes/');
                 }
@@ -177,8 +156,8 @@ class EpisodesController extends \NDN\Controller
             $this->view->setVar('id', $episode->id);
 
             Tag::displayTo('id', $episode->id);
-            Tag::displayTo('episodeId', $episode->number);
-            Tag::displayTo('episodeDate', $episode->airDate);
+            Tag::displayTo('episode_id', $episode->number);
+            Tag::displayTo('episode_date', $episode->air_date);
             Tag::displayTo('outcome', $episode->outcome);
             Tag::displayTo('summary', $episode->summary);
         }
@@ -186,38 +165,24 @@ class EpisodesController extends \NDN\Controller
 
     public function deleteAction($id)
     {
-        $auth = Session::get('auth');
+        $auth = $this->session->get('auth');
 
         if ($auth) {
             $id      = $this->filter->sanitize($id, array('int'));
             $episode = Episodes::findFirst('id=' . $id);
             if (!$episode) {
-                Session::setFlash(
-                    'error',
-                    'Episode not found',
-                    'alert alert-error'
-                );
-
+                $this->flash->error('Episode not found');
                 return $this->response->redirect('episodes/');
             }
 
             if (!$episode->delete()) {
                 foreach ($episode->getMessages() as $message) {
-                    Session::setFlash(
-                        'error',
-                        (string) $message,
-                        'alert alert-error'
-                    );
+                    $this->flash->error((string) $message);
                 }
 
                 return $this->response->redirect('episodes/');
             } else {
-                Session::setFlash(
-                    'success',
-                    'Episode deleted successfully',
-                    'alert alert-success'
-                );
-
+                $this->flash->success('Episode deleted successfully');
                 return $this->response->redirect('episodes/');
             }
         }
@@ -239,6 +204,7 @@ class EpisodesController extends \NDN\Controller
 
         return $result;
     }
+
     /**
      * Private helper setting episode fields
      *
@@ -247,18 +213,10 @@ class EpisodesController extends \NDN\Controller
      */
     private function setEpisode($episode, $auth)
     {
-        $datetime = date('Y-m-d H:i:s');
-
-        $episode->number  = $this->request->getPost('episodeId', 'int');
-        $episode->airDate = $this->request->getPost('episodeDate', 'int');
-        $episode->summary = $this->request->getPost('summary');
-        $episode->outcome = $this->request->getPost('outcome', 'int');
-
-        $episode->lastUpdate       = $datetime;
-        $episode->lastUpdateUserId = (int) $auth['id'];
-
-        $episode->summary = strip_tags($episode->summary);
-        $episode->summary = addslashes($episode->summary);
-
+        $episode->number   = $this->request->getPost('episode_id', 'int');
+        $episode->air_date = $this->request->getPost('episode_date', 'int');
+        $episode->summary  = $this->request->getPost('summary');
+        $episode->outcome  = $this->request->getPost('outcome', 'int');
+        $episode->summary  = strip_tags($episode->summary);
     }
 }

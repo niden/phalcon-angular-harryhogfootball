@@ -17,7 +17,7 @@
     <div class='control-group'>
         <label class='control-label'>Active</label>
         <div class='controls'>
-            {{ select_static('active', ['', 'Yes', 'No']) }}
+            {{ select_static('active', ['0': '', '1': 'Yes', '2': 'No'], 'class': 'input-xlarge') }}
             <p class='help-block'>(required)</p>
         </div>
     </div>
@@ -25,4 +25,4 @@
         {{ submit_button('Send', 'class': 'btn btn-primary btn-large') }}
     </div>
 </fieldset>
-</form>
+{{ end_form() }}

@@ -34,11 +34,11 @@ class Timestamp
         $auth     = $this->di->getShared('session')->get('auth');
         $userId   = (isset($auth['id'])) ? (int) $auth['id'] : 0;
         $datetime = date('Y-m-d H:i:s');
-        if (empty($record->createdAtUserId)) {
-            $record->create_at          = $datetime;
+        if (empty($record->created_at_user_id)) {
+            $record->created_at         = $datetime;
             $record->created_at_user_id = $userId;
         }
-        $record->lastupdate          = $datetime;
+        $record->last_update         = $datetime;
         $record->last_update_user_id = $userId;
     }
 }
