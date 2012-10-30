@@ -70,7 +70,7 @@ class EpisodesController extends \NDN\Controller
                 foreach ($episodes as $episode) {
                     $data[] = array(
                         'id'       => $episode->id,
-                        'number'   => substr("0000" . $episode->id, -3),
+                        'number'   => substr("0000" . $episode->number, -3),
                         'air_date' => $episode->air_date,
                         'outcome'  => $this->translateOutcome($episode->outcome),
                         'summary'  => $episode->summary,
@@ -95,6 +95,8 @@ class EpisodesController extends \NDN\Controller
 
         if ($auth) {
             if ($this->request->isPost()) {
+
+                $this->view->disable();
 
                 $episode = new Episodes();
                 $this->setEpisode($episode, $auth);
@@ -135,6 +137,8 @@ class EpisodesController extends \NDN\Controller
             }
 
             if ($this->request->isPost()) {
+
+                $this->view->disable();
 
                 $this->setEpisode($episode, $auth);
 
@@ -209,9 +213,8 @@ class EpisodesController extends \NDN\Controller
      * Private helper setting episode fields
      *
      * @param $episode
-     * @param $auth
      */
-    private function setEpisode($episode, $auth)
+    private function setEpisode($episode)
     {
         $episode->number   = $this->request->getPost('episode_id', 'int');
         $episode->air_date = $this->request->getPost('episode_date', 'int');

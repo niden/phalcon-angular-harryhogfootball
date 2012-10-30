@@ -84,6 +84,8 @@ class PlayersController extends \NDN\Controller
 
             if ($this->request->isPost()) {
 
+                $this->view->disable();
+
                 $player = new Players();
                 $this->setPlayer($player, $auth);
 
@@ -118,6 +120,8 @@ class PlayersController extends \NDN\Controller
             }
 
             if ($this->request->isPost()) {
+
+                $this->view->disable();
 
                 $this->setPlayer($player, $auth);
 

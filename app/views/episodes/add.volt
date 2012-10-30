@@ -11,30 +11,21 @@
     <div class='control-group'>
         <label class='control-label'>Episode</label>
         <div class='controls'>
-            {{ text_field('episodeId', 'class': 'input-xlarge') }}
+            {{ text_field('episode_id', 'class': 'input-xlarge') }}
             <p class='help-block'>(required)</p>
         </div>
     </div>
     <div class='control-group'>
         <label class='control-label'>Date</label>
         <div class='controls'>
-            {{ text_field('episodeDate', 'class': 'input-medium', 'id': 'episodeDate', 'ui-date': 'dateOptions') }}
+            {{ text_field('episode_date', 'class': 'input-medium', 'id': 'episodeDate', 'ui-date': 'dateOptions') }}
             <p class='help-block'>(required)</p>
         </div>
     </div>
     <div class='control-group'>
         <label class='control-label'>Summary</label>
         <div class='controls'>
-            {{ select_static('outcome', 'class': 'input-xlarge') }}
-            <?php
-                echo Tag::selectStatic(
-                    array(
-                        'outcome',
-                        array('1' => 'Win', '-1' => 'Loss'),
-                        'class' => 'input-xlarge'
-                    )
-                )
-            ?>
+            {{ select_static('outcome', ['0': '', '1': 'Win', '-1': 'Loss'], 'class': 'input-xlarge') }}
             <p class='help-block'>(required)</p>
         </div>
     </div>
