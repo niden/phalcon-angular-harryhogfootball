@@ -24,6 +24,9 @@
                 </li>
             </ul>
         </div>
+
+        <?php echo $this->flash->output() ?>
+
         <div class="row-fluid">
             <?php echo $this->getContent() ?>
         </div> <!-- row -->
