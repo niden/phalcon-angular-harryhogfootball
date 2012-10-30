@@ -21,7 +21,12 @@ class Model extends \Phalcon\Mvc\Model
 {
     protected $behaviors = array();
 
-    public function setBehavior($behavior)
+    /**
+     * Adds a behavior in the model
+     *
+     * @param $behavior
+     */
+    public function addBehavior($behavior)
     {
         $this->behaviors[$behavior] = true;
     }

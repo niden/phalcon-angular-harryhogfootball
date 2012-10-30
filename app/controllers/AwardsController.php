@@ -55,7 +55,7 @@ class AwardsController extends \NDN\Controller
      */
     public function addAction()
     {
-        $auth = Session::get('auth');
+        $auth = $this->session->get('auth');
 
         if ($auth) {
             $this->_bc->add('Add', 'awards/add');
@@ -78,26 +78,13 @@ class AwardsController extends \NDN\Controller
                 $award->playerId  = $this->request->getPost('player_id', 'int');
                 $award->award     = $this->request->getPost('award', 'int');
 
-                $award->lastUpdate       = $datetime;
-                $award->lastUpdateUserId = (int) $auth['id'];
-
                 if (!$award->save()) {
                     foreach ($award->getMessages() as $message) {
-                        Session::setFlash(
-                            'error',
-                            (string) $message,
-                            'alert alert-error'
-                        );
+                        $this->flash->error((string) $message);
                     }
                 } else {
-                    Session::setFlash(
-                        'success',
-                        'Award created successfully',
-                        'alert alert-success'
-                    );
-
+                    $this->flash->success('Award created successfully');
                     $this->invalidateCache();
-
                     $this->response->redirect('awards/');
                 }
 
@@ -124,11 +111,11 @@ class AwardsController extends \NDN\Controller
             case 2:
             case 3:
             case 4:
-                $sql .= 'AND Awards.userId = ' . (int) $action. ' ';
+                $sql .= 'AND Awards.user_id = ' . (int) $action. ' ';
                 break;
         }
 
-        $sql .= 'GROUP BY Awards.award, Awards.playerId '
+        $sql .= 'GROUP BY Awards.award, Awards.player_id '
               . 'ORDER BY Awards.award ASC, total DESC, Players.name ';
 
         if (!empty($limit)) {
@@ -193,9 +180,7 @@ class AwardsController extends \NDN\Controller
 
     private function invalidateCache()
     {
-        $config   = Registry::get('config');
-        $cache    = Registry::get('cache');
-        $cacheDir = $config->models->cache->cacheDir;
+        $cacheDir = $this->config->models->cache->cacheDir;
         $name     = strtolower($this->getName());
 
         foreach (glob($cacheDir . '*' . $name) as $filename) {
@@ -204,7 +189,7 @@ class AwardsController extends \NDN\Controller
             $entry = str_replace($cacheDir, '', $filename);
 
             // $entry has the cache key
-            $cache->remove($entry);
+            $this->cache->delete($entry);
         }
     }
 }

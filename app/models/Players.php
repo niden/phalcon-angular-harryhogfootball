@@ -19,7 +19,7 @@ class Players extends \NDN\Model
      */
     public function initialize()
     {
-        $this->setBehavior('Timestamp');
+        $this->addBehavior('Timestamp');
         $this->hasMany('id', 'Awards', 'player_id');
     }
 }

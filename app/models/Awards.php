@@ -12,9 +12,6 @@
  *
  */
 
-use \Phalcon\Mvc\Model\MetaData;
-use \Phalcon\Db\Column;
-
 class Awards extends \NDN\Model
 {
     /**
@@ -22,7 +19,7 @@ class Awards extends \NDN\Model
      */
     public function initialize()
     {
-        $this->setBehavior('Timestamp');
+        $this->addBehavior('Timestamp');
         $this->belongsTo('episode_id', 'Episodes', 'id');
         $this->belongsTo('player_id', 'Players', 'id');
         $this->belongsTo('user_id', 'Users', 'id');
