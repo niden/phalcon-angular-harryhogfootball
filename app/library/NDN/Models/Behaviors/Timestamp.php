@@ -19,11 +19,11 @@ use \Phalcon\Db\Column;
 
 class Timestamp
 {
-    protected $di;
+    protected $session;
 
-    public function __construct($di)
+    public function __construct($session)
     {
-        $this->di = $di;
+        $this->session= $session;
     }
 
     /**
@@ -31,7 +31,7 @@ class Timestamp
      */
     public function beforeSave($record)
     {
-        $auth     = $this->di->getShared('session')->get('auth');
+        $auth     = $this->session->get('auth');
         $userId   = (isset($auth['id'])) ? (int) $auth['id'] : 0;
         $datetime = date('Y-m-d H:i:s');
         if (empty($record->created_at_user_id)) {

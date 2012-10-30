@@ -38,13 +38,9 @@ class Model extends \Phalcon\Mvc\Model
 
         foreach ($this->behaviors as $behavior => $active)
         {
-            if ($active &&
-                file_exists($path . '/Models/Behaviors/' . $behavior . '.php'))
+            if ($active && $di->has($behavior))
             {
-                $className = '\NDN\Models\Behaviors\\' . $behavior;
-                $class     = new $className($di);
-
-                $class->beforeSave($this);
+                $di->get($behavior)->beforeSave($this);
             }
         }
     }

@@ -51,6 +51,7 @@ class Bootstrap
             $this->initDatabase($options);
             $this->initSession($options);
             $this->initCache($options);
+            $this->initBehaviors($options);
 
 //        $this->initDebug($options);
             $application = new Application();
@@ -361,6 +362,25 @@ class Bootstrap
             }
         );
 
+    }
+
+    /**
+     * Initializes the model behaviors
+     *
+     * @param array $options
+     */
+    protected function initBehaviors($options = array())
+    {
+        $session = $this->_di->getShared('session');
+
+        // Timestamp
+        $this->_di->set(
+            'Timestamp',
+            function() use ($session) {
+                $timestamp = new Models\Behaviors\Timestamp($session);
+                return $timestamp;
+            }
+        );
     }
 //    protected function initEventsManager($options = array())
 //   {
