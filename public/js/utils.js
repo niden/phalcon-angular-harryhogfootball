@@ -56,7 +56,7 @@ var ngModule = angular.module('HHF', ['ngResource', 'ui'])
                     break;
                 case '/episodes':
                     getPath = path + '/get';
-                    getSort = '-airDate';
+                    getSort = '-number';
                     break;
                 case '/':
                     getPath = '/awards/get/0/5';

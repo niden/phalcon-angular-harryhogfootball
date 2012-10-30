@@ -60,7 +60,7 @@ class AwardsController extends \NDN\Controller
         if ($auth) {
             $this->_bc->add('Add', 'awards/add');
 
-            $allEpisodes = Episodes::find(array('order' => 'airDate DESC'));
+            $allEpisodes = Episodes::find(array('order' => 'air_date DESC'));
             $allUsers    = Users::find(array('order' => 'username'));
             $allPlayers  = Players::find(array('order' => 'active DESC, name'));
 
@@ -73,9 +73,9 @@ class AwardsController extends \NDN\Controller
                 $datetime = date('Y-m-d H:i:s');
 
                 $award = new Awards();
-                $award->userId    = $this->request->getPost('userId', 'int');
-                $award->episodeId = $this->request->getPost('episodeId', 'int');
-                $award->playerId  = $this->request->getPost('playerId', 'int');
+                $award->userId    = $this->request->getPost('user_id', 'int');
+                $award->episodeId = $this->request->getPost('episode_id', 'int');
+                $award->playerId  = $this->request->getPost('player_id', 'int');
                 $award->award     = $this->request->getPost('award', 'int');
 
                 $award->lastUpdate       = $datetime;

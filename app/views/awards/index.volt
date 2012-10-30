@@ -1,4 +1,4 @@
-<?php echo $this->getContent() ?>
+{{ content() }}
             <div ng-controller='MainCtrl'>
 
             <div>

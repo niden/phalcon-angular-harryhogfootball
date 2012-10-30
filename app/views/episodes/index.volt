@@ -1,6 +1,4 @@
-<?php use \Phalcon\Tag as Tag; ?>
-
-<?php echo $this->getContent() ?>
+{{ content() }}
 
 <div>
     <ul class='nav nav-tabs'>
@@ -15,7 +13,7 @@
     <thead>
     <tr>
         <th><a href='' ng-click="predicate='number'; reverse=!reverse">#</a></th>
-        <th><a href='' ng-click="predicate='airDate'; reverse=!reverse">Date</a></th>
+        <th><a href='' ng-click="predicate='air_date'; reverse=!reverse">Date</a></th>
         <th><a href='' ng-click="predicate='outcome'; reverse=!reverse">W/L</a></th>
         <th><a href='' ng-click="predicate='summary'; reverse=!reverse">Summary</a></th>
     </tr>
@@ -23,7 +21,7 @@
     <tbody>
         <tr ng-repeat="episode in data.results | orderBy:predicate:reverse">
             <td>[[episode.number]]</td>
-            <td width='7%'>[[episode.airDate]]</td>
+            <td width='7%'>[[episode.air_date]]</td>
             <td>[[episode.outcome]]</td>
             <td>[[episode.summary]]</td>
             {% if (addButton) %}

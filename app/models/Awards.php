@@ -23,7 +23,8 @@ class Awards extends \NDN\Model
     public function initialize()
     {
         $this->setBehavior('Timestamp');
-        $this->belongsTo('episodeId', 'Episodes', 'id');
-        $this->belongsTo('playerId', 'Players', 'id');
+        $this->belongsTo('episode_id', 'Episodes', 'id');
+        $this->belongsTo('player_id', 'Players', 'id');
+        $this->belongsTo('user_id', 'Users', 'id');
     }
 }

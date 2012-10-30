@@ -23,7 +23,7 @@
             <td>[[player.name]]</td>
             <td>
                 <span ng-show="player.active" class='label label-success'>
-                    [[player.activeText]]
+                    [[player.active_text]]
                 </span>
             </td>
             {% if (addButton) %}

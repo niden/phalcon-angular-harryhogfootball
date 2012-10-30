@@ -19,6 +19,6 @@ class Users extends \NDN\Model
      */
     public function initialize()
     {
-        $this->belongsTo('userId', 'Scoring', 'id');
+        $this->hasMany('id', 'Awards', 'user_id');
     }
 }

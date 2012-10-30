@@ -35,10 +35,10 @@ class Timestamp
         $userId   = (isset($auth['id'])) ? (int) $auth['id'] : 0;
         $datetime = date('Y-m-d H:i:s');
         if (empty($record->createdAtUserId)) {
-            $record->createdAt        = $datetime;
-            $record->createdAtUserId  = $userId;
+            $record->create_at          = $datetime;
+            $record->created_at_user_id = $userId;
         }
-        $record->lastUpdate       = $datetime;
-        $record->lastUpdateUserId = $userId;
+        $record->lastupdate          = $datetime;
+        $record->last_update_user_id = $userId;
     }
 }

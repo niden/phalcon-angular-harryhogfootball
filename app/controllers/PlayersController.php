@@ -60,10 +60,10 @@ class PlayersController extends \NDN\Controller
             if (count($players) >= 0) {
                 foreach ($players as $player) {
                     $results[] = array(
-                                    'id'         => $player->id,
-                                    'name'       => $player->name,
-                                    'active'     => $player->active,
-                                    'activeText' => $this->transformActive($player->active),
+                                    'id'          => $player->id,
+                                    'name'        => $player->name,
+                                    'active'      => $player->active,
+                                    'active_text' => $this->transformActive($player->active),
                                  );
                 }
             }

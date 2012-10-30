@@ -20,6 +20,6 @@ class Episodes extends \NDN\Model
     public function initialize()
     {
         $this->setBehavior('Timestamp');
-        $this->belongsTo('episodeId', 'Awards', 'id');
+        $this->hasMany('id', 'Awards', 'episode_id');
     }
 }

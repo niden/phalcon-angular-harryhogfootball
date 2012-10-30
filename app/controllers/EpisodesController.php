@@ -69,11 +69,11 @@ class EpisodesController extends \NDN\Controller
             if (count($episodes) > 0) {
                 foreach ($episodes as $episode) {
                     $data[] = array(
-                        'id'      => $episode->id,
-                        'number'  => substr("0000" . $episode->id, -3),
-                        'airDate' => $episode->airdate,
-                        'outcome' => $this->translateOutcome($episode->outcome),
-                        'summary' => $episode->summary,
+                        'id'       => $episode->id,
+                        'number'   => substr("0000" . $episode->id, -3),
+                        'air_date' => $episode->air_date,
+                        'outcome'  => $this->translateOutcome($episode->outcome),
+                        'summary'  => $episode->summary,
                     );
                 }
             }
