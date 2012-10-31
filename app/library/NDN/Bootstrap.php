@@ -19,14 +19,15 @@ use \Phalcon\Loader as Loader;
 use \Phalcon\Flash\Session as Flash;
 use \Phalcon\Logger\Adapter\File as Logger;
 use \Phalcon\Db\Adapter\Pdo\Mysql as Mysql;
-use \Phalcon\Mvc\Model\Metadata\Memory as MetadataMemory;
 use \Phalcon\Session\Adapter\Files as Session;
 use \Phalcon\Cache\Frontend\Data as CacheFront;
 use \Phalcon\Cache\Backend\File as CacheBack;
 use \Phalcon\Mvc\Application as Application;
-use \Phalcon\Events\Manager as EventsManager;
-use \Phalcon\Mvc\View\Engine\Volt as Volt;
+use \Phalcon\Mvc\Dispatcher as Dispatcher;
 use \Phalcon\Mvc\View as View;
+use \Phalcon\Mvc\View\Engine\Volt as Volt;
+use \Phalcon\Mvc\Model\Metadata\Memory as MetadataMemory;
+use \Phalcon\Events\Manager as EventsManager;
 
 class Bootstrap
 {
@@ -46,6 +47,7 @@ class Bootstrap
             'timezone',
             'flash',
             'url',
+            'dispatcher',
             'view',
             'logger',
             'database',
@@ -214,6 +216,35 @@ class Bootstrap
                 $url->setBaseUri($config->app->baseUri);
                 return $url;
             }
+        );
+    }
+
+    /**
+     * Initializes the dispatcher
+     *
+     * @param array $options
+     */
+    protected function initDispatcher($options = array())
+    {
+        $di = $this->_di;
+
+        $this->_di->set(
+            'dispatcher',
+            function() use ($di) {
+
+                $evManager = $di->getShared('eventsManager');
+                $acl       = new \NDN\Plugins\Acl($di);
+
+                /**
+                 * Listening to events in the dispatcher using the
+                 * Acl plugin
+                 */
+                $evManager->attach('dispatch', $acl);
+        		$dispatcher = new Dispatcher();
+		        $dispatcher->setEventsManager($evManager);
+
+		        return $dispatcher;
+	        }
         );
     }
 
@@ -440,26 +471,4 @@ class Bootstrap
             require_once ROOT_PATH . '/app/library/NDN/Debug.php';
         }
     }
-//    protected function initEventsManager($options = array())
-//   {
-//        $di->set('dispatcher', function() use ($di) {
-//
-//		$eventsManager = $di->getShared('eventsManager');
-//
-//		$security = new Security($di);
-//
-//		/**
-//         * We listen for events in the dispatcher using the Security plugin
-//         */
-//		$eventsManager->attach('dispatch', $security);
-//
-//		$dispatcher = new Phalcon\Mvc\Dispatcher();
-//		$dispatcher->setEventsManager($eventsManager);
-//
-//		return $dispatcher;
-//	}
-//
-//
-//
-//
 }
