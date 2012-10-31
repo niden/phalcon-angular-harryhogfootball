@@ -1,7 +1,7 @@
 <?php
 /**
  * Model.php
- * NDN_Model
+ * NDN\Model
  *
  * The base model for all tables
  *
