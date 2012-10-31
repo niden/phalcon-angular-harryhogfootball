@@ -34,12 +34,12 @@
         {{ partial('partials/footer') }}
     </div>
 
-    {{ javascript_include(config.cdn.js.jquery, config.cdn.local) }}
-    {{ javascript_include(config.cdn.js.jquery_ui, config.cdn.local) }}
-    {{ javascript_include(config.cdn.js.bootstrap, config.cdn.local) }}
-    {{ javascript_include(config.cdn.js.angular, config.cdn.local) }}
-    {{ javascript_include(config.cdn.js.angular_resource, config.cdn.local) }}
-    {{ javascript_include(config.cdn.js.angular_ui, config.cdn.local) }}
+    {{ javascript_include(config.app.js.jquery, config.app.js.local) }}
+    {{ javascript_include(config.app.js.jquery_ui, config.app.js.local) }}
+    {{ javascript_include(config.app.js.bootstrap, config.app.js.local) }}
+    {{ javascript_include(config.app.js.angular, config.app.js.local) }}
+    {{ javascript_include(config.app.js.angular_resource, config.app.js.local) }}
+    {{ javascript_include(config.app.js.angular_ui, config.app.js.local) }}
     {{ javascript_include('js/utils.js') }}
 
     </body>
