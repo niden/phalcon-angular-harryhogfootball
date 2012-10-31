@@ -25,6 +25,8 @@ use \Phalcon\Cache\Frontend\Data as CacheFront;
 use \Phalcon\Cache\Backend\File as CacheBack;
 use \Phalcon\Mvc\Application as Application;
 use \Phalcon\Events\Manager as EventsManager;
+use \Phalcon\Mvc\View\Engine\Volt as Volt;
+use \Phalcon\Mvc\View as View;
 
 class Bootstrap
 {
@@ -37,23 +39,32 @@ class Bootstrap
 
     public function run($options)
     {
+        $loaders = array(
+            'config',
+            'loader',
+            'environment',
+            'timezone',
+            'flash',
+            'url',
+            'view',
+            'logger',
+            'database',
+            'session',
+            'cache',
+            'behaviors',
+            'debug',
+        );
+
+
         try {
 
-            // Initialize everything - Order does matter
-            $this->initConfig($options);
-            $this->initLoader($options);
-            $this->initEnvironment($options);
-            $this->initTimezone($options);
-            $this->initFlash($options);
-            $this->initBaseUrl($options);
-            $this->initView($options);
-            $this->initLogger($options);
-            $this->initDatabase($options);
-            $this->initSession($options);
-            $this->initCache($options);
-            $this->initBehaviors($options);
+            foreach ($loaders as $service)
+            {
+                $function = 'init' . ucfirst($service);
 
-//        $this->initDebug($options);
+                $this->$function($options);
+            }
+
             $application = new Application();
             $application->setDI($this->_di);
 
@@ -99,16 +110,15 @@ class Bootstrap
 
         $loader->registerDirs(
             array(
-                ROOT_PATH . $config->phalcon->controllersDir,
-                ROOT_PATH . $config->phalcon->modelsDir,
-                ROOT_PATH . $config->phalcon->pluginsDir,
-                ROOT_PATH . $config->phalcon->libraryDir,
+                ROOT_PATH . $config->app->path->controllers,
+                ROOT_PATH . $config->app->path->models,
+                ROOT_PATH . $config->app->path->library,
             )
         );
 
         // Register the namespace
         $loader->registerNamespaces(
-            array("NDN" => $config->phalcon->libraryDir)
+            array("NDN" => $config->app->path->library)
         );
 
         $loader->register();
@@ -123,14 +133,17 @@ class Bootstrap
     {
         $config = $this->_di->get('config');
 
-        $debug = (isset($config->phalcon->debug)) ?
-                 (bool) $config->phalcon->debug   :
+        $debug = (isset($config->app->debug)) ?
+                 (bool) $config->app->debug   :
                  false;
 
-        if ($debug) {
+        if ($debug)
+        {
             ini_set('display_errors', true);
             error_reporting(E_ALL);
-        } else {
+        }
+        else
+        {
             ini_set('display_errors', false);
 //            error_reporting( -1 );
         }
@@ -149,9 +162,9 @@ class Bootstrap
     {
         $config = $this->_di->get('config');
 
-        $timezone = (isset($config->timezone)) ?
-            $config->timezone      :
-            'US/Eastern';
+        $timezone = (isset($config->app->timezone)) ?
+                    $config->app->timezone      :
+                    'US/Eastern';
 
         date_default_timezone_set($timezone);
 
@@ -167,7 +180,8 @@ class Bootstrap
     {
         $this->_di->set(
             'flash',
-            function() {
+            function()
+            {
                 $params = array(
                     'error'   => 'alert alert-error',
                     'success' => 'alert alert-success',
@@ -184,7 +198,7 @@ class Bootstrap
      *
      * @param array $options
      */
-    protected function initBaseUrl($options = array())
+    protected function initUrl($options = array())
     {
         $config = $this->_di->get('config');
 
@@ -193,9 +207,11 @@ class Bootstrap
          * application
          */
         $this->_di->set(
-            'url', function() use ($config) {
+            'url',
+            function() use ($config)
+            {
                 $url = new \Phalcon\Mvc\Url();
-                $url->setBaseUri($config->phalcon->baseUri);
+                $url->setBaseUri($config->app->baseUri);
                 return $url;
             }
         );
@@ -209,24 +225,33 @@ class Bootstrap
     protected function initView($options = array())
     {
         $config = $this->_di->get('config');
+        $di     = $this->_di;
 
         /**
          * Setup the view service
          */
         $this->_di->set(
             'view',
-            function() use ($config) {
+            function() use ($config, $di)
+            {
                 $view = new \Phalcon\Mvc\View();
-                $view->setViewsDir(ROOT_PATH . $config->phalcon->viewsDir);
+                $view->setViewsDir(ROOT_PATH . $config->app->path->views);
+
+                $volt = new Volt($view, $di);
+                $volt->setOptions(
+                    array(
+                        'compiledPath'      => ROOT_PATH . $config->app->volt->path,
+                        'compiledExtension' => $config->app->volt->extension,
+                        'compiledSeparator' => $config->app->volt->separator,
+                        'stat'              => (bool) $config->app->volt->stat,
+                    )
+                );
 
                 /**
                  * Register Volt
                  */
-                $view->registerEngines(
-                    array(
-                        '.volt' => 'Phalcon\Mvc\View\Engine\Volt'
-                    )
-                );
+                $view->registerEngines(array('.volt' => $volt));
+
                 return $view;
             }
         );
@@ -243,9 +268,10 @@ class Bootstrap
 
         $this->_di->set(
             'logger',
-            function() use ($config) {
-                $logger = new Logger(ROOT_PATH . $config->logger->file);
-                $logger->setFormat($config->logger->format);
+            function() use ($config)
+            {
+                $logger = new Logger(ROOT_PATH . $config->app->logger->file);
+                $logger->setFormat($config->app->logger->format);
                 return $logger;
             }
         );
@@ -260,12 +286,17 @@ class Bootstrap
     {
         $config = $this->_di->get('config');
         $logger = $this->_di->get('logger');
+        $debug  = (isset($config->app->debug)) ?
+                  (bool) $config->app->debug   :
+                  false;
 
         $this->_di->set(
             'db',
-            function() use ($config, $logger) {
+            function() use ($debug, $config, $logger)
+            {
 
-                if ($config->phalcon->debug) {
+                if ($debug)
+                {
                     $eventsManager = new EventsManager();
 
                     // Listen all the database events
@@ -291,7 +322,8 @@ class Bootstrap
 
                 $conn = new Mysql($params);
 
-                if ($config->phalcon->debug) {
+                if ($config->phalcon->debug)
+                {
                     // Assign the eventsManager to the db adapter instance
                     $conn->setEventsManager($eventsManager);
                 }
@@ -305,13 +337,17 @@ class Bootstrap
          */
         $this->_di->set(
             'modelsMetadata',
-            function() use ($config) {
-                if(isset($config->models->metadata)) {
+            function() use ($config)
+            {
+                if (isset($config->models->metadata))
+                {
                     $metaDataConfig  = $config->models->metadata;
                     $metadataAdapter = 'Phalcon\Mvc\Model\Metadata\\'
                                      . $metaDataConfig->adapter;
                     return new $metadataAdapter();
-                } else {
+                }
+                else
+                {
                     return new MetadataMemory();
                 }
             }
@@ -327,9 +363,11 @@ class Bootstrap
     {
         $this->_di->set(
             'session',
-            function() {
+            function()
+            {
                 $session = new Session();
-                if (!$session->isStarted()) {
+                if (!$session->isStarted())
+                {
                     $session->start();
                 }
                 return $session;
@@ -348,10 +386,11 @@ class Bootstrap
 
         $this->_di->set(
             'cache',
-            function() use ($config) {
+            function() use ($config)
+            {
                 // Get the parameters
-                $lifetime        = $config->models->cache->lifetime;
-                $cacheDir        = $config->models->cache->cacheDir;
+                $lifetime        = $config->app->cache->lifetime;
+                $cacheDir        = $config->app->cache->cacheDir;
                 $frontEndOptions = array('lifetime' => $lifetime);
                 $backEndOptions  = array('cacheDir' => ROOT_PATH . $cacheDir);
 
@@ -376,11 +415,30 @@ class Bootstrap
         // Timestamp
         $this->_di->set(
             'Timestamp',
-            function() use ($session) {
+            function() use ($session)
+            {
                 $timestamp = new Models\Behaviors\Timestamp($session);
                 return $timestamp;
             }
         );
+    }
+
+    /**
+     * Initializes the debugging functions
+     *
+     * @param array $options
+     */
+    protected function initDebug($options = array())
+    {
+        $config = $this->_di->get('config');
+        $debug  = (isset($config->app->debug)) ?
+                  (bool) $config->app->debug   :
+                  false;
+
+        if ($debug)
+        {
+            require_once ROOT_PATH . '/app/library/NDN/Debug.php';
+        }
     }
 //    protected function initEventsManager($options = array())
 //   {
@@ -404,7 +462,4 @@ class Bootstrap
 //
 //
 //
-//    protected function initDebug($options = array())
-//    {
-//    }
 }

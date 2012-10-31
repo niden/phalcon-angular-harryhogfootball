@@ -13,7 +13,6 @@ try {
     // in my bootstrap class
     require_once ROOT_PATH . '/app/library/NDN/Bootstrap.php';
     require_once ROOT_PATH . '/app/library/NDN/Error.php';
-    require_once ROOT_PATH . '/app/library/NDN/Debug.php';
 
     $di  = new \Phalcon\DI\FactoryDefault();
     $app = new \NDN\Bootstrap($di);
