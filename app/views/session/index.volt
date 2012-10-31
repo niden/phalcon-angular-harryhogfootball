@@ -1,4 +1,4 @@
-{{  content() }}
+{{ content() }}
     <div class="span6">
         <div class="page-header">
             <h2>Log In</h2>

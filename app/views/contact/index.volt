@@ -36,4 +36,4 @@
             {{ submit_button('Send', 'class':'btn btn-primary btn-large') }}
         </div>
     </fieldset>
-{{ end_form }}
+{{ end_form() }}
