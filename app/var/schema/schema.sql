@@ -22,18 +22,18 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `awards` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `episodeId` int(11) unsigned NOT NULL,
-  `userId` int(11) unsigned NOT NULL,
-  `playerId` int(10) unsigned NOT NULL,
+  `episode_id` int(11) unsigned NOT NULL,
+  `user_id` int(11) unsigned NOT NULL,
+  `player_id` int(10) unsigned NOT NULL,
   `award` int(1) NOT NULL DEFAULT '0',
-  `createdAt` datetime DEFAULT NULL,
-  `createdAtUserId` int(11) DEFAULT NULL,
-  `lastUpdate` datetime DEFAULT NULL,
-  `lastUpdateUserId` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `created_at_user_id` int(11) DEFAULT NULL,
+  `last_update` datetime DEFAULT NULL,
+  `last_update_user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `userId` (`userId`),
-  KEY `episodeId` (`episodeId`),
-  KEY `playerId` (`playerId`),
+  KEY `user_id` (`user_id`),
+  KEY `episode_id` (`episode_id`),
+  KEY `player_id` (`player_id`),
   KEY `award` (`award`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `contact` (
   `name` varchar(70) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(70) COLLATE utf8_unicode_ci NOT NULL,
   `comments` text COLLATE utf8_unicode_ci NOT NULL,
-  `createdAt` int(11) NOT NULL DEFAULT '0',
+  `created_at` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
@@ -62,15 +62,15 @@ CREATE TABLE IF NOT EXISTS `episodes` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `number` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `summary` text COLLATE utf8_unicode_ci NOT NULL,
-  `airDate` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `air_date` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `outcome` int(1) NOT NULL,
-  `createdAt` datetime DEFAULT NULL,
-  `createdAtUserId` int(11) DEFAULT NULL,
-  `lastUpdate` datetime DEFAULT NULL,
-  `lastUpdateUserId` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `created_at_user_id` int(11) DEFAULT NULL,
+  `last_update` datetime DEFAULT NULL,
+  `last_update_user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `outcome` (`outcome`),
-  KEY `airDate` (`airDate`)
+  KEY `air_date` (`air_date`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=281 ;
 
 -- --------------------------------------------------------
@@ -83,10 +83,10 @@ CREATE TABLE IF NOT EXISTS `players` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
   `active` int(1) unsigned NOT NULL DEFAULT '0',
-  `createdAt` datetime DEFAULT NULL,
-  `createdAtUserId` int(11) DEFAULT NULL,
-  `lastUpdate` datetime DEFAULT NULL,
-  `lastUpdateUserId` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `created_at_user_id` int(11) DEFAULT NULL,
+  `last_update` datetime DEFAULT NULL,
+  `last_update_user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   KEY `active` (`active`)
