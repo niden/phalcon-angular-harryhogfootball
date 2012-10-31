@@ -15,7 +15,7 @@
         <thead>
         <tr>
             <th><a href='' ng-click="predicate='name'; reverse=!reverse">Name</a></th>
-            <th><a href='' ng-click="predicate='active'; reverse=!reverse">Active</a></th>
+            <th><a href='' ng-click="predicate=['active', 'name']; reverse=!reverse">Active</a></th>
         </tr>
         </thead>
         <tbody>
