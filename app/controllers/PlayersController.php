@@ -17,6 +17,9 @@ use \Phalcon\Mvc\View as View;
 
 class PlayersController extends \NDN\Controller
 {
+    /**
+     * Initializes the controller
+     */
     public function initialize()
     {
         Tag::setTitle('Manage Players');
@@ -41,11 +44,17 @@ class PlayersController extends \NDN\Controller
         $this->view->setVar('menus', $this->constructMenu($this));
     }
 
+    /**
+     * index Action
+     */
     public function indexAction()
     {
 
     }
 
+    /**
+     * get Action - gets data back
+     */
     public function getAction()
     {
         $this->view->setRenderLevel(View::LEVEL_LAYOUT);
@@ -76,6 +85,9 @@ class PlayersController extends \NDN\Controller
         echo $results;
     }
 
+    /**
+     * add Action
+     */
     public function addAction()
     {
         $auth = $this->session->get('auth');
@@ -83,8 +95,6 @@ class PlayersController extends \NDN\Controller
         if ($auth) {
 
             if ($this->request->isPost()) {
-
-                $this->view->disable();
 
                 $player = new Players();
                 $this->setPlayer($player, $auth);
@@ -94,6 +104,9 @@ class PlayersController extends \NDN\Controller
                         $this->flash->error((string) $message);
                     }
                 } else {
+
+                    $this->view->disable();
+
                     $this->flash->success('Player created successfully');
 
                     // Invalidate the cache
@@ -105,6 +118,11 @@ class PlayersController extends \NDN\Controller
         }
     }
 
+    /**
+     * edit Action
+     *
+     * @param $id
+     */
     public function editAction($id)
     {
         $auth = $this->session->get('auth');
@@ -121,8 +139,6 @@ class PlayersController extends \NDN\Controller
 
             if ($this->request->isPost()) {
 
-                $this->view->disable();
-
                 $this->setPlayer($player, $auth);
 
                 if (!$player->save()) {
@@ -130,6 +146,8 @@ class PlayersController extends \NDN\Controller
                         $this->flash->error((string) $message);
                     }
                 } else {
+                    $this->view->disable();
+
                     $this->flash->success('Player updated successfully');
 
                     // Invalidate the cache
@@ -185,11 +203,24 @@ class PlayersController extends \NDN\Controller
         }
     }
 
+    /**
+     * Transforms the active flag to text meaningful to the user
+     *
+     * @param $active
+     *
+     * @return string
+     */
     private function transformActive($active)
     {
         return ($active == 1) ? 'Active' : '';
     }
 
+    /**
+     * Sets the player record up
+     *
+     * @param $player
+     * @param $auth
+     */
     private function setPlayer($player, $auth)
     {
         $datetime = date('Y-m-d H:i:s');

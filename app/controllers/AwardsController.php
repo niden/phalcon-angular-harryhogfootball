@@ -83,6 +83,8 @@ class AwardsController extends \NDN\Controller
                         $this->flash->error((string) $message);
                     }
                 } else {
+                    $this->view->disable();
+
                     $this->flash->success('Award created successfully');
                     $this->invalidateCache();
                     $this->response->redirect('awards/');
@@ -178,6 +180,9 @@ class AwardsController extends \NDN\Controller
         echo $result;
     }
 
+    /**
+     * cache invalidator
+     */
     private function invalidateCache()
     {
         $cacheDir = $this->config->models->cache->cacheDir;

@@ -96,8 +96,6 @@ class EpisodesController extends \NDN\Controller
         if ($auth) {
             if ($this->request->isPost()) {
 
-                $this->view->disable();
-
                 $episode = new Episodes();
                 $this->setEpisode($episode, $auth);
 
@@ -106,6 +104,8 @@ class EpisodesController extends \NDN\Controller
                         $this->flash->error((string) $message);
                     }
                 } else {
+                    $this->view->disable();
+
                     $this->flash->success('Episode created successfully');
 
                     // Invalidate the cache
@@ -138,8 +138,6 @@ class EpisodesController extends \NDN\Controller
 
             if ($this->request->isPost()) {
 
-                $this->view->disable();
-
                 $this->setEpisode($episode, $auth);
 
                 if (!$episode->save()) {
@@ -147,6 +145,8 @@ class EpisodesController extends \NDN\Controller
                         $this->flash((string) $message);
                     }
                 } else {
+                    $this->view->disable();
+
                     $this->flash->success('Episode updated successfully');
 
                     // Invalidate the cache
