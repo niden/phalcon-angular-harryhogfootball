@@ -14,30 +14,45 @@
 
 namespace NDN;
 
-use \Phalcon\Config\Adapter\Ini as Config;
-use \Phalcon\Loader as Loader;
-use \Phalcon\Flash\Session as Flash;
-use \Phalcon\Logger\Adapter\File as Logger;
-use \Phalcon\Db\Adapter\Pdo\Mysql as Mysql;
-use \Phalcon\Session\Adapter\Files as Session;
-use \Phalcon\Cache\Frontend\Data as CacheFront;
-use \Phalcon\Cache\Backend\File as CacheBack;
-use \Phalcon\Mvc\Application as Application;
-use \Phalcon\Mvc\Dispatcher as Dispatcher;
-use \Phalcon\Mvc\View as View;
-use \Phalcon\Mvc\View\Engine\Volt as Volt;
-use \Phalcon\Mvc\Model\Metadata\Memory as MetadataMemory;
-use \Phalcon\Events\Manager as EventsManager;
+use \Phalcon\Config\Adapter\Ini as PhConfig;
+use \Phalcon\Loader as PhLoader;
+use \Phalcon\Flash\Session as PhFlash;
+use \Phalcon\Logger\Adapter\File as PhLogger;
+use \Phalcon\Db\Adapter\Pdo\Mysql as PhMysql;
+use \Phalcon\Session\Adapter\Files as PhSession;
+use \Phalcon\Cache\Frontend\Data as PhCacheFront;
+use \Phalcon\Cache\Backend\File as PhCacheBack;
+use \Phalcon\Mvc\Application as PhApplication;
+use \Phalcon\Mvc\Dispatcher as PhDispatcher;
+use \Phalcon\Mvc\Url as PhUrl;
+use \Phalcon\Mvc\View as PhView;
+use \Phalcon\Mvc\View\Engine\Volt as PhVolt;
+use \Phalcon\Mvc\Model\Metadata\Memory as PhMetadataMemory;
+use \Phalcon\Mvc\Model\Metadata\Files as PhMetadataFiles;
+use \Phalcon\Events\Manager as PhEventsManager;
+use \Phalcon\Exception as PhException;
 
 class Bootstrap
 {
     private $_di;
 
+    /**
+     * Constructor
+     * 
+     * @param $di
+     */
     public function __construct($di)
     {
         $this->_di = $di;
     }
 
+    /**
+     * Runs the application performing all initializations
+     * 
+     * @param $options
+     *
+     * @return mixed
+     */
     public function run($options)
     {
         $loaders = array(
@@ -45,6 +60,7 @@ class Bootstrap
             'loader',
             'environment',
             'timezone',
+            'debug',
             'flash',
             'url',
             'dispatcher',
@@ -54,7 +70,6 @@ class Bootstrap
             'session',
             'cache',
             'behaviors',
-            'debug',
         );
 
 
@@ -67,12 +82,12 @@ class Bootstrap
                 $this->$function($options);
             }
 
-            $application = new Application();
+            $application = new PhApplication();
             $application->setDI($this->_di);
 
             return $application->handle()->getContent();
 
-        } catch (\Phalcon\Exception $e) {
+        } catch (PhException $e) {
             echo $e->getMessage();
         } catch (\PDOException $e) {
             echo $e->getMessage();
@@ -92,7 +107,7 @@ class Bootstrap
         $configFile = ROOT_PATH . '/app/config/config.ini';
 
         // Create the new object
-        $config = new Config($configFile);
+        $config = new PhConfig($configFile);
 
         // Store it in the Di container
         $this->_di->set('config', $config);
@@ -108,7 +123,7 @@ class Bootstrap
         $config = $this->_di->get('config');
 
         // Creates the autoloader
-        $loader = new Loader();
+        $loader = new PhLoader();
 
         $loader->registerDirs(
             array(
@@ -190,7 +205,7 @@ class Bootstrap
                     'notice'  => 'alert alert-info',
                 );
 
-                return new Flash($params);
+                return new PhFlash($params);
             }
         );
     }
@@ -212,7 +227,7 @@ class Bootstrap
             'url',
             function() use ($config)
             {
-                $url = new \Phalcon\Mvc\Url();
+                $url = new PhUrl();
                 $url->setBaseUri($config->app->baseUri);
                 return $url;
             }
@@ -240,7 +255,7 @@ class Bootstrap
                  * Acl plugin
                  */
                 $evManager->attach('dispatch', $acl);
-        		$dispatcher = new Dispatcher();
+        		$dispatcher = new PhDispatcher();
 		        $dispatcher->setEventsManager($evManager);
 
 		        return $dispatcher;
@@ -258,17 +273,11 @@ class Bootstrap
         $config = $this->_di->get('config');
         $di     = $this->_di;
 
-        /**
-         * Setup the view service
-         */
         $this->_di->set(
-            'view',
-            function() use ($config, $di)
+            'volt',
+            function($view, $di) use($config)
             {
-                $view = new \Phalcon\Mvc\View();
-                $view->setViewsDir(ROOT_PATH . $config->app->path->views);
-
-                $volt = new Volt($view, $di);
+                $volt = new PhVolt($view, $di);
                 $volt->setOptions(
                     array(
                         'compiledPath'      => ROOT_PATH . $config->app->volt->path,
@@ -277,12 +286,20 @@ class Bootstrap
                         'stat'              => (bool) $config->app->volt->stat,
                     )
                 );
+                return $volt;
+            }
+        );
 
-                /**
-                 * Register Volt
-                 */
-                $view->registerEngines(array('.volt' => $volt));
-
+        /**
+         * Setup the view service
+         */
+        $this->_di->set(
+            'view',
+            function() use ($config, $di)
+            {
+                $view = new PhView();
+                $view->setViewsDir(ROOT_PATH . $config->app->path->views);
+                $view->registerEngines(array('.volt' => 'volt'));
                 return $view;
             }
         );
@@ -301,7 +318,7 @@ class Bootstrap
             'logger',
             function() use ($config)
             {
-                $logger = new Logger(ROOT_PATH . $config->app->logger->file);
+                $logger = new PhLogger(ROOT_PATH . $config->app->logger->file);
                 $logger->setFormat($config->app->logger->format);
                 return $logger;
             }
@@ -328,7 +345,7 @@ class Bootstrap
 
                 if ($debug)
                 {
-                    $eventsManager = new EventsManager();
+                    $eventsManager = new PhEventsManager();
 
                     // Listen all the database events
                     $eventsManager->attach(
@@ -337,7 +354,7 @@ class Bootstrap
                             if ($event->getType() == 'beforeQuery') {
                                 $logger->log(
                                     $connection->getSQLStatement(),
-                                    Logger::INFO
+                                    PhLogger::INFO
                                 );
                             }
                         }
@@ -351,9 +368,9 @@ class Bootstrap
                     "dbname"   => $config->database->name,
                 );
 
-                $conn = new Mysql($params);
+                $conn = new PhMysql($params);
 
-                if ($config->phalcon->debug)
+                if ($debug)
                 {
                     // Assign the eventsManager to the db adapter instance
                     $conn->setEventsManager($eventsManager);
@@ -370,19 +387,27 @@ class Bootstrap
             'modelsMetadata',
             function() use ($config)
             {
-                if (isset($config->models->metadata))
+                if (isset($config->app->metadata))
                 {
-                    $metaDataConfig  = $config->models->metadata;
-                    $metadataAdapter = 'Phalcon\Mvc\Model\Metadata\\'
-                                     . $metaDataConfig->adapter;
-                    return new $metadataAdapter();
+                    if ($config->app->metadata->adapter == 'Files')
+                    {
+                        return new PhMetadataFiles(
+                            array('metaDataDir' => $config->app->metadata->path)
+                        );
+                    }
+                    else
+                    {
+                        return new PhMetadataMemory();
+                    }
                 }
                 else
                 {
-                    return new MetadataMemory();
+                    return new PhMetadataMemory();
                 }
             }
         );
+
+        $test = $this->_di->get('modelsMetadata');
     }
 
     /**
@@ -396,7 +421,7 @@ class Bootstrap
             'session',
             function()
             {
-                $session = new Session();
+                $session = new PhSession();
                 if (!$session->isStarted())
                 {
                     $session->start();
@@ -425,8 +450,8 @@ class Bootstrap
                 $frontEndOptions = array('lifetime' => $lifetime);
                 $backEndOptions  = array('cacheDir' => ROOT_PATH . $cacheDir);
 
-                $frontCache = new CacheFront($frontEndOptions);
-                $cache      = new CacheBack($frontCache, $backEndOptions);
+                $frontCache = new PhCacheFront($frontEndOptions);
+                $cache      = new PhCacheBack($frontCache, $backEndOptions);
 
                 return $cache;
             }
