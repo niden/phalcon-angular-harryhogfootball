@@ -17,7 +17,8 @@ namespace NDN;
 use \Phalcon\Config\Adapter\Ini as PhConfig;
 use \Phalcon\Loader as PhLoader;
 use \Phalcon\Flash\Session as PhFlash;
-use \Phalcon\Logger\Adapter\File as PhLogger;
+use \Phalcon\Logger as PhLogger;
+use \Phalcon\Logger\Adapter\File as PhLoggerFile;
 use \Phalcon\Db\Adapter\Pdo\Mysql as PhMysql;
 use \Phalcon\Session\Adapter\Files as PhSession;
 use \Phalcon\Cache\Frontend\Data as PhCacheFront;
@@ -104,7 +105,7 @@ class Bootstrap
      */
     protected function initConfig($options = array())
     {
-        $configFile = ROOT_PATH . '/app/config/config.ini';
+        $configFile = ROOT_PATH . '/app/var/config/config.ini';
 
         // Create the new object
         $config = new PhConfig($configFile);
@@ -318,7 +319,7 @@ class Bootstrap
             'logger',
             function() use ($config)
             {
-                $logger = new PhLogger(ROOT_PATH . $config->app->logger->file);
+                $logger = new PhLoggerFile(ROOT_PATH . $config->app->logger->file);
                 $logger->setFormat($config->app->logger->format);
                 return $logger;
             }
@@ -406,8 +407,6 @@ class Bootstrap
                 }
             }
         );
-
-        $test = $this->_di->get('modelsMetadata');
     }
 
     /**
