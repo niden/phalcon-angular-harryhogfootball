@@ -4,7 +4,7 @@
     <h2>Episodes</h2>
 </div>
 
-<div ng-controller='addEditEpisodeCtrl'>
+<div ng-controller='MainCtrl'>
 {{ form('episodes/add', 'class': 'form-horizontal') }}
 
 <fieldset>
@@ -18,7 +18,8 @@
     <div class='control-group'>
         <label class='control-label'>Date</label>
         <div class='controls'>
-            {{ text_field('episode_date', 'class': 'input-medium', 'id': 'episodeDate', 'ui-date': 'dateOptions') }}
+            <input type='text' name='episodeDate' class='input-small' ng-model='datepicker.date' data-date-format='yyyy/mm/mm' bs-datepicker />
+            <button type='button' class='btn' data-toggle='datepicker'><i class='icon-calendar'></i></button>
             <p class='help-block'>(required)</p>
         </div>
     </div>
