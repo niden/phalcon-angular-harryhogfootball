@@ -1,6 +1,7 @@
 // AngularJS code goes here
 // HTTP Interceptor for the Ajax spinner - by Adam Webber - angularjs groups
-var ngModule = angular.module('HHF', ['ngResource', 'ui'])
+var ngModule = angular.module('HHF', ['ngResource', '$strap.directives'])
+
     .config(function($interpolateProvider) {
         $interpolateProvider.startSymbol('[[');
         $interpolateProvider.endSymbol(']]');
@@ -73,12 +74,3 @@ var ngModule = angular.module('HHF', ['ngResource', 'ui'])
 
         $scope.getFiltered(0);
     })
-
-    // This controller is used for the date field in the add/edit episodes.
-    // The field uses angular-ui to display the popup calendar
-    .controller('addEditEpisodeCtrl', function ($scope) {
-        $scope.name = 'episodeDate';
-        $scope.dateOptions = {
-            dateFormat: 'yy-mm-dd'
-        }
-    });
