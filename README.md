@@ -12,7 +12,7 @@ To run this application on your machine, you need at least:
 
     PHP >= 5.3.6
     Apache Web Server with mod rewrite enabled
-    Latest Phalcon Framework extension enabled (0.4.x)
+    Latest Phalcon Framework extension enabled (>= 0.7.0)
 
 ### Installation
 
