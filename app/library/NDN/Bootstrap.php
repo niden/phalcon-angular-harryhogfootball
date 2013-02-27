@@ -19,6 +19,7 @@ use \Phalcon\Loader as PhLoader;
 use \Phalcon\Flash\Session as PhFlash;
 use \Phalcon\Logger as PhLogger;
 use \Phalcon\Logger\Adapter\File as PhLoggerFile;
+use \Phalcon\Logger\Formatter\Line as PhLoggerFormatter;
 use \Phalcon\Db\Adapter\Pdo\Mysql as PhMysql;
 use \Phalcon\Session\Adapter\Files as PhSession;
 use \Phalcon\Cache\Frontend\Data as PhCacheFront;
@@ -320,7 +321,10 @@ class Bootstrap
             function() use ($config)
             {
                 $logger = new PhLoggerFile(ROOT_PATH . $config->app->logger->file);
-                $logger->setFormat($config->app->logger->format);
+
+                $formatter = new PhLoggerFormatter($config->app->logger->format);
+                $logger->setFormatter($formatter);
+
                 return $logger;
             }
         );
