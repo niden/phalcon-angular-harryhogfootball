@@ -27,7 +27,7 @@ Download or clone the application and upload it to your web server.
 
     echo "CREATE DATABASE hhf CHARACTER SET utf8 COLLATE utf8_general_ci;" |mysql -u root -p
 
-    echo "GRANT ALL PRIVILEGES ON hhf.* TO hhf_user@localhost IDENTIFIED BY '12345';" |mysql arrestify -u root -p
+    echo "GRANT ALL PRIVILEGES ON hhf.* TO hhf_user@localhost IDENTIFIED BY '12345';" |mysql hhf -u root -p
 
 Please change the username and password on the line above to meet your requirements.
 
